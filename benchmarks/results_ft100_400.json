@@ -1,0 +1,51 @@
+{
+  "n_test": 400,
+  "n_evaluated": 400,
+  "n_skipped_empty": 0,
+  "r1": 0.855,
+  "r5": 0.9775,
+  "r10": 0.9925,
+  "per_question_type": {
+    "knowledge-update": {
+      "n": 58,
+      "r1": 0.9138,
+      "r5": 1.0,
+      "r10": 1.0
+    },
+    "multi-session": {
+      "n": 96,
+      "r1": 0.9479,
+      "r5": 0.9896,
+      "r10": 1.0
+    },
+    "single-session-assistant": {
+      "n": 52,
+      "r1": 0.9615,
+      "r5": 0.9808,
+      "r10": 0.9808
+    },
+    "single-session-preference": {
+      "n": 23,
+      "r1": 0.6522,
+      "r5": 0.9565,
+      "r10": 0.9565
+    },
+    "single-session-user": {
+      "n": 57,
+      "r1": 0.7719,
+      "r5": 0.9474,
+      "r10": 0.9825
+    },
+    "temporal-reasoning": {
+      "n": 114,
+      "r1": 0.7807,
+      "r5": 0.9737,
+      "r10": 1.0
+    }
+  },
+  "wall_clock_s": 116.25,
+  "mode": "st-model",
+  "model_path": "benchmarks/bench-model-100/model",
+  "dataset": "/Users/macmini/Projects/metis-pair/benchmarks/data/longmemeval/longmemeval_s_cleaned.json",
+  "split_ids": "benchmarks/data/split_ids_100_400.json"
+}

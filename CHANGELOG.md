@@ -42,6 +42,10 @@ All notable changes to adaptmem are recorded here. The format follows
   (FT-300, R@1=0.915, R@5=0.995, 200 held-out questions, CPU).
 - `benchmarks/results_ft200_direct.json` — sanity second run
   (FT-200, R@1=0.900, R@5=0.990).
+- `benchmarks/results_ft100_400.json` — self-contained reproduce
+  (FT-100 trained on the shipped 100/400 split, evaluated on the
+  400 held-out questions): R@1=0.855, R@5=0.978, R@10=0.992. Includes
+  per-question-type breakdown.
 - `benchmarks/data/split_ids_100_400.json` — deterministic
   shuffle(seed=42) of 500 LongMemEval question_ids → first 100 train,
   remaining 400 test. Committed for bit-reproducible runs.
@@ -60,15 +64,16 @@ All notable changes to adaptmem are recorded here. The format follows
   measurement boundary.
 
 ### Open (carried into v0.3 / v0.5)
-- 100/400 self-contained train+test (`make bench-longmemeval`) is
-  wired but blocked on this Mac mini configuration — six attempts,
-  silent exit after model load, both on MPS and CPU. Pipeline + harness
-  work (the bench-ft300 / bench-ft200 targets reproduce the table); the
-  blocker is local PyTorch / sentence-transformers env interaction
-  (memory-pressure-related, swap saturation). v0.3 will pin a known-
-  good dependency set or ship a Docker reproduce target.
 - Mempal protocol-matched run (run our model through their
   `longmemeval_bench.py`) is v0.5.
+
+### Notes
+- The FT-100 self-contained training path runs end-to-end on Colab
+  CPU; on this Mac mini the contrastive `fit()` step deadlocks
+  (PyTorch + sentence-transformers + memory-pressure interaction,
+  six local attempts). Test-mode (`make bench-ft100` against a model
+  trained elsewhere) works on Mac. v0.3 will land a pinned-deps /
+  Docker target so a stranger has a Mac-local fallback.
 
 ## [0.1.0] — 2026-04-26 (initial)
 - `AdaptMem` skeleton with hard-negative mining + contrastive fine-tune

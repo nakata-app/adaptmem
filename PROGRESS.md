@@ -21,7 +21,7 @@ v0.5 mempal outreach   ░░░░░░░░░░░░  0%     (matched-pro
 |---|---|---|---|---|---|
 | FT-300 (metis-pair) | 300 train / 200 test | 0.915 | 0.995 | 0.995 | `benchmarks/results_ft300_direct.json` |
 | FT-200 (metis-pair) | 200 train / 200 test | 0.900 | 0.990 | 0.995 | `benchmarks/results_ft200_direct.json` |
-| FT-100 (self-contained) | 100 train / 400 test | — | — | — | **BLOCKED — see v0.2 open item** |
+| FT-100 (self-contained) | 100 train / 400 test | 0.855 | 0.978 | 0.992 | `benchmarks/results_ft100_400.json` ✅ (Colab-trained, Mac-tested) |
 
 Both numbers clear v0.2 sanity bar (R@5 ≥ 0.985); deltas move in the
 expected direction (more train data → higher recall).
@@ -45,16 +45,14 @@ matched table.
 
 ## Open items
 
-### v0.2 — self-contained reproduce blocker
-- `make bench-longmemeval` çalıştırılamadı bu Mac mini'de. 6 farklı denemede
-  (n=100/30/20, batch=16/4, MPS / `--device cpu`) — model load sonrası
-  silently exit.
-- **Sebep:** memory pressure / swap %95 dolu (PyTorch contrastive fit ek
-  ~1-2GB istiyor, sistem veremiyor → sessiz öldürme).
-- **Çözüm (next session):** reboot sonrası `make bench-longmemeval`
-  çalıştır. Pipeline kodu ve Makefile zaten doğru — bu environment
-  blocker, code blocker değil.
-- README v0.2 status bölümünde dürüstçe yazılı (commit `ba50505`).
+### v0.2 — self-contained reproduce
+- ✅ FT-100 (100 train / 400 test) JSON committed — Colab-trained,
+  Mac-tested. Train pipeline still has a Mac-local PyTorch deadlock
+  (workaround: train elsewhere, drop the model dir into
+  `benchmarks/bench-model-100/`, run `python benchmarks/longmemeval_eval.py
+  --mode test --st-model benchmarks/bench-model-100/model` locally).
+- v0.3 follow-up: pin a known-good dep set or ship a Docker reproduce
+  target so a stranger doesn't need Colab.
 
 ### v0.3 — multi-bench
 - [ ] ConvoMem bench (Salesforce). Dataset arama: `Salesforce/convai_*`
