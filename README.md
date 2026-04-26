@@ -48,9 +48,12 @@ The recipe is small on purpose. Every choice is documented. Every step is one me
 | MemPalace raw (ChromaDB + MiniLM) | — | 0.966 | ✗ | ✗ | ✓ |
 | MemPalace hybrid v4 generalisable | — | 0.984 | ✗ | ✗ | ✓ |
 | MemPalace + Haiku rerank | — | 1.000 | ✓ | ✓ (3 q spot-fix) | ✗ |
+| adaptmem (FT-200 dense, held-out 200q) | 0.900 | 0.990 | ✗ | ✗ | ✓ |
 | **adaptmem (FT-300 dense, held-out 200q)** | **0.915** | **0.995** | **✗** | **✗** | **✓** |
 
-Adaptmem numbers are reproduced from a committed run — see [`benchmarks/results_ft300_direct.json`](benchmarks/results_ft300_direct.json) (200 held-out questions, 607s wall clock on CPU). MemPalace numbers are quoted from their published results, not independently re-run here.
+Adaptmem numbers are reproduced from committed runs — see [`benchmarks/results_ft300_direct.json`](benchmarks/results_ft300_direct.json) and [`benchmarks/results_ft200_direct.json`](benchmarks/results_ft200_direct.json), each over the same 200 held-out questions on CPU. MemPalace numbers are quoted from their published results, not independently re-run here.
+
+**Sanity:** training on more labelled queries (300 vs 200) lifts both R@1 (+1.5pt) and R@5 (+0.5pt) in the expected direction. Both runs clear the ROADMAP v0.2 sanity bar (R@5 ≥ 0.985).
 
 Same encoder family (MiniLM-L6, 90MB) as MemPalace, same dataset, same evaluation protocol (per-question fresh corpus, user-only encoding) — only the **fine-tune step** is different.
 

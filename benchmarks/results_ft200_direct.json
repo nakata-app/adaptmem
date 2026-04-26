@@ -1,0 +1,13 @@
+{
+  "n_test": 200,
+  "n_evaluated": 200,
+  "n_skipped_empty": 0,
+  "r1": 0.9,
+  "r5": 0.99,
+  "r10": 0.995,
+  "wall_clock_s": 66.71,
+  "mode": "st-model",
+  "model_path": "/Users/macmini/Projects/metis-pair/benchmarks/models/minilm-lme-ft-200",
+  "dataset": "/Users/macmini/Projects/metis-pair/benchmarks/data/longmemeval/longmemeval_s_cleaned.json",
+  "split_ids": "/Users/macmini/Projects/metis-pair/benchmarks/data/training_300/split_ids.json"
+}
