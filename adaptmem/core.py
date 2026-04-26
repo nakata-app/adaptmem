@@ -98,7 +98,23 @@ class AdaptMem:
             normalize_embeddings=True,
             convert_to_numpy=True,
         )
-        return {"n_pairs": len(pairs), "runtime_s": round(runtime, 2), "n_steps": n_steps}
+        # Approximate token count (whitespace heuristic — tokenizer-free so it
+        # works for any base model). Word count is the common proxy in
+        # retrieval logs; callers want an order-of-magnitude budget, not an
+        # exact tokenizer count.
+        all_texts: list[str] = [c.text for c in entries]
+        for p in pairs:
+            all_texts.append(p.anchor)
+            all_texts.append(p.positive)
+            all_texts.append(p.negative)
+        n_tokens_approx = sum(len(t.split()) for t in all_texts)
+        return {
+            "n_pairs": len(pairs),
+            "runtime_s": round(runtime, 2),
+            "n_steps": n_steps,
+            "n_tokens_approx": n_tokens_approx,
+            "tokens_per_s": round(n_tokens_approx / runtime, 1) if runtime > 0 else 0.0,
+        }
 
     # ---- Streaming corpus updates -------------------------------------
     def add_corpus(self, new_corpus: list[str] | list[CorpusEntry] | list[dict]) -> int:
