@@ -63,3 +63,119 @@ def test_search_missing_required_args_errors():
     out = _run(["search"])
     assert out.returncode != 0
     assert "model" in out.stderr.lower() or "query" in out.stderr.lower()
+
+
+# ---- evaluate command logic (no model fetch) ----------------------------
+
+
+def test_evaluate_perfect_recall(tmp_path, monkeypatch):
+    """When the stubbed model returns the relevant id at rank 0, R@1/5/10 = 1.0."""
+    import argparse, io, json as _json
+    from contextlib import redirect_stdout
+
+    queries = [
+        {"query": "q1", "relevant_ids": ["a"]},
+        {"query": "q2", "relevant_ids": ["b"]},
+    ]
+    qf = tmp_path / "queries.json"
+    qf.write_text(_json.dumps(queries))
+
+    from adaptmem.types import RetrievalHit
+
+    class _StubAM:
+        rerank_enabled = False
+        rerank_model_name = None
+        _rerank_model = None
+
+        def search(self, query, top_k):
+            # Always return the "right" id at rank 0
+            target = "a" if query == "q1" else "b"
+            return [RetrievalHit(chunk_id=target, text="match", score=1.0)]
+
+    monkeypatch.setattr("adaptmem.AdaptMem.load", classmethod(lambda cls, p: _StubAM()))
+
+    from adaptmem.cli import _cmd_evaluate
+    args = argparse.Namespace(
+        model="x", queries=str(qf), top_k=10, rerank=False, rerank_model=None
+    )
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        _cmd_evaluate(args)
+    out = _json.loads(buf.getvalue())
+    assert out["n"] == 2
+    assert out["recall"]["@1"] == 1.0
+    assert out["recall"]["@5"] == 1.0
+    assert out["recall"]["@10"] == 1.0
+
+
+def test_evaluate_zero_recall(tmp_path, monkeypatch):
+    """When the stubbed model never returns the relevant id, R@k = 0."""
+    import argparse, io, json as _json
+    from contextlib import redirect_stdout
+
+    queries = [{"query": "q", "relevant_ids": ["target"]}]
+    qf = tmp_path / "queries.json"
+    qf.write_text(_json.dumps(queries))
+
+    from adaptmem.types import RetrievalHit
+
+    class _StubAM:
+        rerank_enabled = False
+        rerank_model_name = None
+        _rerank_model = None
+
+        def search(self, query, top_k):
+            return [
+                RetrievalHit(chunk_id=f"wrong{i}", text="x", score=0.5) for i in range(top_k)
+            ]
+
+    monkeypatch.setattr("adaptmem.AdaptMem.load", classmethod(lambda cls, p: _StubAM()))
+
+    from adaptmem.cli import _cmd_evaluate
+    args = argparse.Namespace(
+        model="x", queries=str(qf), top_k=10, rerank=False, rerank_model=None
+    )
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        _cmd_evaluate(args)
+    out = _json.loads(buf.getvalue())
+    assert out["n"] == 1
+    assert out["recall"]["@1"] == 0.0
+    assert out["recall"]["@5"] == 0.0
+
+
+def test_evaluate_skips_queries_with_empty_relevant_ids(tmp_path, monkeypatch):
+    """Queries with no relevant_ids must be skipped (cannot score recall)."""
+    import argparse, io, json as _json
+    from contextlib import redirect_stdout
+
+    queries = [
+        {"query": "q1", "relevant_ids": []},  # skipped
+        {"query": "q2", "relevant_ids": ["a"]},
+    ]
+    qf = tmp_path / "queries.json"
+    qf.write_text(_json.dumps(queries))
+
+    from adaptmem.types import RetrievalHit
+
+    class _StubAM:
+        rerank_enabled = False
+        rerank_model_name = None
+        _rerank_model = None
+
+        def search(self, query, top_k):
+            return [RetrievalHit(chunk_id="a", text="match", score=1.0)]
+
+    monkeypatch.setattr("adaptmem.AdaptMem.load", classmethod(lambda cls, p: _StubAM()))
+
+    from adaptmem.cli import _cmd_evaluate
+    args = argparse.Namespace(
+        model="x", queries=str(qf), top_k=5, rerank=False, rerank_model=None
+    )
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        _cmd_evaluate(args)
+    out = _json.loads(buf.getvalue())
+    # Only 1 of the 2 queries had relevant_ids
+    assert out["n"] == 1
+    assert out["recall"]["@1"] == 1.0
