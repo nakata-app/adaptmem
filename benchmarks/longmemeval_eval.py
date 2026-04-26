@@ -168,12 +168,18 @@ def recall_at_k(retrieved_ids: list[str], gt: set[str], k: int) -> float:
 
 
 def evaluate_with_st_model(model, test_qs: list[dict], top_k: int = 10) -> dict:
-    """Per-question evaluation using a raw SentenceTransformer model."""
+    """Per-question evaluation using a raw SentenceTransformer model.
+
+    Returns macro Recall@1/5/10 plus a per-question-type breakdown
+    (matches MemPal's published table layout).
+    """
     import numpy as np
 
     n = len(test_qs)
     r1 = r5 = r10 = 0.0
     skipped = 0
+    # Per-question-type counters: type -> {n, r1, r5, r10}
+    per_type: dict[str, dict[str, float]] = {}
     t0 = time.time()
     for i, q in enumerate(test_qs):
         sids, docs = make_per_question_corpus(q)
@@ -197,14 +203,32 @@ def evaluate_with_st_model(model, test_qs: list[dict], top_k: int = 10) -> dict:
         order = np.argsort(-scores)
         ranked_sids = [sids[j] for j in order]
         gt = set(q["answer_session_ids"])
-        r1 += recall_at_k(ranked_sids, gt, 1)
-        r5 += recall_at_k(ranked_sids, gt, 5)
-        r10 += recall_at_k(ranked_sids, gt, 10)
+        h1 = recall_at_k(ranked_sids, gt, 1)
+        h5 = recall_at_k(ranked_sids, gt, 5)
+        h10 = recall_at_k(ranked_sids, gt, 10)
+        r1 += h1
+        r5 += h5
+        r10 += h10
+        qtype = q.get("question_type", "unknown")
+        bucket = per_type.setdefault(qtype, {"n": 0, "r1": 0.0, "r5": 0.0, "r10": 0.0})
+        bucket["n"] += 1
+        bucket["r1"] += h1
+        bucket["r5"] += h5
+        bucket["r10"] += h10
         if (i + 1) % 50 == 0:
             elapsed = time.time() - t0
             eta = elapsed * (n - i - 1) / (i + 1)
             print(f"  q{i+1}/{n}  eta {eta:.0f}s", file=sys.stderr, flush=True)
     n_eff = n - skipped
+    per_type_summary = {
+        t: {
+            "n": int(b["n"]),
+            "r1": round(b["r1"] / b["n"], 4) if b["n"] else 0.0,
+            "r5": round(b["r5"] / b["n"], 4) if b["n"] else 0.0,
+            "r10": round(b["r10"] / b["n"], 4) if b["n"] else 0.0,
+        }
+        for t, b in sorted(per_type.items())
+    }
     return {
         "n_test": n,
         "n_evaluated": n_eff,
@@ -212,6 +236,7 @@ def evaluate_with_st_model(model, test_qs: list[dict], top_k: int = 10) -> dict:
         "r1": round(r1 / n, 4) if n else 0.0,
         "r5": round(r5 / n, 4) if n else 0.0,
         "r10": round(r10 / n, 4) if n else 0.0,
+        "per_question_type": per_type_summary,
         "wall_clock_s": round(time.time() - t0, 2),
     }
 
