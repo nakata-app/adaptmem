@@ -275,7 +275,9 @@ class AdaptMem:
 
 
 # ---- helpers ---------------------------------------------------------
-def _normalise_corpus(corpus) -> list[CorpusEntry]:
+def _normalise_corpus(
+    corpus: list[str] | list[CorpusEntry] | list[dict],
+) -> list[CorpusEntry]:
     out: list[CorpusEntry] = []
     for i, c in enumerate(corpus):
         if isinstance(c, str):
@@ -289,7 +291,9 @@ def _normalise_corpus(corpus) -> list[CorpusEntry]:
     return out
 
 
-def _normalise_queries(labelled) -> list[LabelledQuery]:
+def _normalise_queries(
+    labelled: list[LabelledQuery] | list[dict],
+) -> list[LabelledQuery]:
     out: list[LabelledQuery] = []
     for q in labelled:
         if isinstance(q, LabelledQuery):

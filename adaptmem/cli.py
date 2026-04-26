@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 
-def _cmd_train(args):
+def _cmd_train(args: argparse.Namespace) -> None:
     from adaptmem import AdaptMem
     from adaptmem.types import TrainConfig
 
@@ -29,7 +29,7 @@ def _cmd_train(args):
     print(json.dumps(stats, indent=2))
 
 
-def _cmd_evaluate(args):
+def _cmd_evaluate(args: argparse.Namespace) -> None:
     """Compute Recall@k for a saved model against a labelled queries file.
 
     queries.json shape: list of {"query": str, "relevant_ids": [str, ...]}
@@ -65,7 +65,7 @@ def _cmd_evaluate(args):
     print(json.dumps(out, indent=2))
 
 
-def _cmd_search(args):
+def _cmd_search(args: argparse.Namespace) -> None:
     from adaptmem import AdaptMem
 
     am = AdaptMem.load(args.model)
@@ -81,7 +81,7 @@ def _cmd_search(args):
         print(f"{h.score:.4f}\t{h.chunk_id}\t{h.text[:120]}")
 
 
-def main():
+def main() -> None:
     ap = argparse.ArgumentParser(prog="adaptmem")
     sub = ap.add_subparsers(dest="cmd", required=True)
 

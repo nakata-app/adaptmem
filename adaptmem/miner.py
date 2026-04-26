@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import random
 from dataclasses import dataclass
+from typing import Any
 
 import numpy as np
 
@@ -32,7 +33,7 @@ class HardNegativeMiner:
       training pairs, all anchored on the same query but with distinct positives.
     """
 
-    def __init__(self, base_model, top_k_mine: int = 10, seed: int = 42):
+    def __init__(self, base_model: Any, top_k_mine: int = 10, seed: int = 42):
         self.base_model = base_model
         self.top_k_mine = top_k_mine
         self.rng = random.Random(seed)
