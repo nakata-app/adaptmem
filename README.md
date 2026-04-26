@@ -41,17 +41,29 @@ The recipe is small on purpose. Every choice is documented. Every step is one me
 
 ## Concrete result on LongMemEval (s_cleaned, 500 questions)
 
-| System | R@5 | LLM | Hand-tune | Generalisable |
-|---|---|---|---|---|
-| BM25 sparse baseline | 0.70 | ✗ | ✗ | ✓ |
-| Stella dense (academic) | ~0.85 | ✗ | ✗ | ✓ |
-| MemPalace raw (ChromaDB + MiniLM) | 0.966 | ✗ | ✗ | ✓ |
-| MemPalace hybrid v4 generalisable | 0.984 | ✗ | ✗ | ✓ |
-| MemPalace + Haiku rerank | 1.000 | ✓ | ✓ (3 q spot-fix) | ✗ |
-| **adaptmem (FT-300 dense, held-out 200q)** | **0.9950** | **✗** | **✗** | **✓** |
-| **adaptmem (FT-300 + CE top-5)** | **0.9950 R@5, 0.93 R@1** | ✗ | ✗ | ✓ |
+| System | R@1 | R@5 | LLM | Hand-tune | Generalisable |
+|---|---|---|---|---|---|
+| BM25 sparse baseline | — | 0.70 | ✗ | ✗ | ✓ |
+| Stella dense (academic) | — | ~0.85 | ✗ | ✗ | ✓ |
+| MemPalace raw (ChromaDB + MiniLM) | — | 0.966 | ✗ | ✗ | ✓ |
+| MemPalace hybrid v4 generalisable | — | 0.984 | ✗ | ✗ | ✓ |
+| MemPalace + Haiku rerank | — | 1.000 | ✓ | ✓ (3 q spot-fix) | ✗ |
+| **adaptmem (FT-300 dense, held-out 200q)** | **0.915** | **0.995** | **✗** | **✗** | **✓** |
+
+Adaptmem numbers are reproduced from a committed run — see [`benchmarks/results_ft300_direct.json`](benchmarks/results_ft300_direct.json) (200 held-out questions, 607s wall clock on CPU). MemPalace numbers are quoted from their published results, not independently re-run here.
 
 Same encoder family (MiniLM-L6, 90MB) as MemPalace, same dataset, same evaluation protocol (per-question fresh corpus, user-only encoding) — only the **fine-tune step** is different.
+
+### Reproduce
+
+```bash
+# Evaluate the existing FT-300 SentenceTransformer model directly
+python benchmarks/longmemeval_eval.py --mode test \
+    --st-model /path/to/minilm-lme-ft-300 \
+    --results-out benchmarks/results_ft300_direct.json
+```
+
+A cross-encoder rerank stage (R@1 lift) is on the v0.4 roadmap — a JSON capture is not yet committed.
 
 ## Usage (planned API)
 
