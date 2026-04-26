@@ -10,3 +10,5 @@ dist/
 htmlcov/
 **/checkpoints/
 benchmarks/data/
+benchmarks/bench-model/
+benchmarks/*.log
