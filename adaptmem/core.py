@@ -21,11 +21,22 @@ class AdaptMem:
     fine-tuned model lives in memory until you call `save(path)`.
     """
 
-    def __init__(self, base_model: str = "all-MiniLM-L6-v2"):
+    def __init__(
+        self,
+        base_model: str = "all-MiniLM-L6-v2",
+        rerank: bool = False,
+        rerank_model: str = "cross-encoder/ms-marco-MiniLM-L-12-v2",
+    ):
         self.base_model_name = base_model
         self._model = None
         self._corpus: list[CorpusEntry] = []
         self._embeddings: np.ndarray | None = None
+        # Optional cross-encoder rerank stage. Disabled by default; when enabled,
+        # `search` fetches a wider bi-encoder candidate set and reorders it with
+        # the cross-encoder before returning top_k.
+        self.rerank_enabled = rerank
+        self.rerank_model_name = rerank_model
+        self._rerank_model = None
 
     # ---- Training -------------------------------------------------------
     def train(
@@ -103,6 +114,17 @@ class AdaptMem:
                 # tab-safe: escape tabs/newlines in text
                 t = c.text.replace("\t", " ").replace("\n", " ")
                 f.write(f"{c.id}\t{t}\n")
+        # Persist config so `.load(path)` restores rerank settings.
+        import json as _json
+        (out / "config.json").write_text(
+            _json.dumps(
+                {
+                    "base_model": self.base_model_name,
+                    "rerank": self.rerank_enabled,
+                    "rerank_model": self.rerank_model_name,
+                }
+            )
+        )
 
     @classmethod
     def load(cls, path: str | Path) -> "AdaptMem":
@@ -121,22 +143,72 @@ class AdaptMem:
                     continue
                 cid, text = line.split("\t", 1)
                 am._corpus.append(CorpusEntry(id=cid, text=text))
+        # Restore rerank config (config.json missing → conservative defaults).
+        cfg_path = p / "config.json"
+        if cfg_path.exists():
+            import json as _json
+            cfg = _json.loads(cfg_path.read_text())
+            am.base_model_name = cfg.get("base_model", "")
+            am.rerank_enabled = bool(cfg.get("rerank", False))
+            am.rerank_model_name = cfg.get(
+                "rerank_model", "cross-encoder/ms-marco-MiniLM-L-12-v2"
+            )
+        else:
+            am.rerank_enabled = False
+            am.rerank_model_name = "cross-encoder/ms-marco-MiniLM-L-12-v2"
+        am._rerank_model = None
         return am
 
     # ---- Inference -----------------------------------------------------
-    def search(self, query: str, top_k: int = 5) -> list[RetrievalHit]:
+    def _ensure_rerank_model(self) -> None:
+        if self._rerank_model is None:
+            from sentence_transformers import CrossEncoder
+            self._rerank_model = CrossEncoder(self.rerank_model_name)
+
+    def search(
+        self,
+        query: str,
+        top_k: int = 5,
+        rerank_top_k: int | None = None,
+    ) -> list[RetrievalHit]:
+        """Retrieve top_k passages.
+
+        When `rerank_enabled` is True, fetch `rerank_top_k or top_k * 3`
+        candidates from the bi-encoder index, score the (query, candidate)
+        pairs with the cross-encoder, and return the top_k by CE score.
+        Cross-encoder is lazy-loaded.
+        """
         if self._model is None or self._embeddings is None:
             raise RuntimeError("Not initialised. Call .train() or .load() first.")
         qv = self._model.encode(
             [query], normalize_embeddings=True, convert_to_numpy=True, show_progress_bar=False
         )[0]
         scores = self._embeddings @ qv
-        k = min(top_k, len(self._corpus))
-        idx = np.argpartition(-scores, k - 1)[:k]
+        candidate_k = (rerank_top_k or max(top_k * 3, top_k)) if self.rerank_enabled else top_k
+        candidate_k = min(candidate_k, len(self._corpus))
+        idx = np.argpartition(-scores, candidate_k - 1)[:candidate_k]
         idx = idx[np.argsort(-scores[idx])]
+
+        if not self.rerank_enabled:
+            return [
+                RetrievalHit(
+                    chunk_id=self._corpus[i].id,
+                    text=self._corpus[i].text,
+                    score=float(scores[i]),
+                )
+                for i in idx
+            ]
+
+        # Cross-encoder rerank
+        self._ensure_rerank_model()
+        candidates = [self._corpus[i] for i in idx]
+        pairs = [(query, c.text) for c in candidates]
+        ce_scores = self._rerank_model.predict(pairs, show_progress_bar=False)
+        ranked = sorted(zip(candidates, ce_scores), key=lambda x: -float(x[1]))
+        k = min(top_k, len(ranked))
         return [
-            RetrievalHit(chunk_id=self._corpus[i].id, text=self._corpus[i].text, score=float(scores[i]))
-            for i in idx
+            RetrievalHit(chunk_id=c.id, text=c.text, score=float(s))
+            for c, s in ranked[:k]
         ]
 
 
