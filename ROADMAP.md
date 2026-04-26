@@ -1,59 +1,63 @@
 # adaptmem roadmap
 
-Status — `v0.1` (April 26 2026): public API stable, hard-negative mining + contrastive FT + persistence + 9 unit tests passing. No real benchmark integration yet.
+Status — `v0.4` in flight (April 26 2026, late-day session): bench harness landed, two committed JSONs (FT-300 + FT-200) reproduce the README numbers, the v0.4 production-ready surface (CE rerank, streaming index, evaluate CLI, device override, token cost report, py.typed, CI matrix, CLI smoke tests) is shipped. v0.2's self-contained 100/400 train target is wired but blocked on a local PyTorch+memory-pressure interaction; details in `PROGRESS.md`.
+
+Earlier — `v0.1` (April 26 2026, morning): public API stable, hard-negative mining + contrastive FT + persistence + 9 unit tests passing.
 
 The path below is opinionated. Each milestone has a concrete exit criterion and a rough effort estimate (CPU-only on a Mac mini).
 
 ---
 
-## v0.2 — first real benchmark (target: 1-2 days)
+## v0.2 — first real benchmark (target: 1-2 days) — **mostly shipped**
 
 **Goal:** prove the README's `R@5 = 0.9950` claim is reproducible from scratch by anyone who clones the repo.
 
-- [ ] `benchmarks/longmemeval_eval.py`
-  - `--mode train`: load `longmemeval_s_cleaned.json`, take first N questions, build LabelledQuery list, call `AdaptMem.train`, save model. Report training stats.
-  - `--mode test`: load saved model, evaluate on remaining questions, report R@1 / R@5 / R@10.
-  - Per-question protocol (mempal-compatible): each question's `haystack_sessions` = fresh corpus; `answer_session_ids` = relevant ids.
-  - User-only encoding: `"\n".join(t.content for t in session if t.role == "user")`.
-- [ ] Sanity reproduce on 100 train / 400 test split (matches our existing FT-100). Expected R@5 ≥ 0.985.
-- [ ] Full reproduce on 300 train / 200 test split. Expected R@5 ≥ 0.99.
-- [ ] Commit a `benchmarks/results.json` with the numbers and the `git rev-parse HEAD` they came from. Reproducibility is the deliverable.
-- [ ] README replaces the placeholder table with the real numbers + the exact CLI commands to reproduce.
+- [x] `benchmarks/longmemeval_eval.py` (commit `06e593e`, extended in `2ce0132` with per-question-type breakdown)
+  - `--mode train` / `--mode test` — both wired
+  - Per-question protocol: per-question fresh corpus, user-only encoding, drop empty
+  - `--st-model` flag for evaluating raw SentenceTransformer dirs (used for FT-300 / FT-200 reference runs)
+  - `--device cpu|cuda|mps` flag (`04aa59a`) for Apple-silicon MPS-deadlock workaround
+- [x] Full reproduce on 300 train / 200 test split → `benchmarks/results_ft300_direct.json`: R@1=0.915, R@5=**0.995**, R@10=0.995. Commit `06e593e`.
+- [x] Sanity second model FT-200 → `benchmarks/results_ft200_direct.json`: R@1=0.900, R@5=0.990, R@10=0.995. Commit `90d52af`. (More-train-data → higher-recall direction confirmed.)
+- [x] README placeholder rows replaced with reproduced numbers + audit links to the JSONs + reproduce CLI snippet (`eb2daf2`, `90d52af`).
+- [x] `Makefile` with self-contained `bench-longmemeval` target + committed `split_ids_100_400.json` + `DEVICE=cpu` default (`1d3149f`, `c0eec2f`).
+- [ ] **OPEN** — Sanity reproduce on the 100 train / 400 test split. Pipeline + harness wired, six attempts on this Mac mini all silently exit after model load (memory pressure / swap saturation, both on MPS and `--device cpu`). Tracked in `PROGRESS.md` with reproduction notes; v0.3 will pin a known-good dependency set or ship a Docker target.
 
-**Exit:** a stranger runs `make bench-longmemeval` (or the equivalent two-line script) and gets R@5 within ±0.01 of our headline.
+**Exit:** a stranger runs `make bench-longmemeval` (or the equivalent two-line script) and gets R@5 within ±0.01 of our headline. **Not yet met** on this configuration; FT-200 / FT-300 numbers are reproducible via `make bench-ft200` / `make bench-ft300`.
 
 ---
 
-## v0.3 — second benchmark + multi-encoder (target: 3-5 days)
+## v0.3 — second benchmark + multi-encoder (target: 3-5 days) — **partial**
 
 **Goal:** show domain adaptation generalises beyond the dataset that produced it. Add a second public benchmark and a second base encoder.
 
-- [ ] `benchmarks/convomem_eval.py` — Salesforce ConvoMem (cited in MemPal's BENCHMARKS.md as "MemPal 92.9%"). Different domain (general conversation, multi-turn QA), different label distribution.
+- [ ] `benchmarks/convomem_eval.py` — Salesforce ConvoMem. Different domain (general conversation, multi-turn QA), different label distribution.
   - Target: adaptmem trained on ConvoMem train split beats vanilla MiniLM by ≥3 points R@5.
+  - **Pending:** locate the public dataset (HF Hub mirror not yet identified); build script in the longmemeval pattern.
 - [ ] `benchmarks/membench_eval.py` — ACL 2025 MemBench (mempal raw 80.3%). Even more out-of-distribution.
-  - Target: ≥1 point lift over baseline.
-- [ ] Encoder swap support: `AdaptMem(base_model="BAAI/bge-small-en-v1.5")`. Pick a second encoder family.
-  - Target: bge-small + adaptmem on LongMemEval reaches the same 0.99 ceiling MiniLM hit, faster or with fewer pairs.
+- [ ] Encoder swap support: `AdaptMem(base_model="BAAI/bge-small-en-v1.5")`. Param already in place — needs a measured run to confirm the lift.
 - [ ] Document **when adaptmem helps** (in-distribution test set, ≥100 labelled queries) and **when it doesn't** (cross-domain transfer, fewer than 50 queries).
-- [ ] Per-question-type breakdown in the LongMemEval bench (matches what MemPal's table publishes), so `temporal-reasoning` / `multi-session` / `single-session-preference` etc. are visible separately.
+- [x] Per-question-type breakdown in the LongMemEval bench (commit `2ce0132`). The eval JSON now carries a `per_question_type` map (multi-session, temporal-reasoning, knowledge-update, single-session-{user,assistant,preference}).
 
 **Exit:** three benchmark tables in the README. At least two of them are not LongMemEval.
 
 ---
 
-## v0.4 — robustness + APIs (target: 1 week)
+## v0.4 — robustness + APIs (target: 1 week) — **mostly shipped**
 
 **Goal:** make the package something a stranger can import in production, not just a benchmark harness.
 
-- [ ] **Cross-encoder rerank** as a built-in optional second stage (`AdaptMem.rerank=True`). Default model: `cross-encoder/ms-marco-MiniLM-L-12-v2`. Already shown to add R@1 +5 points on our internal LongMemEval runs.
-- [ ] **Streaming index updates** — add new corpus chunks without re-encoding the whole corpus. Persist embeddings incrementally.
-- [ ] **Persistence on disk:** swap in-memory numpy index for an on-disk Parquet index when corpus > 50k chunks. Keep the API identical.
-- [ ] **CI**: GitHub Actions matrix (Python 3.10/3.11/3.12), lint (`ruff`), tests, release-on-tag wheel build to PyPI.
-- [ ] **Type stubs** (`py.typed` marker), strict-mode mypy clean.
-- [ ] **Token cost report** in `train()` output: how many tokens were encoded, how many GPU/CPU seconds were spent. Helps users budget.
-- [ ] **`adaptmem evaluate`** CLI subcommand: take a saved model + a labelled queries file, dump R@k.
+- [x] **Cross-encoder rerank** as a built-in optional second stage (`AdaptMem(rerank=True)`). Default model: `cross-encoder/ms-marco-MiniLM-L-12-v2`. Lazy-loaded, persisted in `config.json`. Surfaced via `--rerank / --rerank-model / --rerank-top-k` on `train`, `search`, and `evaluate` CLI subcommands. (`5beec31`, `5a26e96`)
+- [x] **Streaming index updates** — `AdaptMem.add_corpus(new_corpus)` encodes only the new entries and appends them to the in-memory embedding matrix; de-dupes by id. (`409eb8f`)
+- [ ] **Persistence on disk:** swap in-memory numpy index for an on-disk Parquet index when corpus > 50k chunks. Keep the API identical. *(Not yet started — corpus sizes in current benches are well under threshold.)*
+- [x] **CI**: GitHub Actions matrix (Python 3.10/3.11/3.12), lint (`ruff`), tests on every push and PR. (`4386d8b`) — release-on-tag wheel build to PyPI is the one open piece (needs maintainer-controlled API token).
+- [x] **Type stubs** (`py.typed` marker, PEP 561). (`c4db02c`) Strict-mode mypy run is the next quality gate (planned).
+- [x] **Token cost report** in `train()` output: `n_tokens_approx` (whitespace word count over corpus + every TrainingPair) and `tokens_per_s`. (`2d6ef87`)
+- [x] **`adaptmem evaluate`** CLI subcommand: takes a saved model + a labelled queries file, prints R@1 / R@5 / R@top_k as a JSON dict. (`12057d5`)
+- [x] **`device` parameter** on `AdaptMem(...)` and `--device` flag on the bench harness. Forces PyTorch device choice; persisted in `config.json` so `.load()` honours the same. Apple-silicon MPS-deadlock workaround. (`04aa59a`)
+- [x] **CLI subprocess smoke tests** — argparse plumbing for `train` / `search` / `evaluate`. (`5ba9f34`)
 
-**Exit:** `pip install adaptmem` from PyPI. A second user can train and serve a domain encoder without reading source code, just the README.
+**Exit:** `pip install adaptmem` from PyPI. A second user can train and serve a domain encoder without reading source code, just the README. **Code surface ready;** PyPI publish is the gating step.
 
 ---
 
