@@ -36,6 +36,9 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 include = ["adaptmem*"]
 
+[tool.setuptools.package-data]
+adaptmem = ["py.typed"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
