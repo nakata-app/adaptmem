@@ -143,7 +143,7 @@ def cmd_train(args) -> None:
         warmup_ratio=args.warmup_ratio,
         top_k_mine=args.top_k_mine,
     )
-    am = AdaptMem(base_model=args.base_model)
+    am = AdaptMem(base_model=args.base_model, device=args.device)
 
     t0 = time.time()
     stats = am.train(corpus=corpus, labelled=labelled, config=cfg)
@@ -320,6 +320,12 @@ def main():
         help="Raw SentenceTransformer dir (test) — used to evaluate the existing FT-300 model directly",
     )
     ap.add_argument("--results-out", help="Write results JSON here")
+    ap.add_argument(
+        "--device",
+        default=None,
+        help="Force PyTorch device: 'cpu', 'cuda', 'mps'. Default = autodetect. "
+             "Pass 'cpu' to bypass MPS deadlocks observed on Apple silicon.",
+    )
     args = ap.parse_args()
 
     if args.mode == "train":

@@ -26,6 +26,7 @@ class AdaptMem:
         base_model: str = "all-MiniLM-L6-v2",
         rerank: bool = False,
         rerank_model: str = "cross-encoder/ms-marco-MiniLM-L-12-v2",
+        device: str | None = None,
     ):
         self.base_model_name = base_model
         self._model = None
@@ -37,6 +38,12 @@ class AdaptMem:
         self.rerank_enabled = rerank
         self.rerank_model_name = rerank_model
         self._rerank_model = None
+        # Device override for the underlying SentenceTransformer. None lets
+        # PyTorch auto-detect (CUDA → MPS → CPU). Passing "cpu" sidesteps
+        # MPS deadlocks that have surfaced on some Apple-silicon configs
+        # during contrastive fine-tuning. Persisted in config.json so that
+        # .load() can restore the same choice.
+        self.device = device
 
     # ---- Training -------------------------------------------------------
     def train(
@@ -61,7 +68,8 @@ class AdaptMem:
 
         from sentence_transformers import SentenceTransformer
 
-        base = SentenceTransformer(self.base_model_name)
+        st_kwargs = {"device": self.device} if self.device else {}
+        base = SentenceTransformer(self.base_model_name, **st_kwargs)
         miner = HardNegativeMiner(base_model=base, top_k_mine=config.top_k_mine)
         pairs = miner.mine(entries, queries)
         if not pairs:
@@ -168,6 +176,7 @@ class AdaptMem:
                     "base_model": self.base_model_name,
                     "rerank": self.rerank_enabled,
                     "rerank_model": self.rerank_model_name,
+                    "device": self.device,
                 }
             )
         )
@@ -179,7 +188,17 @@ class AdaptMem:
         p = Path(path)
         am = cls.__new__(cls)
         am.base_model_name = ""
-        am._model = SentenceTransformer(str(p / "model"))
+        am.device = None
+        # Read device from config.json (if present) before constructing the
+        # SentenceTransformer so we can honour an explicit "cpu" choice.
+        cfg_path = p / "config.json"
+        cfg = None
+        if cfg_path.exists():
+            import json as _json
+            cfg = _json.loads(cfg_path.read_text())
+            am.device = cfg.get("device")
+        st_kwargs = {"device": am.device} if am.device else {}
+        am._model = SentenceTransformer(str(p / "model"), **st_kwargs)
         am._embeddings = np.load(p / "embeddings.npy")
         am._corpus = []
         with open(p / "corpus.tsv") as f:
@@ -189,11 +208,8 @@ class AdaptMem:
                     continue
                 cid, text = line.split("\t", 1)
                 am._corpus.append(CorpusEntry(id=cid, text=text))
-        # Restore rerank config (config.json missing → conservative defaults).
-        cfg_path = p / "config.json"
-        if cfg_path.exists():
-            import json as _json
-            cfg = _json.loads(cfg_path.read_text())
+        # Restore rerank config (cfg loaded above for device — reuse).
+        if cfg is not None:
             am.base_model_name = cfg.get("base_model", "")
             am.rerank_enabled = bool(cfg.get("rerank", False))
             am.rerank_model_name = cfg.get(
