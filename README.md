@@ -93,9 +93,18 @@ for chunk_id, score in hits:
 CLI parity:
 
 ```bash
-adaptmem train --corpus corpus.json --queries queries.json --out my-encoder/
-adaptmem search --model my-encoder/ --query "..." --top-k 5
-adaptmem bench longmemeval --data longmemeval_s_cleaned.json
+# Train + persist the rerank flag so .load() restores it later
+adaptmem train --corpus corpus.json --queries queries.json --out my-encoder/ \
+    [--rerank --rerank-model cross-encoder/ms-marco-MiniLM-L-12-v2]
+
+# Serve a query — bi-encoder by default, or force CE rerank for an A/B
+adaptmem search --model my-encoder/ --query "..." --top-k 5 [--rerank --rerank-top-k 15]
+
+# Score a saved model against a labelled queries file (R@1 / R@5 / R@k)
+adaptmem evaluate --model my-encoder/ --queries labelled.json --top-k 10
+
+# Reproduce the LongMemEval table (Makefile, single command)
+make bench-longmemeval
 ```
 
 ## What it is NOT
@@ -106,10 +115,23 @@ adaptmem bench longmemeval --data longmemeval_s_cleaned.json
 
 ## Status
 
-`v0.2` shipped — public API stable, hard-negative mining + contrastive FT,
-persistence, streaming `add_corpus`, optional cross-encoder rerank, CLI
-(`train` / `search` / `evaluate`), Makefile reproduction target, GitHub
-Actions CI, py.typed (PEP 561), 23 passing tests.
+`v0.4` in flight — production-ready surface mostly landed:
+
+- **API:** hard-negative mining + contrastive FT + persistence (v0.1), optional
+  cross-encoder rerank (`AdaptMem(rerank=True)`), streaming index updates
+  (`add_corpus()`), `device` override (CPU / CUDA / MPS) all in.
+- **CLI:** `adaptmem train | search | evaluate` with `--rerank /
+  --rerank-model / --rerank-top-k` on each. 6 subprocess smoke tests.
+- **Bench:** `benchmarks/longmemeval_eval.py` train+test harness with
+  per-question-type breakdown. Two committed reproducible runs (FT-300,
+  FT-200). `Makefile` `bench-longmemeval` target with `DEVICE=cpu` default.
+- **Quality:** `py.typed` (PEP 561) for downstream type-checkers, GitHub
+  Actions CI on Python 3.10/3.11/3.12, train() returns `n_tokens_approx`
+  + `tokens_per_s` for budget planning. 23 passing tests.
+
+Open: on-disk Parquet persistence (warranted only at corpus > 50k chunks,
+not yet started); PyPI release (gated on a maintainer API token); the
+self-contained 100/400 reproduction described below.
 
 Reference numbers (held-out 200q on the 300/200 split): R@1=0.915,
 R@5=0.995 with FT-300; R@1=0.900, R@5=0.990 with FT-200. Both runs
