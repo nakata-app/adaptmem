@@ -9,6 +9,7 @@ dist/
 .coverage
 htmlcov/
 **/checkpoints/
-benchmarks/data/
-benchmarks/bench-model/
+benchmarks/data/*
+!benchmarks/data/split_ids_100_400.json
+benchmarks/bench-model*/
 benchmarks/*.log
