@@ -124,6 +124,26 @@ class AdaptMem:
             "tokens_per_s": round(n_tokens_approx / runtime, 1) if runtime > 0 else 0.0,
         }
 
+    # ---- Public introspection (stable contract for downstream tools) ---
+    @property
+    def encoder(self) -> Any:
+        """The underlying SentenceTransformer (after .train() or .load()).
+
+        Exposed so downstream packages (e.g. halluguard) can plug the tuned
+        encoder into their own retrievers without reaching into `_model`.
+        """
+        return self._model
+
+    @property
+    def corpus(self) -> list[CorpusEntry]:
+        """The indexed corpus entries, in insertion order."""
+        return list(self._corpus)
+
+    @property
+    def embeddings(self) -> np.ndarray | None:
+        """The L2-normalised embedding matrix aligned with `corpus`."""
+        return self._embeddings
+
     # ---- Streaming corpus updates -------------------------------------
     def add_corpus(self, new_corpus: list[str] | list[CorpusEntry] | list[dict]) -> int:
         """Append entries to the in-memory index without re-encoding the
