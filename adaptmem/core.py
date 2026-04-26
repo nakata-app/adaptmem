@@ -100,6 +100,36 @@ class AdaptMem:
         )
         return {"n_pairs": len(pairs), "runtime_s": round(runtime, 2), "n_steps": n_steps}
 
+    # ---- Streaming corpus updates -------------------------------------
+    def add_corpus(self, new_corpus: list[str] | list[CorpusEntry] | list[dict]) -> int:
+        """Append entries to the in-memory index without re-encoding the
+        whole corpus. Returns the number of newly added entries.
+
+        Skips entries whose `id` already exists in the current index — safe
+        to call repeatedly with overlapping batches. Existing embeddings
+        are preserved; only the new chunk texts are encoded.
+
+        Requires that `.train()` or `.load()` was called first (the index
+        encoder + embedding matrix must already exist).
+        """
+        if self._model is None or self._embeddings is None:
+            raise RuntimeError("Not initialised. Call .train() or .load() first.")
+        new_entries = _normalise_corpus(new_corpus)
+        existing_ids = {c.id for c in self._corpus}
+        fresh = [e for e in new_entries if e.id not in existing_ids]
+        if not fresh:
+            return 0
+        new_vecs = self._model.encode(
+            [e.text for e in fresh],
+            batch_size=64,
+            show_progress_bar=False,
+            normalize_embeddings=True,
+            convert_to_numpy=True,
+        )
+        self._corpus.extend(fresh)
+        self._embeddings = np.vstack([self._embeddings, new_vecs])
+        return len(fresh)
+
     # ---- Persistence ---------------------------------------------------
     def save(self, path: str | Path) -> None:
         if self._model is None:
