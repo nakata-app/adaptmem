@@ -29,6 +29,42 @@ def _cmd_train(args):
     print(json.dumps(stats, indent=2))
 
 
+def _cmd_evaluate(args):
+    """Compute Recall@k for a saved model against a labelled queries file.
+
+    queries.json shape: list of {"query": str, "relevant_ids": [str, ...]}
+    """
+    from adaptmem import AdaptMem
+
+    queries = json.loads(Path(args.queries).read_text())
+    am = AdaptMem.load(args.model)
+    if args.rerank:
+        am.rerank_enabled = True
+        if args.rerank_model:
+            am.rerank_model_name = args.rerank_model
+            am._rerank_model = None
+
+    ks = sorted({1, 5, args.top_k})
+    max_k = max(ks)
+    hits_at = {k: 0 for k in ks}
+    n = 0
+    for q in queries:
+        relevant = set(q["relevant_ids"])
+        if not relevant:
+            continue
+        ranked = [h.chunk_id for h in am.search(q["query"], top_k=max_k)]
+        for k in ks:
+            if any(rid in ranked[:k] for rid in relevant):
+                hits_at[k] += 1
+        n += 1
+
+    if n == 0:
+        print(json.dumps({"error": "no labelled queries with relevant_ids"}, indent=2))
+        return
+    out = {"n": n, "recall": {f"@{k}": round(hits_at[k] / n, 4) for k in ks}}
+    print(json.dumps(out, indent=2))
+
+
 def _cmd_search(args):
     from adaptmem import AdaptMem
 
@@ -92,6 +128,18 @@ def main():
         help="Bi-encoder candidate set size before CE rerank (default: top-k * 3).",
     )
     s.set_defaults(func=_cmd_search)
+
+    e = sub.add_parser("evaluate", help="recall@k against a labelled queries file")
+    e.add_argument("--model", required=True, help="path saved by `adaptmem train`")
+    e.add_argument(
+        "--queries",
+        required=True,
+        help='JSON list of {"query": str, "relevant_ids": [str,...]}',
+    )
+    e.add_argument("--top-k", type=int, default=10, help="Largest k to compute (R@1/R@5/R@k)")
+    e.add_argument("--rerank", action="store_true")
+    e.add_argument("--rerank-model", default=None)
+    e.set_defaults(func=_cmd_evaluate)
 
     args = ap.parse_args()
     args.func(args)
