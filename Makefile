@@ -1,5 +1,9 @@
 PYTHON ?= python
 DATASET ?= /Users/macmini/Projects/metis-pair/benchmarks/data/longmemeval/longmemeval_s_cleaned.json
+# Force CPU by default — bypasses MPS deadlocks observed on Apple silicon
+# during contrastive fine-tuning. Override with `make DEVICE= bench-...` to
+# let PyTorch autodetect.
+DEVICE ?= cpu
 
 # Self-contained 100/400 split shipped with the repo
 SPLIT_100 ?= benchmarks/data/split_ids_100_400.json
@@ -25,24 +29,28 @@ bench-longmemeval: bench-ft100
 bench-ft100: train-100
 	$(PYTHON) benchmarks/longmemeval_eval.py --mode test \
 	    --dataset $(DATASET) --split-ids $(SPLIT_100) \
-	    --st-model $(MODEL_100) --results-out $(RESULTS_100)
+	    --st-model $(MODEL_100)/model --results-out $(RESULTS_100) \
+	    $(if $(DEVICE),--device $(DEVICE),)
 
 train-100:
 	$(PYTHON) benchmarks/longmemeval_eval.py --mode train \
 	    --dataset $(DATASET) --split-ids $(SPLIT_100) \
-	    --n-train 100 --model-out $(MODEL_100)
+	    --n-train 100 --model-out $(MODEL_100) \
+	    $(if $(DEVICE),--device $(DEVICE),)
 
 # Reproduce the FT-300 / FT-200 reference numbers in the README. Requires the
 # external models from metis-pair (paths overridable via MODEL_300 / MODEL_200).
 bench-ft300:
 	$(PYTHON) benchmarks/longmemeval_eval.py --mode test \
 	    --dataset $(DATASET) --split-ids $(SPLIT_300) \
-	    --st-model $(MODEL_300) --results-out $(RESULTS_300)
+	    --st-model $(MODEL_300) --results-out $(RESULTS_300) \
+	    $(if $(DEVICE),--device $(DEVICE),)
 
 bench-ft200:
 	$(PYTHON) benchmarks/longmemeval_eval.py --mode test \
 	    --dataset $(DATASET) --split-ids $(SPLIT_300) \
-	    --st-model $(MODEL_200) --results-out $(RESULTS_200)
+	    --st-model $(MODEL_200) --results-out $(RESULTS_200) \
+	    $(if $(DEVICE),--device $(DEVICE),)
 
 clean-bench:
 	rm -rf $(MODEL_100) $(RESULTS_100) benchmarks/*.log
