@@ -106,7 +106,28 @@ adaptmem bench longmemeval --data longmemeval_s_cleaned.json
 
 ## Status
 
-`v0.1` skeleton in flight. Real code, real tests, real benchmark numbers are landing.
+`v0.2` shipped — public API stable, hard-negative mining + contrastive FT,
+persistence, streaming `add_corpus`, optional cross-encoder rerank, CLI
+(`train` / `search` / `evaluate`), Makefile reproduction target, GitHub
+Actions CI, py.typed (PEP 561), 23 passing tests.
+
+Reference numbers (held-out 200q on the 300/200 split): R@1=0.915,
+R@5=0.995 with FT-300; R@1=0.900, R@5=0.990 with FT-200. Both runs
+clear the v0.2 sanity bar (R@5 ≥ 0.985) and the deltas move in the
+expected direction (more train data → higher recall). See
+`benchmarks/results_ft300_direct.json` and
+`benchmarks/results_ft200_direct.json`.
+
+**Reproducibility caveat (v0.2 open item):** the self-contained 100/400
+train+test target (`make bench-longmemeval`) is wired up and
+deterministic on its split, but on this Mac mini configuration the
+contrastive fine-tune step silently exits after model load — both on
+MPS (default) and on `--device cpu`. The bench harness, split file,
+and Makefile all work; the bottleneck is local PyTorch+sentence-
+transformers compatibility, not the pipeline. A v0.3 follow-up will
+either pin a working dependency set or ship a containerised reproduce
+target. In the meantime, `make bench-ft300` / `bench-ft200` (using the
+externally trained metis-pair models) reproduce the README numbers.
 
 ## License
 
