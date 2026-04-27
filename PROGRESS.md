@@ -17,13 +17,14 @@ v0.4 production-ready  ████████████  done   (CE rerank/s
                                              + mypy --strict; PyPI publish token Atakan-gated)
 v0.5 mempal outreach   ░░░░░░░░░░░░  0%     (matched-protocol run via MemPalace/mempalace + GitHub Discussion;
                                              3-seed reproduce blocker is the same Mac/Py3.14 train deadlock)
-v0.6 multi-bench/PyPI  ░░░░░░░░░░░░  0%     (planned)
-v0.7 Metis integration ███████████░  ~85%   (ADR + adaptmem.server FastAPI + DaemonEncoder + Guard.from_daemon
+v0.6 multi-bench/PyPI  ████████░░░░  ~65%  (PyPI release done — `pip install adaptmem` works;
+                                             ConvoMem/MemBench/FActScore + Parquet on-disk pending)
+v0.7 Metis integration ████████████  done  (ADR + adaptmem.server FastAPI + DaemonEncoder + Guard.from_daemon
                                              + Pipeline.from_daemon + metis semantic_memory_search tool all
-                                             shipped; Linux live-smoke pending, metis PR merge pending)
+                                             shipped; metis PR #6 merged to master 2026-04-27)
 ```
 
-**Public:** https://github.com/nakata-app/adaptmem (master, CI green).
+**Public:** https://github.com/nakata-app/adaptmem (master, CI green) · **PyPI:** https://pypi.org/project/adaptmem/ (v0.5.1, `pip install adaptmem` / `pip install "adaptmem[server]"`).
 
 ## Bench results — what's actually committed
 
@@ -121,4 +122,4 @@ matched table.
 
 - Repo: https://github.com/nakata-app/adaptmem (master, MIT, CI green).
 - Sibling repos: `nakata-app/halluguard`, `nakata-app/claimcheck`.
-- Pre-PyPI: install via `pip install -e .` until v0.5 closes.
+- PyPI: `pip install adaptmem` (core) or `pip install "adaptmem[server]"` (HTTP daemon).

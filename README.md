@@ -1,5 +1,10 @@
 # adaptmem
 
+[![PyPI version](https://img.shields.io/pypi/v/adaptmem.svg)](https://pypi.org/project/adaptmem/)
+[![Python versions](https://img.shields.io/pypi/pyversions/adaptmem.svg)](https://pypi.org/project/adaptmem/)
+[![License: MIT](https://img.shields.io/pypi/l/adaptmem.svg)](LICENSE)
+[![CI](https://github.com/nakata-app/adaptmem/actions/workflows/ci.yml/badge.svg)](https://github.com/nakata-app/adaptmem/actions/workflows/ci.yml)
+
 **Beat your retrieval baseline with 200 lines of hard-negative mining and a 90MB encoder.**
 
 You point adaptmem at a domain (a corpus + a handful of labelled queries). It mines hard negatives, fine-tunes a tiny embedder on the contrastive objective, and hands you back a retriever that outperforms much larger generic models on your data.
