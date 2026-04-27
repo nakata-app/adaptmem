@@ -1,0 +1,3 @@
+# drafts/ is internal — published artefacts go to GitHub Discussions / blogs.
+# Track the templates themselves but never any *.local.md scratchpad.
+*.local.md
