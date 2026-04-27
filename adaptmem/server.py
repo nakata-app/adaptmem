@@ -94,7 +94,14 @@ def _build_app() -> Any:
         "engine": None,        # AdaptMem instance (shared encoder)
         "corpora": {},         # corpus_id -> AdaptMem
         "device": None,
+        # Prometheus-style counters: endpoint -> {"count": int, "duration_s_sum": float}
+        "metrics": {},
     }
+
+    def _record_metric(endpoint: str, duration_s: float) -> None:
+        m = state["metrics"].setdefault(endpoint, {"count": 0, "duration_s_sum": 0.0})
+        m["count"] += 1
+        m["duration_s_sum"] += duration_s
 
     def _ensure_encoder() -> AdaptMem:
         """Return a (lazy) AdaptMem with a loaded base encoder."""
@@ -106,6 +113,47 @@ def _build_app() -> Any:
             state["engine"] = new_engine
         result: AdaptMem = state["engine"]
         return result
+
+    @app.middleware("http")
+    async def _track_request(request: Any, call_next: Any) -> Any:
+        # Skip the metrics endpoint itself so scrapes don't inflate counters.
+        if request.url.path == "/metrics":
+            return await call_next(request)
+        t0 = time.perf_counter()
+        response = await call_next(request)
+        _record_metric(request.url.path, time.perf_counter() - t0)
+        return response
+
+    @app.get("/metrics")
+    def metrics() -> Any:
+        """Prometheus text format. No external dep — hand-rolled.
+
+        Lines look like:
+            adaptmem_request_total{endpoint="/embed"} 17
+            adaptmem_request_duration_seconds_sum{endpoint="/embed"} 0.412
+            adaptmem_uptime_seconds 123.4
+        """
+        from fastapi.responses import PlainTextResponse
+
+        lines = [
+            "# HELP adaptmem_uptime_seconds Daemon process uptime in seconds.",
+            "# TYPE adaptmem_uptime_seconds gauge",
+            f"adaptmem_uptime_seconds {time.time() - _STARTED_AT:.3f}",
+            "# HELP adaptmem_corpora_total Number of indexed corpora.",
+            "# TYPE adaptmem_corpora_total gauge",
+            f"adaptmem_corpora_total {len(state['corpora'])}",
+            "# HELP adaptmem_request_total Total requests by endpoint.",
+            "# TYPE adaptmem_request_total counter",
+            "# HELP adaptmem_request_duration_seconds_sum Cumulative request duration by endpoint.",
+            "# TYPE adaptmem_request_duration_seconds_sum counter",
+        ]
+        for endpoint, m in sorted(state["metrics"].items()):
+            label = endpoint.replace('"', '\\"')
+            lines.append(f'adaptmem_request_total{{endpoint="{label}"}} {m["count"]}')
+            lines.append(
+                f'adaptmem_request_duration_seconds_sum{{endpoint="{label}"}} {m["duration_s_sum"]:.6f}'
+            )
+        return PlainTextResponse("\n".join(lines) + "\n", media_type="text/plain; version=0.0.4")
 
     @app.get("/healthz", response_model=HealthzResponse)
     def healthz() -> HealthzResponse:

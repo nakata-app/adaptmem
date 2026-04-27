@@ -4,6 +4,7 @@
 [![Python versions](https://img.shields.io/pypi/pyversions/adaptmem.svg)](https://pypi.org/project/adaptmem/)
 [![License: MIT](https://img.shields.io/pypi/l/adaptmem.svg)](LICENSE)
 [![CI](https://github.com/nakata-app/adaptmem/actions/workflows/ci.yml/badge.svg)](https://github.com/nakata-app/adaptmem/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/nakata-app/adaptmem/graph/badge.svg)](https://codecov.io/gh/nakata-app/adaptmem)
 
 **Beat your retrieval baseline with 200 lines of hard-negative mining and a 90MB encoder.**
 

@@ -92,3 +92,24 @@ def test_embed(client):
     assert len(body["embeddings"]) == 2
     assert body["dim"] > 0
     assert len(body["embeddings"][0]) == body["dim"]
+
+
+def test_metrics_prometheus_format(client):
+    c, _ = client
+    # Prime counters with known traffic.
+    c.get("/healthz")
+    c.get("/healthz")
+    c.get("/version")
+
+    r = c.get("/metrics")
+    assert r.status_code == 200
+    body = r.text
+    assert "adaptmem_uptime_seconds " in body
+    assert "adaptmem_corpora_total " in body
+    # Healthz hit twice, version once.
+    assert 'adaptmem_request_total{endpoint="/healthz"} 2' in body
+    assert 'adaptmem_request_total{endpoint="/version"} 1' in body
+    # Duration counter exists for each endpoint.
+    assert 'adaptmem_request_duration_seconds_sum{endpoint="/healthz"}' in body
+    # /metrics itself is not counted (middleware skips it).
+    assert '/metrics"' not in body

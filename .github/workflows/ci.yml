@@ -29,4 +29,12 @@ jobs:
       - name: Type-check (mypy --strict)
         run: mypy --strict adaptmem
       - name: Test
-        run: pytest -q
+        run: pytest -q --cov=adaptmem --cov-report=xml --cov-report=term
+      - name: Upload coverage to Codecov
+        if: matrix.python-version == '3.12'
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage.xml
+          flags: unittests
+          name: adaptmem-py3.12
+          fail_ci_if_error: false
