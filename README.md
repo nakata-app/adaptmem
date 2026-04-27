@@ -173,6 +173,53 @@ Endpoint contract (full ADR in [`docs/metis_integration.md`](docs/metis_integrat
 domain-tuned semantic queries against `.metis/memory/*.md` without any
 Python in the build.
 
+## The cluster — adaptmem in context
+
+`adaptmem` is one of four sibling packages that together cover the
+**no-LLM-judge LLM safety stack.** Each one solves a different slice
+of "is this AI claim trustworthy?" — pick what you need.
+
+```
+                                           ┌────────────────┐
+                                           │  user input    │
+                                           └────────┬───────┘
+                                                    │
+                                ┌─────────────► promptguard ◄─────── input gate
+                                │                   │                (jailbreak / injection)
+                                │                   ▼
+                                │             ┌──────────┐
+        adaptmem ──── retrieval │             │   LLM    │
+        (this repo)             │             └────┬─────┘
+                                │                  │
+                                │                  ▼
+                                │             halluguard ◄─────── output gate
+                                │             (corpus-grounded)    (closed world)
+                                │                  │
+                                │                  ▼
+                                └──────────►  claimcheck ◄───────── orchestration
+                                              (adaptmem + halluguard,
+                                               one Pipeline)
+                                                   │
+                                          (claim isn't in the corpus)
+                                                   ▼
+                                              truthcheck ◄────── open-world fact check
+                                                                  (web-grounded)
+```
+
+| Package | Surface | When to reach for it |
+|---|---|---|
+| **[adaptmem](https://github.com/nakata-app/adaptmem)** | `AdaptMem.train(corpus, queries) / .search(q)` | Your retrieval is too generic. You have a corpus + a few labelled queries and want a domain-tuned encoder in 5 lines. |
+| **[halluguard](https://github.com/nakata-app/halluguard)** | `Guard.from_documents(docs).check(answer)` | You have an LLM answer and a corpus. Did the LLM stay grounded? |
+| **[claimcheck](https://github.com/nakata-app/claimcheck)** | `Pipeline.from_corpus(...)`, `from_daemon(...)`, `check(answer)` | Composition: domain-tuned retrieval **plus** verification, behind one API. |
+| **promptguard** (pre-v0.1) | `PromptGuard().check(user_input)` | Block prompt-injection / jailbreak attempts before they reach your LLM. |
+| **truthcheck** (pre-v0.1) | `WebFactChecker().check(claim)` | Claim isn't in your corpus — does the open web back it up? |
+
+All five are **vendor-neutral** (no Anthropic / OpenAI / Google
+required), all five are **deterministic where possible** (no LLM
+judge in the inference path of halluguard / promptguard), and all
+five compose into a single safety pipeline if your stack needs the
+full stack.
+
 ## What it is NOT
 
 - Not a generic embedder. The output model is **specialised** to the corpus you trained on.
