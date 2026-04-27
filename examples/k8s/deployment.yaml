@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adaptmem
+  labels:
+    app: adaptmem
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: adaptmem
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: adaptmem
+      annotations:
+        # Tell Prometheus to scrape /metrics directly (in addition to
+        # the optional ServiceMonitor for kube-prometheus-stack users).
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "7800"
+    spec:
+      # Run as non-root for defence in depth (Dockerfile creates the user).
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: adaptmem
+          # Pin a tag in production. Replace with your registry path.
+          image: nakata-app/adaptmem:0.5.1
+          imagePullPolicy: IfNotPresent
+          args:
+            - "serve"
+            - "--host=0.0.0.0"
+            - "--port=7800"
+          envFrom:
+            - configMapRef:
+                name: adaptmem-config
+            - secretRef:
+                name: adaptmem-secret
+          ports:
+            - name: http
+              containerPort: 7800
+              protocol: TCP
+          # Liveness — restart the pod if the process is wedged.
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          # Readiness — keep the pod out of the Service rotation until
+          # the encoder model has loaded (lazy on first /v1/embed).
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 6
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+          volumeMounts:
+            # Persistent corpus DB — survives pod restarts when backed
+            # by a real PVC. Default uses emptyDir so the dev/demo path
+            # works without storage provisioning.
+            - name: adaptmem-data
+              mountPath: /var/adaptmem
+            # HuggingFace model cache — avoids re-downloading the
+            # encoder weights on every pod restart.
+            - name: hf-cache
+              mountPath: /home/adaptmem/.cache/huggingface
+      volumes:
+        - name: adaptmem-data
+          # For real persistence, swap to a PVC:
+          # persistentVolumeClaim:
+          #   claimName: adaptmem-data
+          emptyDir: {}
+        - name: hf-cache
+          emptyDir:
+            # Up the size for embedded GPU models — MiniLM is small,
+            # cross-encoder NLI checkpoints (used by halluguard) are
+            # ~700MB.
+            sizeLimit: 2Gi

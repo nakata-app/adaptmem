@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: adaptmem-config
+  labels:
+    app: adaptmem
+data:
+  # Encoder model — change if you want a domain-tuned model from a private
+  # registry / HuggingFace path.
+  ADAPTMEM_BASE_MODEL: "all-MiniLM-L6-v2"
+
+  # Rate limit per remote IP. Tighten for public exposure.
+  ADAPTMEM_RATE_LIMIT: "120/minute"
+
+  # OpenTelemetry — leave blank to disable tracing.
+  OTEL_SERVICE_NAME: "adaptmem"
+  # OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"
+
+  # Persistent corpus directory (mounted via deployment volumeMount).
+  ADAPTMEM_PERSIST_DIR: "/var/adaptmem"
+
+  # Audit log path (mounted via deployment volumeMount). Leave unset if
+  # you only want stdout audit (picked up by the cluster log shipper).
+  # ADAPTMEM_AUDIT_LOG: "/var/log/adaptmem/audit.jsonl"

@@ -1,0 +1,22 @@
+## Prometheus Operator (kube-prometheus-stack) integration.
+## Skip this file if you scrape Prometheus directly from the
+## prometheus.io/scrape annotation on the Pod.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: adaptmem
+  labels:
+    app: adaptmem
+    # Match the label selector your Prometheus instance uses.
+    # kube-prometheus-stack defaults to `release: prometheus` for the
+    # `monitoring` namespace — adjust as needed.
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: adaptmem
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
+      scrapeTimeout: 10s
