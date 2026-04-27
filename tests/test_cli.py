@@ -70,7 +70,9 @@ def test_search_missing_required_args_errors():
 
 def test_evaluate_perfect_recall(tmp_path, monkeypatch):
     """When the stubbed model returns the relevant id at rank 0, R@1/5/10 = 1.0."""
-    import argparse, io, json as _json
+    import argparse
+    import io
+    import json as _json
     from contextlib import redirect_stdout
 
     queries = [
@@ -110,7 +112,9 @@ def test_evaluate_perfect_recall(tmp_path, monkeypatch):
 
 def test_evaluate_zero_recall(tmp_path, monkeypatch):
     """When the stubbed model never returns the relevant id, R@k = 0."""
-    import argparse, io, json as _json
+    import argparse
+    import io
+    import json as _json
     from contextlib import redirect_stdout
 
     queries = [{"query": "q", "relevant_ids": ["target"]}]
@@ -146,7 +150,9 @@ def test_evaluate_zero_recall(tmp_path, monkeypatch):
 
 def test_evaluate_skips_queries_with_empty_relevant_ids(tmp_path, monkeypatch):
     """Queries with no relevant_ids must be skipped (cannot score recall)."""
-    import argparse, io, json as _json
+    import argparse
+    import io
+    import json as _json
     from contextlib import redirect_stdout
 
     queries = [

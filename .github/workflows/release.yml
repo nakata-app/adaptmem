@@ -30,10 +30,6 @@ jobs:
   publish:
     needs: build
     runs-on: ubuntu-latest
-    # Maintainer must populate PYPI_API_TOKEN as a repo secret before this
-    # job will succeed. Until then, builds run on every tag but publish
-    # is gated.
-    if: ${{ secrets.PYPI_API_TOKEN != '' }}
     permissions:
       contents: read
     steps:
@@ -50,4 +46,9 @@ jobs:
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: twine upload dist/*
+        run: |
+          if [ -z "$TWINE_PASSWORD" ]; then
+            echo "PYPI_API_TOKEN secret not set — skipping publish (build artifacts available)."
+            exit 0
+          fi
+          twine upload dist/*
