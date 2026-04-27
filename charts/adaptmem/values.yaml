@@ -1,0 +1,97 @@
+# Default values for adaptmem.
+# This is a YAML-formatted file. Override with `--values custom-values.yaml`
+# or `--set key=value` at install time.
+
+image:
+  repository: nakata-app/adaptmem
+  tag: ""               # empty → use Chart.appVersion
+  pullPolicy: IfNotPresent
+
+replicaCount: 3
+
+# Daemon configuration.
+config:
+  baseModel: "all-MiniLM-L6-v2"
+  rateLimit: "120/minute"          # ADAPTMEM_RATE_LIMIT
+  persistDir: "/var/adaptmem"      # ADAPTMEM_PERSIST_DIR
+  # auditLogFile: "/var/log/adaptmem/audit.jsonl"   # uncomment to also write to file
+  otelServiceName: "adaptmem"
+  # otelEndpoint: "https://api.honeycomb.io"        # leave empty to disable tracing
+
+# API key authentication.
+# Three modes (pick one):
+#   1. existingSecret: reference an existing K8s Secret (recommended for production)
+#   2. apiKey: simple single-key string (chart creates the Secret for you)
+#   3. apiKeysFile: JSON RBAC list (multi-key, viewer/admin roles)
+auth:
+  enabled: false
+  existingSecret: ""               # pre-existing Secret name with key ADAPTMEM_API_KEY
+  apiKey: ""                       # creates Secret on install
+  apiKeysFile: ""                  # JSON content for --api-keys-file
+
+# Service exposure.
+service:
+  type: ClusterIP                  # ClusterIP | NodePort | LoadBalancer
+  port: 7800
+
+# Ingress (optional). Set enabled=true to expose the daemon over an
+# ingress controller; pair with TLS via cert-manager / external-dns.
+ingress:
+  enabled: false
+  className: nginx
+  annotations: {}
+  hosts:
+    - host: adaptmem.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+  # - secretName: adaptmem-tls
+  #   hosts:
+  #     - adaptmem.example.com
+
+# Resource requests / limits per pod.
+resources:
+  requests:
+    cpu: 500m
+    memory: 1Gi
+  limits:
+    cpu: "2"
+    memory: 4Gi
+
+# HorizontalPodAutoscaler.
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+# Persistent volume for corpus DB. emptyDir = corpora lost on pod restart.
+persistence:
+  enabled: false
+  storageClass: ""                 # leave empty for cluster default
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+
+# Probes — adaptmem already exposes /healthz + /readyz; tune if you have a
+# slow-loading custom encoder.
+probes:
+  liveness:
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 5
+    failureThreshold: 3
+  readiness:
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 6
+
+# Prometheus Operator integration.
+serviceMonitor:
+  enabled: false
+  interval: 15s
+  scrapeTimeout: 10s
+  labels: {}                       # match your Prometheus selector

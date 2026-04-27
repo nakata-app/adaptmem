@@ -1,0 +1,23 @@
+apiVersion: v2
+name: adaptmem
+description: Domain-tuned retrieval daemon — semantic search over your own corpus, no LLM judge.
+type: application
+version: 0.1.0          # chart version (bump on chart changes)
+appVersion: "0.5.1"     # adaptmem package version this chart targets
+
+home: https://github.com/nakata-app/adaptmem
+sources:
+  - https://github.com/nakata-app/adaptmem
+maintainers:
+  - name: atakan
+    email: ataknakbaba@gmail.com
+
+keywords:
+  - retrieval
+  - embedding
+  - rag
+  - semantic-search
+  - llm
+  - domain-adaptation
+
+icon: https://avatars.githubusercontent.com/u/275135684

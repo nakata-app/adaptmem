@@ -1,0 +1,40 @@
+adaptmem {{ .Chart.AppVersion }} — chart version {{ .Chart.Version }}
+
+1. Get the daemon URL:
+{{- if .Values.ingress.enabled }}
+{{- range .Values.ingress.hosts }}
+   http{{ if $.Values.ingress.tls }}s{{ end }}://{{ .host }}
+{{- end }}
+{{- else if eq .Values.service.type "LoadBalancer" }}
+   Wait for the LoadBalancer external IP:
+       kubectl get svc -w {{ include "adaptmem.fullname" . }}
+{{- else if eq .Values.service.type "NodePort" }}
+   export NODE_PORT=$(kubectl get svc {{ include "adaptmem.fullname" . }} -o jsonpath='{.spec.ports[0].nodePort}')
+   export NODE_IP=$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[0].address}')
+   echo "http://$NODE_IP:$NODE_PORT"
+{{- else }}
+   Port-forward to the daemon:
+       kubectl port-forward svc/{{ include "adaptmem.fullname" . }} {{ .Values.service.port }}:{{ .Values.service.port }}
+   Then: curl http://127.0.0.1:{{ .Values.service.port }}/healthz
+{{- end }}
+
+2. Verify the deployment:
+   kubectl get pods -l app={{ include "adaptmem.name" . }}
+   kubectl logs -l app={{ include "adaptmem.name" . }} -f
+
+3. {{ if .Values.auth.enabled -}}
+Auth is enabled. Send Bearer token on /v1/* requests:
+       curl -H "Authorization: Bearer YOUR_KEY" http://...:{{ .Values.service.port }}/v1/embed -d '{"texts":["hi"]}'
+{{- else -}}
+Auth is DISABLED. Set `auth.enabled: true` + `auth.apiKey: ...` for production.
+{{- end }}
+
+4. Index a corpus:
+   curl -X POST .../v1/reindex -H "Content-Type: application/json" \
+        -d '{"corpus_id": "demo", "documents": [{"id": "a", "text": "..."}]}'
+
+5. Search:
+   curl -X POST .../v1/search -H "Content-Type: application/json" \
+        -d '{"corpus_id": "demo", "query": "...", "top_k": 5}'
+
+For full docs: https://github.com/nakata-app/adaptmem

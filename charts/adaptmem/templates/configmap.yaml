@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "adaptmem.fullname" . }}-config
+  labels:
+    {{- include "adaptmem.labels" . | nindent 4 }}
+data:
+  ADAPTMEM_BASE_MODEL: {{ .Values.config.baseModel | quote }}
+  ADAPTMEM_RATE_LIMIT: {{ .Values.config.rateLimit | quote }}
+  {{- if .Values.config.persistDir }}
+  ADAPTMEM_PERSIST_DIR: {{ .Values.config.persistDir | quote }}
+  {{- end }}
+  {{- if .Values.config.auditLogFile }}
+  ADAPTMEM_AUDIT_LOG: {{ .Values.config.auditLogFile | quote }}
+  {{- end }}
+  OTEL_SERVICE_NAME: {{ .Values.config.otelServiceName | quote }}
+  {{- if .Values.config.otelEndpoint }}
+  OTEL_EXPORTER_OTLP_ENDPOINT: {{ .Values.config.otelEndpoint | quote }}
+  {{- end }}
