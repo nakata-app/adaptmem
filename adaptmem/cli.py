@@ -234,6 +234,18 @@ def main() -> None:
     cs.add_argument("--top-k", type=int, default=5)
     cs.set_defaults(func=_cmd_corpora_search)
 
+    csm = co_sub.add_parser("search-many", help="federated search across multiple corpora")
+    _add_daemon_args(csm)
+    csm.add_argument(
+        "--corpus-ids",
+        required=True,
+        nargs="+",
+        help="One or more corpus_ids (space-separated).",
+    )
+    csm.add_argument("--query", required=True)
+    csm.add_argument("--top-k", type=int, default=5)
+    csm.set_defaults(func=_cmd_corpora_search_many)
+
     cr = co_sub.add_parser("reindex", help="(re)index a corpus from a JSON file")
     _add_daemon_args(cr)
     cr.add_argument("--corpus-id", required=True)
@@ -316,6 +328,21 @@ def _cmd_corpora_search(args: argparse.Namespace) -> None:
     )
     for hit in body.get("hits", []):
         print(f"{hit['score']:.4f}\t{hit['id']}\t{hit['text'][:120]}")
+
+
+def _cmd_corpora_search_many(args: argparse.Namespace) -> None:
+    body = _daemon_request(
+        "POST",
+        args.daemon,
+        "/v1/search-many",
+        args.api_key,
+        {"query": args.query, "top_k": args.top_k, "corpus_ids": args.corpus_ids},
+    )
+    for hit in body.get("hits", []):
+        print(f"{hit['score']:.4f}\t[{hit['corpus_id']}]\t{hit['id']}\t{hit['text'][:120]}")
+    missing = body.get("corpora_missing", [])
+    if missing:
+        print(f"# missing: {', '.join(missing)}")
 
 
 def _cmd_corpora_delete(args: argparse.Namespace) -> None:
