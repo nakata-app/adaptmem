@@ -1,6 +1,6 @@
 # adaptmem — progress & resume notes
 
-**Last updated:** 2026-04-26 (post-Claude-session, before reboot).
+**Last updated:** 2026-04-27 (post-public-push session).
 
 This file is the resume contract: open the repo, read this, you know the
 state of play. Updated at the end of each working session.
@@ -9,11 +9,13 @@ state of play. Updated at the end of each working session.
 
 ```
 v0.1 skeleton          ████████████  done
-v0.2 first bench       ██████████░░  ~85%   (100/400 self-contained train BLOCKED, see below)
-v0.3 multi-bench       ████░░░░░░░░  ~30%   (per-qtype done, ConvoMem/MemBench/encoder swap kalan)
-v0.4 production-ready  ███████████░  ~90%   (CE rerank/streaming/evaluate/token-cost/py.typed/CI done; PyPI release credential bekliyor)
-v0.5 mempal outreach   ░░░░░░░░░░░░  0%     (matched-protocol run + GitHub Discussion)
+v0.2 first bench       ████████████  done   (FT-100 R@5=0.978 self-contained shipped, Colab-trained Mac-tested)
+v0.3 multi-bench       ████░░░░░░░░  ~35%   (per-qtype done, encoder swap PoC + ConvoMem + MemBench kalan)
+v0.4 production-ready  ███████████░  ~90%   (CE rerank/streaming/evaluate/token-cost/py.typed/CI/release-workflow done; PyPI publish token bekliyor)
+v0.5 mempal outreach   ░░░░░░░░░░░░  0%     (matched-protocol run via MemPalace/mempalace + GitHub Discussion)
 ```
+
+**Public:** https://github.com/nakata-app/adaptmem (master, CI green).
 
 ## Bench results — what's actually committed
 
@@ -39,18 +41,19 @@ expected direction (more train data → higher recall).
 
 **Caveat (v0.5 work):** sayılar same dataset / same protocol description
 üzerinde, ama mempal'ın **kendi eval script'iyle** koşturulmadı. Apples-
-to-apples kanıt v0.5'te: clone `milla-jovovich/mempalace`, plug
+to-apples kanıt v0.5'te: clone `MemPalace/mempalace`, plug
 `AdaptMem.encode` into their `longmemeval_bench.py`, re-run, post the
 matched table.
 
 ## Open items
 
-### v0.2 — self-contained reproduce
-- ✅ FT-100 (100 train / 400 test) JSON committed — Colab-trained,
-  Mac-tested. Train pipeline still has a Mac-local PyTorch deadlock
-  (workaround: train elsewhere, drop the model dir into
-  `benchmarks/bench-model-100/`, run `python benchmarks/longmemeval_eval.py
-  --mode test --st-model benchmarks/bench-model-100/model` locally).
+### v0.2 — self-contained reproduce — **CLOSED**
+- ✅ FT-100 (100 train / 400 test) shipped — `results_ft100_400.json`,
+  R@1=0.855 / R@5=0.978 / R@10=0.992. Colab-trained, Mac-tested.
+  Train pipeline has a Mac-local PyTorch deadlock under memory pressure
+  (workaround: train elsewhere, drop model dir into
+  `benchmarks/bench-model-100/`, run
+  `python benchmarks/longmemeval_eval.py --mode test --st-model benchmarks/bench-model-100/model`).
 - v0.3 follow-up: pin a known-good dep set or ship a Docker reproduce
   target so a stranger doesn't need Colab.
 
@@ -78,53 +81,33 @@ matched table.
 ### v0.5 — mempal outreach
 - [ ] Three-seed reproduce of FT-300 with mean ± stddev.
 - [ ] Matched-protocol run via mempal's `longmemeval_bench.py`.
-- [ ] Open a GitHub Discussion on `milla-jovovich/mempalace` framed as
+- [ ] Open a GitHub Discussion on `MemPalace/mempalace` framed as
   "we extended your work", not "we beat your benchmark."
 
 ## How to resume (next session)
 
-1. Reboot done? `vm.swapusage` should show low utilisation.
-2. Read this file + `README.md` + `ROADMAP.md`.
-3. Run `make bench-longmemeval` — if it completes:
-   - Commit `benchmarks/results_ft100_400.json`
-   - Add the FT-100 row to README table
-   - Mark v0.2 closed.
-4. If it still fails the same way, the blocker isn't memory — drop into
-   `python -c "from adaptmem import AdaptMem; AdaptMem().train(...)"`
-   with tiny inputs (corpus=2 strings, 1 query) to isolate the layer
-   that crashes. Then file findings here.
-5. Pick the next v0.3 / v0.5 item from the lists above.
+1. Read this file + `README.md` + `ROADMAP.md`.
+2. v0.2 closed. Next priorities (in order):
+   - **Encoder swap PoC** — re-run bench with `--st-model BAAI/bge-small-en-v1.5`,
+     commit a `results_bge_small.json` row alongside the MiniLM ones.
+   - **v0.5 mempal matched-protocol** — clone `MemPalace/mempalace`
+     (default branch `develop`), plug `AdaptMem.encode` into their
+     `longmemeval_bench.py`, run, commit a `results_mempal_protocol.json`
+     row. This is the apples-to-apples claim.
+   - 3-seed reproduce (mean ± stddev) before mempal outreach.
+3. PyPI release — token-gated; needs Atakan onayı.
 
 ## Toolchain
 
 - Python 3.14 via `~/Projects/metis-pair/benchmarks/.venv` (has `adaptmem`
   installed editable, plus `pytest`, `numpy`, `sentence-transformers`,
-  `torch`, `datasets`, `accelerate`).
+  `torch`, `datasets`, `accelerate`, `ruff`).
 - `make bench-longmemeval` — self-contained reproduction (see Makefile).
 - Tests: `cd ~/Projects/adaptmem && ../metis-pair/benchmarks/.venv/bin/pytest -q`
-- Current suite: **23/23 pass**.
+- Current suite: **26/26 pass**, lint clean.
 
-## Commit log highlights (this session)
+## Public
 
-```
-ba50505 README: v0.2 status + honest note on train pipeline silently exiting
-c0eec2f make: DEVICE=cpu default + MODEL_100/model path fix
-04aa59a core: device override (CPU forcing for MPS-deadlock workaround)
-5ba9f34 test: subprocess CLI smoke tests
-2ce0132 bench: per-question-type recall breakdown in eval output
-2d6ef87 core: report n_tokens_approx + tokens_per_s in train() stats
-12057d5 cli: add `adaptmem evaluate` — recall@k against labelled queries
-409eb8f core: streaming add_corpus — append entries without re-encoding
-4386d8b ci: GitHub Actions matrix (py 3.10/3.11/3.12)
-c4db02c package: ship py.typed marker (PEP 561)
-5a26e96 cli: surface --rerank, --rerank-model, --rerank-top-k
-5beec31 core: optional cross-encoder rerank in AdaptMem.search
-1d3149f make: bench-longmemeval self-contained reproduction target
-90d52af bench: add FT-200 sanity row + second results JSON
-eb2daf2 README: replace placeholder R@5 row with reproduced numbers + audit ref
-06e593e bench: longmemeval reproduction harness + first results JSON
-```
-
-15 commits on top of `52dc52c` (v0.1 ROADMAP commit). All shipped to
-`master` locally. Push to remote when ready (no remote currently
-configured).
+- Repo: https://github.com/nakata-app/adaptmem (master, MIT, CI green).
+- Sibling repos: `nakata-app/halluguard`, `nakata-app/claimcheck`.
+- Pre-PyPI: install via `pip install -e .` until v0.5 closes.

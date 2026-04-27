@@ -77,12 +77,50 @@ Pre-flight:
 - [ ] One paragraph in the README naming MemPalace as the **source of the verbatim-storage insight** that this repo extends. Adaptmem is an extension, not a replacement.
 
 Outreach:
-- [ ] Open a **GitHub Discussion** (not an Issue, not a PR yet) on `milla-jovovich/mempalace` titled along the lines of "Domain-adaptive fine-tune as orthogonal R@5 lift on top of MemPal raw retrieval". Link to adaptmem repo, paste reproduce commands.
+- [ ] Open a **GitHub Discussion** (not an Issue, not a PR yet) on `MemPalace/mempalace` titled along the lines of "Domain-adaptive fine-tune as orthogonal R@5 lift on top of MemPal raw retrieval". Link to adaptmem repo, paste reproduce commands.
 - [ ] Aim the technical content at **the developer (Ben Sigman)**, not the public face. Use the pull-request voice: "here's a number, here's the reproduce, here's the integration sketch."
 - [ ] If they're interested → propose a `mempal-adapt` integration: their store layer + adaptmem's encoder-tuning step.
 - [ ] If they pass → adaptmem stays standalone. Either outcome is fine.
 
 **Exit:** discussion is open with reproducible numbers and a clear integration proposal. The framing is "we extended your work" not "we beat your benchmark."
+
+---
+
+## v0.6 — production install + multi-bench (target: 1-2 weeks)
+
+**Goal:** `pip install adaptmem` works, and the README cites at least three benchmarks (LongMemEval + one other public + one out-of-distribution).
+
+- [ ] **PyPI release.** Tag `v0.6.0`, populate `PYPI_API_TOKEN` repo secret, the gated `release.yml` step publishes the wheel. After this, `claimcheck` and `halluguard` can drop their editable-sibling install in favour of `dependencies = ["adaptmem>=0.6"]`.
+- [ ] **On-disk Parquet index.** Swap in-memory numpy index for Parquet when corpus > 50k chunks. Keep `AdaptMem.search` API identical; `add_corpus` appends to the Parquet file and updates a small in-memory ANN sidecar.
+- [ ] **ConvoMem bench.** `benchmarks/convomem_eval.py`. Locate the public dataset (HF Hub mirror), build the script in the longmemeval pattern. Out-of-domain validation that the FT recipe is not LongMemEval-specific.
+- [ ] **MemBench bench.** ACL 2025 paper's harness; mempal raw 80.3% there. Even more out-of-distribution.
+- [ ] **FActScore bench.** Atomic-fact retrieval over Wikipedia. Different shape from per-question fresh-corpus benchmarks; reveals whether adaptmem helps in the "many small chunks" regime.
+- [ ] **mypy --strict pass.** `py.typed` was the marker; this is the gate.
+- [ ] **3-seed reproduce.** Mean ± stddev for FT-100 / FT-200 / FT-300 across `seed ∈ {42, 1337, 7}`. Drops the "single number could be lucky" objection that v0.5 outreach will probably hear.
+
+**Exit:** `pip install adaptmem`, README has three bench tables, CI runs mypy strict on every push.
+
+---
+
+## v0.7 — Metis integration (target: 2-3 weeks)
+
+**Goal:** adaptmem becomes the encoder/retriever layer for `~/Projects/metis`. Today they are unrelated: metis is a Rust agent CLI, adaptmem is Python research code. The integration question is *how* they talk.
+
+- [ ] **Bridge architecture decision.** Three candidates:
+  - (a) `subprocess` shell-out — metis spawns `python -m adaptmem search ...`, parses JSON. Zero linkage, slow startup, easy to ship.
+  - (b) **PyO3 / pyo3** — Rust binding into the Python interpreter. Tightest, fastest in-process, biggest build surface (cargo + Python deps must coexist).
+  - (c) **HTTP/IPC daemon** — `adaptmem serve` exposes a local HTTP/Unix-socket endpoint, metis sends queries. Process isolation, clean stop/start, can be reused by claimcheck and halluguard too.
+  - Pick one. Document the tradeoff in an ADR.
+- [ ] **Use case netleştir.** Where exactly does adaptmem plug in? Three plausible targets in metis:
+  - (i) Conversation context retrieval (memory layer for the agent's own history).
+  - (ii) Tool-output verification gate (claimcheck wrapping adaptmem + halluguard before the agent acts on a result).
+  - (iii) Codebase semantic search (replace or augment current grep/glob with embedding retrieval).
+  - Pick at least one for v0.7. Others can land in v0.8+.
+- [ ] **PoC implementation** for the chosen use case. End-to-end: metis → bridge → adaptmem → result.
+- [ ] **Integration tests.** Spawn metis, run a fixture interaction, assert the bridge round-trip works on Linux + macOS.
+- [ ] **Document the contract.** `docs/metis_integration.md` — bridge protocol, version compatibility table, how to swap encoders without recompiling metis.
+
+**Exit:** metis's `/memory` command (or whichever use case won) calls adaptmem under the hood and produces a measurable retrieval improvement vs the in-tree baseline.
 
 ---
 
