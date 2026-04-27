@@ -141,5 +141,14 @@ class CorpusStore:
             for row in self._conn.execute("SELECT id FROM corpora ORDER BY id").fetchall()
         ]
 
+    def delete_corpus(self, corpus_id: str) -> bool:
+        """Drop the corpus rows. Returns True if it existed, False otherwise."""
+        with self._conn:
+            cur = self._conn.execute(
+                "DELETE FROM corpora WHERE id = ?", (corpus_id,)
+            )
+            # Rows in `documents` are removed by ON DELETE CASCADE.
+            return bool(cur.rowcount)
+
     def close(self) -> None:
         self._conn.close()

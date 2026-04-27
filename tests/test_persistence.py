@@ -83,6 +83,24 @@ def test_save_casts_non_float32(tmp_path):
     np.testing.assert_array_almost_equal(embs_back, embs64.astype(np.float32))
 
 
+def test_delete_corpus_removes_rows_and_returns_true(tmp_path):
+    store = CorpusStore(tmp_path / "corpora.db")
+    store.save_corpus(
+        "victim", "m", [("d1", "hi"), ("d2", "ho")],
+        np.zeros((2, 4), dtype=np.float32),
+    )
+    assert "victim" in store.list_corpora()
+    assert store.delete_corpus("victim") is True
+    assert "victim" not in store.list_corpora()
+    # Cascaded: documents rows are gone too.
+    assert store.load_corpus("victim") is None
+
+
+def test_delete_corpus_returns_false_for_missing(tmp_path):
+    store = CorpusStore(tmp_path / "corpora.db")
+    assert store.delete_corpus("never-saved") is False
+
+
 def test_persistence_survives_close_reopen(tmp_path):
     """The whole point: stop the process, reopen the DB, corpora are still there."""
     db = tmp_path / "corpora.db"

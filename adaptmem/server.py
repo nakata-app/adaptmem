@@ -85,6 +85,11 @@ if importlib.util.find_spec("pydantic") is not None:
         n_docs: int
         elapsed_ms: float
 
+    class DeleteCorpusResponse(BaseModel):
+        corpus_id: str
+        deleted_in_memory: bool
+        deleted_on_disk: bool
+
     class HealthzResponse(BaseModel):
         ok: bool
         uptime_s: float
@@ -551,6 +556,36 @@ def _build_app() -> Any:
             elapsed_ms=elapsed_ms,
             corpora_queried=len(req.corpus_ids) - len(missing),
             corpora_missing=missing,
+        )
+
+    @data_router.delete(
+        "/corpora/{corpus_id}",
+        response_model=DeleteCorpusResponse,
+        dependencies=[Depends(require_admin)],
+    )
+    def delete_corpus(
+        corpus_id: str,
+        authorization: str | None = Header(default=None),
+    ) -> DeleteCorpusResponse:
+        """Drop a corpus from memory + disk. Admin role required.
+
+        Idempotent: returns 200 with `deleted_*` flags showing what
+        actually existed; doesn't 404 on a missing id.
+        """
+        _enforce_tenant(corpus_id, authorization)
+
+        deleted_mem = corpus_id in state["corpora"]
+        if deleted_mem:
+            del state["corpora"][corpus_id]
+
+        deleted_disk = False
+        if state["store"] is not None:
+            deleted_disk = state["store"].delete_corpus(corpus_id)
+
+        return DeleteCorpusResponse(
+            corpus_id=corpus_id,
+            deleted_in_memory=deleted_mem,
+            deleted_on_disk=deleted_disk,
         )
 
     @data_router.post("/search", response_model=SearchResponse)

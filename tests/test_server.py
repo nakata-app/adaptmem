@@ -363,6 +363,66 @@ def test_tenant_filter_blocks_cross_tenant_search():
     assert r.status_code == 404
 
 
+def test_delete_corpus_idempotent_for_missing_id():
+    """DELETE on a corpus that doesn't exist returns 200 with both flags
+    False — not 404. Idempotency is the point: callers can retry safely."""
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    state["api_keys"] = {"admin-key": {"role": "admin", "tenant_id": None}}
+    c = TestClient(app)
+
+    r = c.delete(
+        "/v1/corpora/never-existed",
+        headers={"Authorization": "Bearer admin-key"},
+    )
+    assert r.status_code == 200
+    body = r.json()
+    assert body["corpus_id"] == "never-existed"
+    assert body["deleted_in_memory"] is False
+    assert body["deleted_on_disk"] is False
+
+
+def test_delete_corpus_requires_admin_role():
+    """Viewer key gets 403."""
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    state["api_keys"] = {"viewer-key": {"role": "viewer", "tenant_id": None}}
+    c = TestClient(app)
+
+    r = c.delete(
+        "/v1/corpora/x",
+        headers={"Authorization": "Bearer viewer-key"},
+    )
+    assert r.status_code == 403
+
+
+def test_delete_corpus_removes_from_memory():
+    """When the corpus is in state['corpora'], DELETE removes it."""
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    # Stub a "corpus" — only delete logic matters, not the engine itself.
+    state["corpora"]["temp"] = object()
+    c = TestClient(app)
+
+    r = c.delete("/v1/corpora/temp")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["deleted_in_memory"] is True
+    assert "temp" not in state["corpora"]
+
+
 def test_search_many_returns_partial_results_with_missing_corpora():
     """search-many never errors for missing corpus_ids — they go in
     `corpora_missing` while the rest are queried."""

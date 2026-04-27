@@ -244,6 +244,11 @@ def main() -> None:
     )
     cr.set_defaults(func=_cmd_corpora_reindex)
 
+    cd = co_sub.add_parser("delete", help="drop a corpus from memory + disk (admin only)")
+    _add_daemon_args(cd)
+    cd.add_argument("--corpus-id", required=True)
+    cd.set_defaults(func=_cmd_corpora_delete)
+
     # Optional: argcomplete-driven shell tab-completion. Best-effort
     # import — if argcomplete isn't installed (default), CLI works
     # exactly as before. With it installed + a one-time
@@ -311,6 +316,16 @@ def _cmd_corpora_search(args: argparse.Namespace) -> None:
     )
     for hit in body.get("hits", []):
         print(f"{hit['score']:.4f}\t{hit['id']}\t{hit['text'][:120]}")
+
+
+def _cmd_corpora_delete(args: argparse.Namespace) -> None:
+    body = _daemon_request(
+        "DELETE",
+        args.daemon,
+        f"/v1/corpora/{args.corpus_id}",
+        args.api_key,
+    )
+    print(json.dumps(body, indent=2))
 
 
 def _cmd_corpora_reindex(args: argparse.Namespace) -> None:
