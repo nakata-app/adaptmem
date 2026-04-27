@@ -243,6 +243,29 @@ def _build_app() -> Any:
                 status_code=403, detail="admin role required for this endpoint"
             )
 
+    def _enforce_tenant(corpus_id: str, authorization: str | None) -> None:
+        """Reject requests whose corpus_id falls outside the caller's tenant.
+
+        Convention: corpus_id starts with `<tenant_id>/`. When the API key
+        has a non-null tenant_id, the corpus_id must begin with that
+        prefix. Admin keys with tenant_id=None can address any corpus.
+        """
+        meta = _resolve_key(authorization)
+        if meta is None:
+            return  # auth disabled, no tenant boundaries
+        tenant = meta.get("tenant_id")
+        if tenant is None:
+            return  # admin / unscoped key
+        prefix = f"{tenant}/"
+        if not corpus_id.startswith(prefix):
+            raise HTTPException(
+                status_code=403,
+                detail=(
+                    f"corpus_id '{corpus_id}' is outside tenant '{tenant}'. "
+                    f"Names must start with '{prefix}'."
+                ),
+            )
+
     def _record_metric(endpoint: str, duration_s: float) -> None:
         m = state["metrics"].setdefault(endpoint, {"count": 0, "duration_s_sum": 0.0})
         m["count"] += 1
@@ -424,7 +447,12 @@ def _build_app() -> Any:
         response_model=ReindexResponse,
         dependencies=[Depends(require_admin)],
     )
-    def reindex(req: ReindexRequest) -> ReindexResponse:
+    def reindex(
+        req: ReindexRequest,
+        authorization: str | None = Header(default=None),
+    ) -> ReindexResponse:
+        _enforce_tenant(req.corpus_id, authorization)
+
         from adaptmem.miner import CorpusEntry
         from sentence_transformers import SentenceTransformer
 
@@ -459,7 +487,11 @@ def _build_app() -> Any:
         )
 
     @data_router.post("/search", response_model=SearchResponse)
-    def search(req: SearchRequest) -> SearchResponse:
+    def search(
+        req: SearchRequest,
+        authorization: str | None = Header(default=None),
+    ) -> SearchResponse:
+        _enforce_tenant(req.corpus_id, authorization)
         if req.corpus_id not in state["corpora"]:
             raise HTTPException(
                 status_code=404,

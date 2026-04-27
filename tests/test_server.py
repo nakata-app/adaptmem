@@ -330,6 +330,61 @@ def test_rbac_viewer_can_search_but_not_reindex():
     assert "admin" in r.json()["detail"].lower()
 
 
+def test_tenant_filter_blocks_cross_tenant_search():
+    """API key with tenant_id='t1' can't search corpus_id='t2/secret'."""
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    state["api_keys"] = {
+        "t1-viewer": {"role": "viewer", "tenant_id": "t1"},
+    }
+    c = TestClient(app)
+
+    # corpus_id outside the tenant prefix → 403.
+    r = c.post(
+        "/v1/search",
+        json={"query": "x", "top_k": 1, "corpus_id": "t2/secret"},
+        headers={"Authorization": "Bearer t1-viewer"},
+    )
+    assert r.status_code == 403
+    assert "outside tenant" in r.json()["detail"]
+
+    # corpus_id with the right prefix → passes the tenant check (404
+    # because the corpus isn't indexed, but auth + tenant check both
+    # cleared).
+    r = c.post(
+        "/v1/search",
+        json={"query": "x", "top_k": 1, "corpus_id": "t1/owned"},
+        headers={"Authorization": "Bearer t1-viewer"},
+    )
+    assert r.status_code == 404
+
+
+def test_admin_unscoped_key_can_address_any_corpus():
+    """Admin role with tenant_id=None should bypass tenant filter."""
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    state["api_keys"] = {
+        "global-admin": {"role": "admin", "tenant_id": None},
+    }
+    c = TestClient(app)
+
+    # Any corpus — even without a tenant prefix — passes for unscoped admin.
+    r = c.post(
+        "/v1/search",
+        json={"query": "x", "top_k": 1, "corpus_id": "anywhere"},
+        headers={"Authorization": "Bearer global-admin"},
+    )
+    assert r.status_code == 404  # corpus missing, but tenant filter passed.
+
+
 def test_rbac_unknown_key_rejected():
     from fastapi.testclient import TestClient
 
