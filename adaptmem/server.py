@@ -256,6 +256,9 @@ def serve(
     device: str | None = None,
     uds: str | None = None,
     api_key: str | None = None,
+    ssl_keyfile: str | None = None,
+    ssl_certfile: str | None = None,
+    ssl_ca_certs: str | None = None,
 ) -> None:
     """Start the daemon. Blocks the calling thread.
 
@@ -263,6 +266,10 @@ def serve(
     `/embed`, `/search`, `/reindex` require `Authorization: Bearer <key>`.
     `/healthz`, `/version`, `/metrics` stay open for health probes /
     Prometheus scrape regardless.
+
+    TLS: pass `ssl_keyfile` and `ssl_certfile` to serve over HTTPS. For
+    mTLS, also pass `ssl_ca_certs` (PEM bundle of trusted client CAs);
+    uvicorn will require a verified client certificate per request.
     """
     import os
 
@@ -281,7 +288,21 @@ def serve(
     resolved_key = api_key or os.environ.get("ADAPTMEM_API_KEY") or None
     state["api_key"] = resolved_key if resolved_key else None
 
+    ssl_kwargs: dict[str, Any] = {}
+    if ssl_keyfile and ssl_certfile:
+        ssl_kwargs["ssl_keyfile"] = ssl_keyfile
+        ssl_kwargs["ssl_certfile"] = ssl_certfile
+        if ssl_ca_certs:
+            import ssl as _ssl
+
+            ssl_kwargs["ssl_ca_certs"] = ssl_ca_certs
+            ssl_kwargs["ssl_cert_reqs"] = _ssl.CERT_REQUIRED  # mTLS
+    elif ssl_keyfile or ssl_certfile:
+        raise SystemExit(
+            "TLS requires both --ssl-keyfile and --ssl-certfile (PEM paths)."
+        )
+
     if uds:
-        uvicorn.run(app, uds=uds, log_level="info")
+        uvicorn.run(app, uds=uds, log_level="info", **ssl_kwargs)
     else:
-        uvicorn.run(app, host=host, port=port, log_level="info")
+        uvicorn.run(app, host=host, port=port, log_level="info", **ssl_kwargs)

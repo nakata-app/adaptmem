@@ -163,6 +163,22 @@ def main() -> None:
         help="Bearer token required for /embed, /search, /reindex. "
              "Falls back to ADAPTMEM_API_KEY env. Unset = auth disabled.",
     )
+    sv.add_argument(
+        "--ssl-keyfile",
+        default=None,
+        help="Path to TLS private key (PEM). Pair with --ssl-certfile to serve HTTPS.",
+    )
+    sv.add_argument(
+        "--ssl-certfile",
+        default=None,
+        help="Path to TLS certificate chain (PEM). Required when --ssl-keyfile is set.",
+    )
+    sv.add_argument(
+        "--ssl-ca-certs",
+        default=None,
+        help="PEM bundle of trusted client CA certs. When set, mTLS is enforced "
+             "(daemon requires a verified client certificate per request).",
+    )
     sv.set_defaults(func=_cmd_serve)
 
     args = ap.parse_args()
@@ -179,6 +195,9 @@ def _cmd_serve(args: argparse.Namespace) -> None:
         device=args.device,
         uds=args.uds,
         api_key=args.api_key,
+        ssl_keyfile=args.ssl_keyfile,
+        ssl_certfile=args.ssl_certfile,
+        ssl_ca_certs=args.ssl_ca_certs,
     )
 
 

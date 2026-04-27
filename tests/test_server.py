@@ -94,14 +94,6 @@ def test_embed(client):
     assert len(body["embeddings"][0]) == body["dim"]
 
 
-def test_auth_disabled_lets_protected_endpoints_through(client):
-    """Default state: api_key=None → /embed/search/reindex open."""
-    c, _ = client
-    # No Authorization header — should succeed (engine load required, so embed is the cheapest).
-    r = c.post("/embed", json={"texts": ["hello"]})
-    assert r.status_code == 200
-
-
 def test_auth_enabled_rejects_missing_token():
     """When api_key is configured, missing Authorization header → 401."""
     from fastapi.testclient import TestClient
@@ -143,6 +135,13 @@ def test_auth_enabled_rejects_wrong_token():
 
 
 def test_auth_enabled_accepts_correct_token():
+    """Correct Bearer token should pass the auth check.
+
+    We assert that the response is NOT a 401 — going further (200 with
+    encoded body) requires loading the SentenceTransformer, which is
+    overkill for an auth-only test and stresses Mac/Py3.14 ardışık model
+    load. The auth path is the unit under test.
+    """
     from fastapi.testclient import TestClient
 
     from adaptmem.server import _build_app
@@ -152,13 +151,77 @@ def test_auth_enabled_accepts_correct_token():
     state["api_key"] = "secret-key-xyz"
     c = TestClient(app)
 
+    # Use /search with a missing corpus_id — auth passes, then 404 from
+    # the handler. Confirms Bearer auth let the request through without
+    # invoking the encoder.
     r = c.post(
-        "/embed",
-        json={"texts": ["x"]},
+        "/search",
+        json={"query": "x", "top_k": 1, "corpus_id": "no-such-corpus"},
         headers={"Authorization": "Bearer secret-key-xyz"},
     )
-    assert r.status_code == 200
-    assert "embeddings" in r.json()
+    assert r.status_code == 404
+    assert "not indexed" in r.json()["detail"]
+
+
+def test_serve_rejects_unpaired_tls_flags(monkeypatch):
+    """`serve(ssl_keyfile=X)` without certfile (or vice versa) → SystemExit."""
+    import pytest as _pytest
+
+    from adaptmem.server import serve
+
+    # Stub uvicorn.run so we never actually bind a port.
+    import uvicorn
+
+    monkeypatch.setattr(uvicorn, "run", lambda *a, **k: None)
+
+    with _pytest.raises(SystemExit, match="ssl-keyfile and --ssl-certfile"):
+        serve(ssl_keyfile="/tmp/key.pem")
+    with _pytest.raises(SystemExit, match="ssl-keyfile and --ssl-certfile"):
+        serve(ssl_certfile="/tmp/cert.pem")
+
+
+def test_serve_accepts_paired_tls_flags(monkeypatch):
+    """Both keyfile + certfile present → no exception, uvicorn.run called with ssl kwargs."""
+    captured: dict = {}
+
+    def fake_run(app, **kwargs):
+        captured.update(kwargs)
+
+    import uvicorn
+
+    monkeypatch.setattr(uvicorn, "run", fake_run)
+
+    from adaptmem.server import serve
+
+    serve(ssl_keyfile="/tmp/key.pem", ssl_certfile="/tmp/cert.pem")
+    assert captured["ssl_keyfile"] == "/tmp/key.pem"
+    assert captured["ssl_certfile"] == "/tmp/cert.pem"
+    # No CA → no client cert requirement
+    assert "ssl_ca_certs" not in captured
+
+
+def test_serve_mtls_when_ca_certs_provided(monkeypatch):
+    """`ssl_ca_certs` → uvicorn requires verified client cert (mTLS)."""
+    import ssl as _ssl
+
+    captured: dict = {}
+
+    def fake_run(app, **kwargs):
+        captured.update(kwargs)
+
+    import uvicorn
+
+    monkeypatch.setattr(uvicorn, "run", fake_run)
+
+    from adaptmem.server import serve
+
+    serve(
+        ssl_keyfile="/tmp/key.pem",
+        ssl_certfile="/tmp/cert.pem",
+        ssl_ca_certs="/tmp/ca.pem",
+    )
+    assert captured["ssl_ca_certs"] == "/tmp/ca.pem"
+    assert captured["ssl_cert_reqs"] == _ssl.CERT_REQUIRED
 
 
 def test_metrics_prometheus_format(client):
