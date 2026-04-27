@@ -6,6 +6,44 @@ All notable changes to adaptmem are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added — v0.7 Metis integration (PoC shipped)
+- **`adaptmem.server`** — FastAPI app exposing `/healthz`, `/version`,
+  `/embed`, `/reindex`, `/search`. Lazy encoder load (model only built
+  on first embed/reindex call). Pydantic schemas at module level so
+  FastAPI introspection works.
+- **`adaptmem serve`** CLI subcommand — `--port`, `--host`, `--device`,
+  `--uds` (Unix-domain-socket alternative for zero-TCP-overhead
+  callers).
+- **`[server]` optional dep** — `pip install "adaptmem[server]"` pulls
+  fastapi + uvicorn[standard] + pydantic. Core install stays minimal.
+- **`tests/test_server.py`** — 5 endpoint tests via FastAPI TestClient.
+  Real encoder, real ranking, no mocks for the retrieval pass.
+- **`docs/metis_integration.md`** — full ADR. Three bridge options
+  considered (subprocess shell-out, PyO3, HTTP daemon); HTTP daemon
+  chosen. v1 endpoint contract, compatibility matrix, failure modes,
+  rollout plan.
+
+### Added — v0.4 production-ready surface (closed)
+- **mypy --strict pass.** `dict[str, Any]` annotations, `DataLoader[Any]`
+  local annotation, `from typing import Any`, type-ignore on
+  sentence_transformers.losses (3rd-party stub gap).
+- **`release.yml`** — wheel build + sdist + tag-gated PyPI publish
+  (skipped via shell guard when `PYPI_API_TOKEN` is absent).
+
+### Added — bench results
+- `benchmarks/results_minilm_baseline_400.json` — raw MiniLM 400q
+  R@5=0.965, matches MemPalace published 0.966 within 0.1pt.
+  Independent confirmation of the protocol.
+- `benchmarks/results_minilm_baseline_50.json` — raw MiniLM 50q
+  baseline alongside the BGE comparison.
+- `benchmarks/results_bge_small_50.json` — BAAI/bge-small-en-v1.5 raw
+  50q. Encoder swap = honest null result (R@5=0.98 vs MiniLM 0.98).
+  The lift comes from fine-tuning, not the base model.
+- `benchmarks/bench_st_inline.py` — minimal harness that imports
+  helpers from `longmemeval_eval.py` but bypasses `cmd_test` (which
+  deadlocks on Mac/Py3.14 + sentence-transformers + uvicorn-thread-
+  pool cluster).
+
 ### Added — v0.4 production-ready surface
 - Optional cross-encoder rerank stage on `AdaptMem.search()` (default
   off). Enable via `AdaptMem(rerank=True)`; CE candidates pulled from a
