@@ -224,6 +224,38 @@ def test_serve_mtls_when_ca_certs_provided(monkeypatch):
     assert captured["ssl_cert_reqs"] == _ssl.CERT_REQUIRED
 
 
+def test_otel_disabled_when_endpoint_unset(monkeypatch):
+    """Without OTEL_EXPORTER_OTLP_ENDPOINT, _enable_otel returns False
+    (and silently does nothing — no import cost on dev boxes)."""
+    monkeypatch.delenv("OTEL_EXPORTER_OTLP_ENDPOINT", raising=False)
+    from fastapi import FastAPI
+
+    from adaptmem.server import _enable_otel
+
+    app = FastAPI()
+    assert _enable_otel(app) is False
+
+
+def test_otel_returns_false_when_extras_missing(monkeypatch):
+    """When the endpoint is set but [telemetry] extras aren't installed,
+    we shouldn't crash — silently skip instead."""
+    monkeypatch.setenv("OTEL_EXPORTER_OTLP_ENDPOINT", "https://example.com")
+    # Simulate missing extras by hiding the import path.
+    import sys
+
+    blocked = [m for m in list(sys.modules) if m.startswith("opentelemetry")]
+    for m in blocked:
+        monkeypatch.setitem(sys.modules, m, None)
+
+    from fastapi import FastAPI
+
+    from adaptmem.server import _enable_otel
+
+    app = FastAPI()
+    # Returns False; no exception bubbles up.
+    assert _enable_otel(app) is False
+
+
 def test_lifespan_shutdown_closes_corpus_store(tmp_path):
     """SIGTERM-equivalent: leaving the TestClient context fires the
     lifespan shutdown hook and closes the CorpusStore."""

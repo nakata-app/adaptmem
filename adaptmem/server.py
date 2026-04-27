@@ -83,6 +83,42 @@ if importlib.util.find_spec("pydantic") is not None:
         corpora: list[str]
 
 
+def _enable_otel(app: Any) -> bool:
+    """Auto-instrument FastAPI when the [telemetry] extras + OTLP endpoint are present.
+
+    Returns True if instrumentation was attached, False otherwise (missing
+    deps, no endpoint, or already instrumented). Caller can check the
+    return value in tests; production just calls and forgets.
+
+    Required env (any standard OTEL_* setup works — these are the most
+    common):
+        OTEL_EXPORTER_OTLP_ENDPOINT   e.g. https://api.honeycomb.io
+        OTEL_EXPORTER_OTLP_HEADERS    e.g. x-honeycomb-team=KEY
+        OTEL_SERVICE_NAME             defaults to "adaptmem"
+    """
+    import os as _os
+
+    if not _os.environ.get("OTEL_EXPORTER_OTLP_ENDPOINT"):
+        return False
+    try:
+        from opentelemetry import trace
+        from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+        from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+        from opentelemetry.sdk.resources import Resource
+        from opentelemetry.sdk.trace import TracerProvider
+        from opentelemetry.sdk.trace.export import BatchSpanProcessor
+    except ImportError:  # pragma: no cover — exercised when [telemetry] absent
+        return False
+
+    service = _os.environ.get("OTEL_SERVICE_NAME", "adaptmem")
+    resource = Resource.create({"service.name": service})
+    provider = TracerProvider(resource=resource)
+    provider.add_span_processor(BatchSpanProcessor(OTLPSpanExporter()))
+    trace.set_tracer_provider(provider)
+    FastAPIInstrumentor.instrument_app(app)
+    return True
+
+
 def _build_app() -> Any:
     """Build the FastAPI app + return (app, state). Imports gated to keep `[server]` optional."""
     try:
@@ -117,6 +153,11 @@ def _build_app() -> Any:
         description="Domain-tuned retrieval daemon",
         lifespan=_lifespan,
     )
+
+    # OpenTelemetry tracing — opt-in via the [telemetry] extras + the
+    # standard OTEL_EXPORTER_OTLP_ENDPOINT env. Missing extras = silent
+    # no-op (dev / test boxes don't pay the import cost).
+    _enable_otel(app)
 
     # Rate limiting (slowapi). Default cap can be overridden via env. Per-
     # endpoint granularity is a v0.6 follow-up — keeping the wiring simple
