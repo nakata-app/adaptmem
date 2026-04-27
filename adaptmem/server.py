@@ -95,6 +95,35 @@ def _build_app() -> Any:
 
     app = FastAPI(title="adaptmem", description="Domain-tuned retrieval daemon")
 
+    # Rate limiting (slowapi). Default cap can be overridden via env. Per-
+    # endpoint granularity is a v0.6 follow-up — keeping the wiring simple
+    # avoids slowapi's signature-introspection quirks with FastAPI.
+    import os as _os
+
+    _default_rate = _os.environ.get("ADAPTMEM_RATE_LIMIT", "120/minute")
+
+    try:
+        from slowapi import Limiter
+        from slowapi.errors import RateLimitExceeded
+        from slowapi.middleware import SlowAPIMiddleware
+        from slowapi.util import get_remote_address
+
+        limiter = Limiter(key_func=get_remote_address, default_limits=[_default_rate])
+        app.state.limiter = limiter
+        app.add_middleware(SlowAPIMiddleware)
+
+        @app.exception_handler(RateLimitExceeded)
+        def _rate_limit_handler(request: Any, exc: Any) -> Any:
+            from fastapi.responses import JSONResponse
+
+            return JSONResponse(
+                status_code=429,
+                content={"detail": f"rate limit exceeded: {exc.detail}"},
+            )
+    except ImportError:  # pragma: no cover
+        # Older install without slowapi — rate limiting silently disabled.
+        pass
+
     state: dict[str, Any] = {
         "encoder_name": None,
         "engine": None,        # AdaptMem instance (shared encoder)

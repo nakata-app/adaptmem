@@ -224,6 +224,25 @@ def test_serve_mtls_when_ca_certs_provided(monkeypatch):
     assert captured["ssl_cert_reqs"] == _ssl.CERT_REQUIRED
 
 
+def test_rate_limit_returns_429_after_threshold(monkeypatch):
+    """Default ADAPTMEM_RATE_LIMIT 120/min; lower it and confirm 429 fires."""
+    monkeypatch.setenv("ADAPTMEM_RATE_LIMIT", "2/minute")
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    c = TestClient(app)
+    # First two calls within the cap → 200.
+    assert c.get("/healthz").status_code == 200
+    assert c.get("/healthz").status_code == 200
+    # Third → 429 with the slowapi-formatted message.
+    third = c.get("/healthz")
+    assert third.status_code == 429
+    assert "rate limit exceeded" in third.json()["detail"]
+
+
 def test_rbac_viewer_can_search_but_not_reindex():
     """Viewer role: /search + /embed allowed, /reindex returns 403."""
     from fastapi.testclient import TestClient
