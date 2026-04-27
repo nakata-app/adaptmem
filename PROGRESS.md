@@ -90,8 +90,16 @@ matched table.
 ### v0.5 — mempal outreach
 - [ ] Three-seed reproduce of FT-300 with mean ± stddev.
 - [ ] Matched-protocol run via mempal's `longmemeval_bench.py`.
+  - Wrapper hazır: `benchmarks/mempal_bench_with_ft.py` (monkey-patches
+    `_bench_embed_fn` global, ZERO modification to mempal script).
+  - Colab notebook: `benchmarks/colab_mempal_matched_protocol.ipynb`
+    (3 ardışık run: raw default sanity → raw+FT-300 → hybrid_v4+FT-300).
+  - Mac 8GB'da koşmaz (memory tight) → Colab'da koşulacak. Drive layout
+    notebook header'ında. Bu Mac sırasında dataset/model upload + run.
 - [ ] Open a GitHub Discussion on `MemPalace/mempalace` framed as
   "we extended your work", not "we beat your benchmark."
+  - Draft hazır: `drafts/mempal_discussion.md` — matched-protocol
+    sayıları gelince caveat satırı silinecek + tabloya ek sütun.
 
 ## How to resume (next session)
 
