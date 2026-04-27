@@ -224,6 +224,56 @@ def test_serve_mtls_when_ca_certs_provided(monkeypatch):
     assert captured["ssl_cert_reqs"] == _ssl.CERT_REQUIRED
 
 
+def test_rbac_viewer_can_search_but_not_reindex():
+    """Viewer role: /search + /embed allowed, /reindex returns 403."""
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    state["api_keys"] = {
+        "viewer-key": {"role": "viewer", "tenant_id": None},
+        "admin-key": {"role": "admin", "tenant_id": None},
+    }
+    c = TestClient(app)
+
+    # /search via viewer key — auth+role OK; corpus missing → 404 (not 403).
+    r = c.post(
+        "/v1/search",
+        json={"query": "x", "top_k": 1, "corpus_id": "anything"},
+        headers={"Authorization": "Bearer viewer-key"},
+    )
+    assert r.status_code == 404
+
+    # /reindex via viewer key — 403 forbidden.
+    r = c.post(
+        "/v1/reindex",
+        json={"corpus_id": "c", "documents": [{"id": "d", "text": "t"}]},
+        headers={"Authorization": "Bearer viewer-key"},
+    )
+    assert r.status_code == 403
+    assert "admin" in r.json()["detail"].lower()
+
+
+def test_rbac_unknown_key_rejected():
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    state["api_keys"] = {"viewer-key": {"role": "viewer", "tenant_id": None}}
+    c = TestClient(app)
+
+    r = c.post(
+        "/v1/search",
+        json={"query": "x", "top_k": 1, "corpus_id": "c"},
+        headers={"Authorization": "Bearer wrong-key"},
+    )
+    assert r.status_code == 401
+
+
 def test_audit_log_writes_json_line_per_data_request(tmp_path, capsys):
     """Audit middleware emits one JSON line per /search call (and to file)."""
     import json as _json

@@ -103,7 +103,11 @@ def _build_app() -> Any:
         # Prometheus-style counters: endpoint -> {"count": int, "duration_s_sum": float}
         "metrics": {},
         # API key (None = auth disabled; str = required Bearer token).
+        # Backward-compat single-key field. For multi-key + RBAC, see api_keys.
         "api_key": None,
+        # Multi-key map: token -> {"role": "viewer"|"admin", "tenant_id": str|None}
+        # When non-empty, takes precedence over the single api_key field.
+        "api_keys": {},
         # Audit log: structured JSON lines. Optional file sink in addition
         # to stdout (configured by serve()). When None, logs go to stdout
         # via the standard logger.
@@ -112,21 +116,39 @@ def _build_app() -> Any:
         "store": None,
     }
 
-    def verify_api_key(authorization: str | None = Header(default=None)) -> None:
-        """Bearer-token auth. No-op when state["api_key"] is None.
-
-        Raises 401 when:
-        - the daemon is configured with an api_key but the request is missing one;
-        - the supplied key doesn't match.
-        """
-        configured = state["api_key"]
-        if configured is None:
-            return  # auth disabled
+    def _resolve_key(authorization: str | None) -> dict[str, Any] | None:
+        """Decode Authorization header → key metadata or None when auth disabled."""
+        # Auth disabled mode: no api_key, no api_keys.
+        if state["api_key"] is None and not state["api_keys"]:
+            return {"role": "admin", "tenant_id": None}  # full access, no auth required
         if not authorization or not authorization.lower().startswith("bearer "):
             raise HTTPException(status_code=401, detail="missing Bearer token")
         supplied = authorization.split(" ", 1)[1].strip()
-        if supplied != configured:
+
+        # Multi-key map takes precedence.
+        if state["api_keys"]:
+            meta = state["api_keys"].get(supplied)
+            if meta is None:
+                raise HTTPException(status_code=401, detail="invalid api key")
+            result: dict[str, Any] = meta
+            return result
+
+        # Backward-compat single-key mode: implicit admin role.
+        if supplied != state["api_key"]:
             raise HTTPException(status_code=401, detail="invalid api key")
+        return {"role": "admin", "tenant_id": None}
+
+    def verify_api_key(authorization: str | None = Header(default=None)) -> None:
+        """Bearer-token auth. No-op when no api_key is configured."""
+        _resolve_key(authorization)
+
+    def require_admin(authorization: str | None = Header(default=None)) -> None:
+        """Bearer-token auth + role check. Used for write endpoints."""
+        meta = _resolve_key(authorization)
+        if meta is None or meta.get("role") != "admin":
+            raise HTTPException(
+                status_code=403, detail="admin role required for this endpoint"
+            )
 
     def _record_metric(endpoint: str, duration_s: float) -> None:
         m = state["metrics"].setdefault(endpoint, {"count": 0, "duration_s_sum": 0.0})
@@ -304,7 +326,11 @@ def _build_app() -> Any:
             dim=int(embeddings.shape[1]),
         )
 
-    @data_router.post("/reindex", response_model=ReindexResponse)
+    @data_router.post(
+        "/reindex",
+        response_model=ReindexResponse,
+        dependencies=[Depends(require_admin)],
+    )
     def reindex(req: ReindexRequest) -> ReindexResponse:
         from adaptmem.miner import CorpusEntry
         from sentence_transformers import SentenceTransformer
@@ -372,6 +398,7 @@ def serve(
     device: str | None = None,
     uds: str | None = None,
     api_key: str | None = None,
+    api_keys_file: str | None = None,
     ssl_keyfile: str | None = None,
     ssl_certfile: str | None = None,
     ssl_ca_certs: str | None = None,
@@ -406,6 +433,33 @@ def serve(
     resolved_key = api_key or os.environ.get("ADAPTMEM_API_KEY") or None
     state["api_key"] = resolved_key if resolved_key else None
     state["audit_log_file"] = audit_log_file or os.environ.get("ADAPTMEM_AUDIT_LOG") or None
+
+    # Multi-key + RBAC: load JSON file shaped like
+    #   [{"key": "...", "role": "viewer"|"admin", "tenant_id": "..."}]
+    # When present, overrides the single api_key field. Each request's
+    # Bearer token is looked up against this map; admin role is required
+    # for /reindex.
+    keys_path = api_keys_file or os.environ.get("ADAPTMEM_API_KEYS_FILE") or None
+    if keys_path:
+        import json as _json
+
+        with open(keys_path, encoding="utf-8") as fh:
+            entries = _json.load(fh)
+        keymap: dict[str, dict[str, Any]] = {}
+        for entry in entries:
+            if "key" not in entry or "role" not in entry:
+                raise SystemExit(
+                    f"--api-keys-file: each entry needs 'key' and 'role'; got {entry}"
+                )
+            if entry["role"] not in ("viewer", "admin"):
+                raise SystemExit(
+                    f"--api-keys-file: role must be viewer|admin, got '{entry['role']}'"
+                )
+            keymap[entry["key"]] = {
+                "role": entry["role"],
+                "tenant_id": entry.get("tenant_id"),
+            }
+        state["api_keys"] = keymap
 
     # Optional SQLite-backed corpus store. When set, /reindex writes both to
     # memory and to disk; on startup all stored corpora are reloaded so

@@ -161,7 +161,16 @@ def main() -> None:
         "--api-key",
         default=None,
         help="Bearer token required for /embed, /search, /reindex. "
-             "Falls back to ADAPTMEM_API_KEY env. Unset = auth disabled.",
+             "Falls back to ADAPTMEM_API_KEY env. Unset = auth disabled. "
+             "Implicit admin role. Use --api-keys-file for RBAC.",
+    )
+    sv.add_argument(
+        "--api-keys-file",
+        default=None,
+        help="JSON file with multi-key RBAC: "
+             '[{"key": "...", "role": "viewer"|"admin", "tenant_id": "..."}]. '
+             "viewer = /search + /embed. admin = also /reindex. "
+             "Falls back to ADAPTMEM_API_KEYS_FILE env. Overrides --api-key.",
     )
     sv.add_argument(
         "--ssl-keyfile",
@@ -211,6 +220,7 @@ def _cmd_serve(args: argparse.Namespace) -> None:
         device=args.device,
         uds=args.uds,
         api_key=args.api_key,
+        api_keys_file=args.api_keys_file,
         ssl_keyfile=args.ssl_keyfile,
         ssl_certfile=args.ssl_certfile,
         ssl_ca_certs=args.ssl_ca_certs,
