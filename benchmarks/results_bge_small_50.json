@@ -1,0 +1,49 @@
+{
+  "n_test": 50,
+  "n_evaluated": 50,
+  "n_skipped_empty": 0,
+  "r1": 0.8,
+  "r5": 0.98,
+  "r10": 1.0,
+  "per_question_type": {
+    "knowledge-update": {
+      "n": 5,
+      "r1": 0.8,
+      "r5": 1.0,
+      "r10": 1.0
+    },
+    "multi-session": {
+      "n": 7,
+      "r1": 0.8571,
+      "r5": 1.0,
+      "r10": 1.0
+    },
+    "single-session-assistant": {
+      "n": 6,
+      "r1": 0.8333,
+      "r5": 1.0,
+      "r10": 1.0
+    },
+    "single-session-preference": {
+      "n": 6,
+      "r1": 0.6667,
+      "r5": 1.0,
+      "r10": 1.0
+    },
+    "single-session-user": {
+      "n": 7,
+      "r1": 0.5714,
+      "r5": 0.8571,
+      "r10": 1.0
+    },
+    "temporal-reasoning": {
+      "n": 19,
+      "r1": 0.8947,
+      "r5": 1.0,
+      "r10": 1.0
+    }
+  },
+  "wall_clock_s": 668.96,
+  "model": "BAAI/bge-small-en-v1.5",
+  "split": "/tmp/split_50.json"
+}

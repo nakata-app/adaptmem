@@ -1,0 +1,49 @@
+{
+  "n_test": 50,
+  "n_evaluated": 50,
+  "n_skipped_empty": 0,
+  "r1": 0.84,
+  "r5": 0.98,
+  "r10": 0.98,
+  "per_question_type": {
+    "knowledge-update": {
+      "n": 5,
+      "r1": 0.8,
+      "r5": 1.0,
+      "r10": 1.0
+    },
+    "multi-session": {
+      "n": 7,
+      "r1": 0.8571,
+      "r5": 1.0,
+      "r10": 1.0
+    },
+    "single-session-assistant": {
+      "n": 6,
+      "r1": 1.0,
+      "r5": 1.0,
+      "r10": 1.0
+    },
+    "single-session-preference": {
+      "n": 6,
+      "r1": 1.0,
+      "r5": 1.0,
+      "r10": 1.0
+    },
+    "single-session-user": {
+      "n": 7,
+      "r1": 0.7143,
+      "r5": 0.8571,
+      "r10": 0.8571
+    },
+    "temporal-reasoning": {
+      "n": 19,
+      "r1": 0.7895,
+      "r5": 1.0,
+      "r10": 1.0
+    }
+  },
+  "wall_clock_s": 160.53,
+  "model": "sentence-transformers/all-MiniLM-L6-v2",
+  "split": "/tmp/split_50.json"
+}

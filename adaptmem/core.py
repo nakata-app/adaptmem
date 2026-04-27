@@ -49,10 +49,10 @@ class AdaptMem:
     # ---- Training -------------------------------------------------------
     def train(
         self,
-        corpus: list[str] | list[CorpusEntry] | list[dict],
-        labelled: list[LabelledQuery] | list[dict],
+        corpus: list[str] | list[CorpusEntry] | list[dict[str, Any]],
+        labelled: list[LabelledQuery] | list[dict[str, Any]],
         config: TrainConfig | None = None,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """Mine hard negatives, fine-tune via MultipleNegativesRankingLoss, build index.
 
         `corpus` can be:
@@ -77,11 +77,11 @@ class AdaptMem:
             raise ValueError("Hard-negative mining produced 0 pairs — check your labels.")
 
         # Fine-tune
-        from sentence_transformers import losses
+        from sentence_transformers import losses  # type: ignore[attr-defined]
         from torch.utils.data import DataLoader
 
         examples = [p.to_input_example() for p in pairs]
-        loader = DataLoader(examples, shuffle=True, batch_size=config.batch_size)
+        loader: DataLoader[Any] = DataLoader(examples, shuffle=True, batch_size=config.batch_size)  # type: ignore[arg-type]
         loss = losses.MultipleNegativesRankingLoss(base)
 
         import time
@@ -146,7 +146,7 @@ class AdaptMem:
         return self._embeddings
 
     # ---- Streaming corpus updates -------------------------------------
-    def add_corpus(self, new_corpus: list[str] | list[CorpusEntry] | list[dict]) -> int:
+    def add_corpus(self, new_corpus: list[str] | list[CorpusEntry] | list[dict[str, Any]]) -> int:
         """Append entries to the in-memory index without re-encoding the
         whole corpus. Returns the number of newly added entries.
 
@@ -297,7 +297,7 @@ class AdaptMem:
 
 # ---- helpers ---------------------------------------------------------
 def _normalise_corpus(
-    corpus: list[str] | list[CorpusEntry] | list[dict],
+    corpus: list[str] | list[CorpusEntry] | list[dict[str, Any]],
 ) -> list[CorpusEntry]:
     out: list[CorpusEntry] = []
     for i, c in enumerate(corpus):
@@ -313,7 +313,7 @@ def _normalise_corpus(
 
 
 def _normalise_queries(
-    labelled: list[LabelledQuery] | list[dict],
+    labelled: list[LabelledQuery] | list[dict[str, Any]],
 ) -> list[LabelledQuery]:
     out: list[LabelledQuery] = []
     for q in labelled:

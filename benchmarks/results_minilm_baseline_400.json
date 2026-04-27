@@ -1,0 +1,49 @@
+{
+  "n_test": 400,
+  "n_evaluated": 400,
+  "n_skipped_empty": 0,
+  "r1": 0.795,
+  "r5": 0.965,
+  "r10": 0.98,
+  "per_question_type": {
+    "knowledge-update": {
+      "n": 58,
+      "r1": 0.8621,
+      "r5": 1.0,
+      "r10": 1.0
+    },
+    "multi-session": {
+      "n": 96,
+      "r1": 0.8646,
+      "r5": 0.9896,
+      "r10": 1.0
+    },
+    "single-session-assistant": {
+      "n": 52,
+      "r1": 0.9615,
+      "r5": 0.9808,
+      "r10": 0.9808
+    },
+    "single-session-preference": {
+      "n": 23,
+      "r1": 0.6522,
+      "r5": 0.9565,
+      "r10": 0.9565
+    },
+    "single-session-user": {
+      "n": 57,
+      "r1": 0.7018,
+      "r5": 0.9123,
+      "r10": 0.9649
+    },
+    "temporal-reasoning": {
+      "n": 114,
+      "r1": 0.7018,
+      "r5": 0.9474,
+      "r10": 0.9649
+    }
+  },
+  "wall_clock_s": 814.69,
+  "model": "sentence-transformers/all-MiniLM-L6-v2",
+  "split": "/Users/macmini/Projects/adaptmem/benchmarks/data/split_ids_100_400.json"
+}

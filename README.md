@@ -41,22 +41,26 @@ The recipe is small on purpose. Every choice is documented. Every step is one me
 
 ## Concrete result on LongMemEval (s_cleaned, 500 questions)
 
-| System | R@1 | R@5 | LLM | Hand-tune | Generalisable |
-|---|---|---|---|---|---|
-| BM25 sparse baseline | — | 0.70 | ✗ | ✗ | ✓ |
-| Stella dense (academic) | — | ~0.85 | ✗ | ✗ | ✓ |
-| MemPalace raw (ChromaDB + MiniLM) | — | 0.966 | ✗ | ✗ | ✓ |
-| MemPalace hybrid v4 generalisable | — | 0.984 | ✗ | ✗ | ✓ |
-| MemPalace + Haiku rerank | — | 1.000 | ✓ | ✓ (3 q spot-fix) | ✗ |
-| adaptmem (FT-100 dense, held-out 400q, **self-contained**) | 0.855 | 0.978 | ✗ | ✗ | ✓ |
-| adaptmem (FT-200 dense, held-out 200q) | 0.900 | 0.990 | ✗ | ✗ | ✓ |
-| **adaptmem (FT-300 dense, held-out 200q)** | **0.915** | **0.995** | **✗** | **✗** | **✓** |
+| System | R@1 | R@5 | R@10 | n | LLM | Hand-tune | Generalisable |
+|---|---|---|---|---|---|---|---|
+| BM25 sparse baseline | — | 0.70 | — | 500 | ✗ | ✗ | ✓ |
+| Stella dense (academic) | — | ~0.85 | — | 500 | ✗ | ✗ | ✓ |
+| MemPalace raw (ChromaDB + MiniLM) | — | 0.966 | — | 500 | ✗ | ✗ | ✓ |
+| MemPalace hybrid v4 generalisable | — | 0.984 | — | 500 | ✗ | ✗ | ✓ |
+| MemPalace + Haiku rerank | — | 1.000 | — | 500 | ✓ | ✓ (3 q spot-fix) | ✗ |
+| **MiniLM-L6 raw (our eval, no FT)** | 0.795 | **0.965** | 0.980 | 400 | ✗ | ✗ | ✓ |
+| BGE-small-en-v1.5 raw (our eval, no FT) | 0.80 | 0.98 | 1.00 | 50 | ✗ | ✗ | ✓ |
+| adaptmem (FT-100 dense, **self-contained**) | 0.855 | 0.978 | 0.992 | 400 | ✗ | ✗ | ✓ |
+| adaptmem (FT-200 dense) | 0.900 | 0.990 | 0.995 | 200 | ✗ | ✗ | ✓ |
+| **adaptmem (FT-300 dense)** | **0.915** | **0.995** | **0.995** | 200 | **✗** | **✗** | **✓** |
 
-Adaptmem numbers are reproduced from committed runs — see [`benchmarks/results_ft300_direct.json`](benchmarks/results_ft300_direct.json), [`benchmarks/results_ft200_direct.json`](benchmarks/results_ft200_direct.json), and [`benchmarks/results_ft100_400.json`](benchmarks/results_ft100_400.json). The FT-100 row is the **self-contained** path (`make bench-longmemeval`): trained from scratch on the shipped 100/400 split with no external dependencies. FT-300/FT-200 are reference runs against the larger metis-pair models. MemPalace numbers are quoted from their published results, not independently re-run here.
+Adaptmem numbers reproduced from committed runs — see [`benchmarks/results_ft300_direct.json`](benchmarks/results_ft300_direct.json), [`benchmarks/results_ft200_direct.json`](benchmarks/results_ft200_direct.json), [`benchmarks/results_ft100_400.json`](benchmarks/results_ft100_400.json), [`benchmarks/results_minilm_baseline_400.json`](benchmarks/results_minilm_baseline_400.json), [`benchmarks/results_bge_small_50.json`](benchmarks/results_bge_small_50.json), and [`benchmarks/results_minilm_baseline_50.json`](benchmarks/results_minilm_baseline_50.json). Reproduce harness: `python benchmarks/bench_st_inline.py --split benchmarks/data/split_ids_100_400.json --st-model <hf-id-or-path> --out <results.json>`.
 
-**Sanity:** train-set size lifts recall in the expected direction — 100 → 200 → 300 queries gives R@5 0.978 → 0.990 → 0.995 and R@1 0.855 → 0.900 → 0.915. The FT-100 row sits 0.7pt below the ROADMAP v0.2 sanity bar (R@5 ≥ 0.985); 200+ train queries clear it comfortably.
+**Two findings:**
+1. **Our raw MiniLM 400q (R@5=0.965) matches MemPalace's published raw (0.966) within 0.1pt** — same encoder family, same protocol, independent eval. The protocol is sound.
+2. **Encoder swap (BGE-small) does not lift R@5 by itself** — 0.98 vs 0.98 on 50q matched split. The lift comes from the **fine-tune step**, not the base model. FT-100 lifts +1.3pt over MiniLM raw on the same 400q split; FT-300 lifts +3.0pt over the published mempal raw.
 
-Same encoder family (MiniLM-L6, 90MB) as MemPalace, same dataset, same evaluation protocol (per-question fresh corpus, user-only encoding) — only the **fine-tune step** is different.
+Train-set size scales recall as expected: 100→200→300 train queries gives R@5 0.978→0.990→0.995 and R@1 0.855→0.900→0.915. The FT-100 row sits 0.7pt below the ROADMAP v0.2 sanity bar (R@5 ≥ 0.985); 200+ train queries clear it comfortably.
 
 ### Reproduce
 
