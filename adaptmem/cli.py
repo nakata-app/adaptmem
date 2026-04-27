@@ -206,6 +206,18 @@ def main() -> None:
     )
     sv.set_defaults(func=_cmd_serve)
 
+    # Optional: argcomplete-driven shell tab-completion. Best-effort
+    # import — if argcomplete isn't installed (default), CLI works
+    # exactly as before. With it installed + a one-time
+    # `eval "$(register-python-argcomplete adaptmem)"` in your shell
+    # rc-file, you get tab-completion for all subcommands and flags.
+    try:
+        import argcomplete
+
+        argcomplete.autocomplete(ap)
+    except ImportError:
+        pass
+
     args = ap.parse_args()
     args.func(args)
 

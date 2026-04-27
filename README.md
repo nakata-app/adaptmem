@@ -118,6 +118,24 @@ adaptmem evaluate --model my-encoder/ --queries labelled.json --top-k 10
 make bench-longmemeval
 ```
 
+## Shell tab-completion (optional)
+
+Install `argcomplete` once per shell, then complete subcommands +
+flags by pressing Tab:
+
+```bash
+pip install "adaptmem[shell]"
+# bash:
+eval "$(register-python-argcomplete adaptmem)" >> ~/.bashrc
+# zsh:
+eval "$(register-python-argcomplete adaptmem)" >> ~/.zshrc
+# fish:
+register-python-argcomplete --shell fish adaptmem | source
+```
+
+Now `adaptmem se<Tab>` expands to `adaptmem serve`, and
+`adaptmem serve --<Tab><Tab>` lists every flag.
+
 ## Daemon mode (`adaptmem serve`)
 
 For multi-language consumers (e.g. metis, a Rust agent CLI) or for any

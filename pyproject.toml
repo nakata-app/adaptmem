@@ -25,6 +25,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.5"]
+shell = ["argcomplete>=3.5"]
 server = ["fastapi>=0.110", "uvicorn[standard]>=0.30", "pydantic>=2.5", "slowapi>=0.1.9"]
 telemetry = [
   "opentelemetry-api>=1.30",
@@ -55,7 +56,7 @@ python_version = "3.10"
 strict = true
 
 [[tool.mypy.overrides]]
-# `[telemetry]` extras are optional; lokalde / CI'da ([telemetry] olmadan)
+# `[telemetry]` and `[shell]` extras are optional; lokalde / CI'da
 # yüklü değil — mypy bu yüzden import-not-found atar. Override'la sustur.
-module = ["opentelemetry.*"]
+module = ["opentelemetry.*", "argcomplete"]
 ignore_missing_imports = true
