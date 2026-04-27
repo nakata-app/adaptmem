@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+from typing import Any
 
 
 def _cmd_train(args: argparse.Namespace) -> None:
@@ -206,6 +207,43 @@ def main() -> None:
     )
     sv.set_defaults(func=_cmd_serve)
 
+    # `corpora` subcommand group — talks to a running daemon over HTTP.
+    co = sub.add_parser("corpora", help="manage corpora on a running daemon")
+    co_sub = co.add_subparsers(dest="corpora_cmd", required=True)
+
+    def _add_daemon_args(p: argparse.ArgumentParser) -> None:
+        p.add_argument(
+            "--daemon",
+            default="http://127.0.0.1:7800",
+            help="Daemon base URL. Defaults to http://127.0.0.1:7800.",
+        )
+        p.add_argument(
+            "--api-key",
+            default=None,
+            help="Bearer token. Falls back to ADAPTMEM_API_KEY env.",
+        )
+
+    cl = co_sub.add_parser("list", help="list indexed corpora")
+    _add_daemon_args(cl)
+    cl.set_defaults(func=_cmd_corpora_list)
+
+    cs = co_sub.add_parser("search", help="search a single corpus")
+    _add_daemon_args(cs)
+    cs.add_argument("--corpus-id", required=True)
+    cs.add_argument("--query", required=True)
+    cs.add_argument("--top-k", type=int, default=5)
+    cs.set_defaults(func=_cmd_corpora_search)
+
+    cr = co_sub.add_parser("reindex", help="(re)index a corpus from a JSON file")
+    _add_daemon_args(cr)
+    cr.add_argument("--corpus-id", required=True)
+    cr.add_argument(
+        "--file",
+        required=True,
+        help='Path to JSON list of {"id": ..., "text": ...} entries.',
+    )
+    cr.set_defaults(func=_cmd_corpora_reindex)
+
     # Optional: argcomplete-driven shell tab-completion. Best-effort
     # import — if argcomplete isn't installed (default), CLI works
     # exactly as before. With it installed + a one-time
@@ -220,6 +258,75 @@ def main() -> None:
 
     args = ap.parse_args()
     args.func(args)
+
+
+def _daemon_request(
+    method: str,
+    daemon_url: str,
+    path: str,
+    api_key: str | None,
+    json_body: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Common HTTP wrapper for `corpora` subcommands. Imports requests
+    lazily so the rest of the CLI works without [server] extras."""
+    try:
+        import requests  # type: ignore[import-untyped]
+    except ImportError as e:
+        raise SystemExit(
+            "`corpora` subcommands need `requests`. Run "
+            '`pip install adaptmem[server]` or `pip install requests`.'
+        ) from e
+
+    import os as _os
+
+    headers: dict[str, str] = {}
+    key = api_key or _os.environ.get("ADAPTMEM_API_KEY")
+    if key:
+        headers["Authorization"] = f"Bearer {key}"
+    url = f"{daemon_url.rstrip('/')}{path}"
+    resp = requests.request(method, url, headers=headers, json=json_body, timeout=120)
+    if not resp.ok:
+        raise SystemExit(f"daemon {method} {path} → {resp.status_code}: {resp.text[:200]}")
+    body: dict[str, Any] = resp.json()
+    return body
+
+
+def _cmd_corpora_list(args: argparse.Namespace) -> None:
+    body = _daemon_request("GET", args.daemon, "/version", args.api_key)
+    corpora = body.get("corpora", [])
+    if not corpora:
+        print("(no corpora indexed)")
+        return
+    for cid in corpora:
+        print(cid)
+
+
+def _cmd_corpora_search(args: argparse.Namespace) -> None:
+    body = _daemon_request(
+        "POST",
+        args.daemon,
+        "/v1/search",
+        args.api_key,
+        {"query": args.query, "top_k": args.top_k, "corpus_id": args.corpus_id},
+    )
+    for hit in body.get("hits", []):
+        print(f"{hit['score']:.4f}\t{hit['id']}\t{hit['text'][:120]}")
+
+
+def _cmd_corpora_reindex(args: argparse.Namespace) -> None:
+    docs = json.loads(Path(args.file).read_text())
+    if not isinstance(docs, list) or not all("id" in d and "text" in d for d in docs):
+        raise SystemExit(
+            "--file must point to a JSON list of {id, text} entries."
+        )
+    body = _daemon_request(
+        "POST",
+        args.daemon,
+        "/v1/reindex",
+        args.api_key,
+        {"corpus_id": args.corpus_id, "documents": docs},
+    )
+    print(json.dumps(body, indent=2))
 
 
 def _cmd_serve(args: argparse.Namespace) -> None:
