@@ -17,7 +17,53 @@ MODEL_200 ?= /Users/macmini/Projects/metis-pair/benchmarks/models/minilm-lme-ft-
 RESULTS_300 ?= benchmarks/results_ft300_direct.json
 RESULTS_200 ?= benchmarks/results_ft200_direct.json
 
-.PHONY: bench-longmemeval bench-ft100 bench-ft300 bench-ft200 train-100 clean-bench
+.PHONY: bench-longmemeval bench-ft100 bench-ft300 bench-ft200 train-100 clean-bench \
+        test lint typecheck verify install dev docker-build helm-lint clean help
+
+# ---- Common developer entry points ---------------------------------------
+
+help:
+	@echo "adaptmem — common dev targets:"
+	@echo "  make install      — pip install -e .[dev]"
+	@echo "  make dev          — install + pre-commit hooks"
+	@echo "  make test         — pytest -q"
+	@echo "  make lint         — ruff check"
+	@echo "  make typecheck    — mypy --strict"
+	@echo "  make verify       — lint + typecheck + test (CI-equivalent)"
+	@echo "  make docker-build — docker build -t adaptmem:dev ."
+	@echo "  make helm-lint    — helm lint charts/adaptmem"
+	@echo "  make bench-longmemeval — self-contained R@5 reproduce"
+	@echo "  make clean        — strip caches and build artefacts"
+
+install:
+	$(PYTHON) -m pip install -e ".[dev]"
+
+dev: install
+	$(PYTHON) -m pip install pre-commit
+	pre-commit install
+
+test:
+	$(PYTHON) -m pytest -q
+
+lint:
+	$(PYTHON) -m ruff check adaptmem tests
+
+typecheck:
+	$(PYTHON) -m mypy --strict adaptmem
+
+verify: lint typecheck test
+	@echo "all gates green"
+
+docker-build:
+	docker build -t adaptmem:dev .
+
+helm-lint:
+	helm lint charts/adaptmem
+
+clean:
+	rm -rf .pytest_cache .ruff_cache .mypy_cache htmlcov .coverage
+	find . -type d -name __pycache__ -exec rm -rf {} +
+	find . -type d -name "*.egg-info" -exec rm -rf {} +
 
 # Default: self-contained reproduction (train + test on the 100/400 split).
 # A stranger only needs the LongMemEval dataset; everything else is in this repo.
