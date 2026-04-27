@@ -86,6 +86,8 @@ if importlib.util.find_spec("pydantic") is not None:
 def _build_app() -> Any:
     """Build the FastAPI app + return (app, state). Imports gated to keep `[server]` optional."""
     try:
+        from contextlib import asynccontextmanager
+
         from fastapi import APIRouter, Depends, FastAPI, Header, HTTPException
     except ImportError as e:  # pragma: no cover — exercised only without `[server]`
         raise SystemExit(
@@ -93,7 +95,28 @@ def _build_app() -> Any:
             "    pip install \"adaptmem[server]\""
         ) from e
 
-    app = FastAPI(title="adaptmem", description="Domain-tuned retrieval daemon")
+    @asynccontextmanager
+    async def _lifespan(_app: Any) -> Any:
+        """Lifespan handler — runs at startup (before yield) and shutdown
+        (after yield). Gives us a clean hook for closing the SQLite
+        store on SIGTERM so WAL data is flushed and no .db-wal/-shm
+        files dangle.
+        """
+        yield  # startup is no-op; encoder loads lazily on first request
+        # --- shutdown phase ---
+        store = state.get("store")
+        if store is not None:
+            try:
+                store.close()
+            except Exception:
+                # Shutdown is best-effort; swallow rather than crash uvicorn.
+                pass
+
+    app = FastAPI(
+        title="adaptmem",
+        description="Domain-tuned retrieval daemon",
+        lifespan=_lifespan,
+    )
 
     # Rate limiting (slowapi). Default cap can be overridden via env. Per-
     # endpoint granularity is a v0.6 follow-up — keeping the wiring simple

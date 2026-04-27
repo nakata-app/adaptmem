@@ -60,7 +60,13 @@ class CorpusStore:
     def __init__(self, db_path: str | Path) -> None:
         self.path = Path(db_path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        self._conn = sqlite3.connect(str(self.path), isolation_level=None)
+        # check_same_thread=False so the SAME connection can be reused
+        # by uvicorn worker threads + the lifespan shutdown handler.
+        # Safe with WAL + isolation_level=None (autocommit) — sqlite
+        # serialises writes on the connection automatically.
+        self._conn = sqlite3.connect(
+            str(self.path), isolation_level=None, check_same_thread=False
+        )
         self._conn.execute("PRAGMA journal_mode=WAL")
         self._conn.execute("PRAGMA foreign_keys=ON")
         self._conn.executescript(_SCHEMA)

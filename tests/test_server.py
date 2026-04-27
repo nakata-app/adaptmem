@@ -224,6 +224,29 @@ def test_serve_mtls_when_ca_certs_provided(monkeypatch):
     assert captured["ssl_cert_reqs"] == _ssl.CERT_REQUIRED
 
 
+def test_lifespan_shutdown_closes_corpus_store(tmp_path):
+    """SIGTERM-equivalent: leaving the TestClient context fires the
+    lifespan shutdown hook and closes the CorpusStore."""
+    import sqlite3
+
+    from fastapi.testclient import TestClient
+
+    from adaptmem.persistence import CorpusStore
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    state["store"] = CorpusStore(tmp_path / "corpora.db")
+
+    with TestClient(app) as c:
+        c.get("/healthz")  # touch the app so lifespan startup completes
+
+    # After the context exits, lifespan shutdown ran → store.close() called.
+    # The connection is closed; any further query raises ProgrammingError.
+    with pytest.raises(sqlite3.ProgrammingError):
+        state["store"].list_corpora()
+
+
 def test_rate_limit_returns_429_after_threshold(monkeypatch):
     """Default ADAPTMEM_RATE_LIMIT 120/min; lower it and confirm 429 fires."""
     monkeypatch.setenv("ADAPTMEM_RATE_LIMIT", "2/minute")
