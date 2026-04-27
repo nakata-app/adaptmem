@@ -179,6 +179,14 @@ def main() -> None:
         help="PEM bundle of trusted client CA certs. When set, mTLS is enforced "
              "(daemon requires a verified client certificate per request).",
     )
+    sv.add_argument(
+        "--audit-log-file",
+        default=None,
+        help="Path to a file that mirrors the JSON audit lines emitted to stdout. "
+             "Falls back to ADAPTMEM_AUDIT_LOG env. Each request appends one line "
+             "with timestamp, request id, endpoint, status, duration, client IP, "
+             "and api_key hash.",
+    )
     sv.set_defaults(func=_cmd_serve)
 
     args = ap.parse_args()
@@ -198,6 +206,7 @@ def _cmd_serve(args: argparse.Namespace) -> None:
         ssl_keyfile=args.ssl_keyfile,
         ssl_certfile=args.ssl_certfile,
         ssl_ca_certs=args.ssl_ca_certs,
+        audit_log_file=args.audit_log_file,
     )
 
 

@@ -104,6 +104,10 @@ def _build_app() -> Any:
         "metrics": {},
         # API key (None = auth disabled; str = required Bearer token).
         "api_key": None,
+        # Audit log: structured JSON lines. Optional file sink in addition
+        # to stdout (configured by serve()). When None, logs go to stdout
+        # via the standard logger.
+        "audit_log_file": None,
     }
 
     def verify_api_key(authorization: str | None = Header(default=None)) -> None:
@@ -127,6 +131,33 @@ def _build_app() -> Any:
         m["count"] += 1
         m["duration_s_sum"] += duration_s
 
+    def _hash_key(api_key: str | None) -> str | None:
+        """8-char SHA256 prefix of the api_key — enough to correlate
+        requests in logs without leaking the secret."""
+        if not api_key:
+            return None
+        import hashlib
+
+        return hashlib.sha256(api_key.encode()).hexdigest()[:8]
+
+    def _write_audit(entry: dict[str, Any]) -> None:
+        """Emit one JSON line to stdout + optional file sink."""
+        import json as _json
+        import sys as _sys
+
+        line = _json.dumps(entry, separators=(",", ":"))
+        # stdout for container log collectors / journald.
+        print(line, file=_sys.stdout, flush=True)
+        # Optional file sink for shippers that prefer log-file tailing.
+        path = state.get("audit_log_file")
+        if path:
+            try:
+                with open(path, "a", encoding="utf-8") as fh:
+                    fh.write(line + "\n")
+            except OSError:
+                # Audit failure must not break the request path.
+                pass
+
     def _ensure_encoder() -> AdaptMem:
         """Return a (lazy) AdaptMem with a loaded base encoder."""
         if state["engine"] is None:
@@ -140,12 +171,41 @@ def _build_app() -> Any:
 
     @app.middleware("http")
     async def _track_request(request: Any, call_next: Any) -> Any:
-        # Skip the metrics endpoint itself so scrapes don't inflate counters.
-        if request.url.path == "/metrics":
-            return await call_next(request)
+        # Skip metrics + healthz from audit + counters — high-frequency
+        # probes would spam the log otherwise. Auditable endpoints are
+        # the data path (embed/search/reindex) plus version/readyz.
+        skip_audit = request.url.path in ("/metrics", "/healthz")
         t0 = time.perf_counter()
+        # Generate a request id we can log + return in headers.
+        import uuid as _uuid
+
+        req_id = _uuid.uuid4().hex[:12]
+        request.state.req_id = req_id
         response = await call_next(request)
-        _record_metric(request.url.path, time.perf_counter() - t0)
+        duration_s = time.perf_counter() - t0
+        if request.url.path == "/metrics":
+            return response
+        _record_metric(request.url.path, duration_s)
+
+        if not skip_audit:
+            # Pull the bearer token (if any) for audit correlation.
+            auth = request.headers.get("authorization", "")
+            supplied = auth[7:].strip() if auth.lower().startswith("bearer ") else None
+            client = request.client.host if request.client else "unknown"
+            _write_audit(
+                {
+                    "ts": time.time(),
+                    "req_id": req_id,
+                    "method": request.method,
+                    "path": request.url.path,
+                    "status": response.status_code,
+                    "duration_ms": round(duration_s * 1000, 2),
+                    "client": client,
+                    "api_key_id": _hash_key(supplied),
+                }
+            )
+        # Echo the request id so callers can correlate with logs.
+        response.headers["x-request-id"] = req_id
         return response
 
     @app.get("/metrics")
@@ -303,6 +363,7 @@ def serve(
     ssl_keyfile: str | None = None,
     ssl_certfile: str | None = None,
     ssl_ca_certs: str | None = None,
+    audit_log_file: str | None = None,
 ) -> None:
     """Start the daemon. Blocks the calling thread.
 
@@ -331,6 +392,7 @@ def serve(
     # CLI flag wins; env var is the fallback. Empty strings ignored.
     resolved_key = api_key or os.environ.get("ADAPTMEM_API_KEY") or None
     state["api_key"] = resolved_key if resolved_key else None
+    state["audit_log_file"] = audit_log_file or os.environ.get("ADAPTMEM_AUDIT_LOG") or None
 
     ssl_kwargs: dict[str, Any] = {}
     if ssl_keyfile and ssl_certfile:

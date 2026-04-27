@@ -224,6 +224,101 @@ def test_serve_mtls_when_ca_certs_provided(monkeypatch):
     assert captured["ssl_cert_reqs"] == _ssl.CERT_REQUIRED
 
 
+def test_audit_log_writes_json_line_per_data_request(tmp_path, capsys):
+    """Audit middleware emits one JSON line per /search call (and to file)."""
+    import json as _json
+
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    audit_path = tmp_path / "audit.jsonl"
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    state["audit_log_file"] = str(audit_path)
+    c = TestClient(app)
+
+    # /search hits the audit path (404 from missing corpus, but still audited).
+    r = c.post(
+        "/v1/search",
+        json={"query": "x", "top_k": 1, "corpus_id": "missing"},
+        headers={"x-test-marker": "1"},
+    )
+    assert r.status_code == 404
+    # x-request-id echoed back.
+    assert "x-request-id" in r.headers
+
+    # File sink received one line.
+    lines = audit_path.read_text().strip().split("\n")
+    assert len(lines) == 1
+    entry = _json.loads(lines[0])
+    assert entry["path"] == "/v1/search"
+    assert entry["status"] == 404
+    assert entry["method"] == "POST"
+    assert entry["duration_ms"] >= 0
+    assert entry["req_id"] == r.headers["x-request-id"]
+    # No api key was sent → api_key_id is null.
+    assert entry["api_key_id"] is None
+
+
+def test_audit_log_skips_healthz_and_metrics(tmp_path):
+    """High-frequency probes shouldn't spam the audit log."""
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    audit_path = tmp_path / "audit.jsonl"
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    state["audit_log_file"] = str(audit_path)
+    c = TestClient(app)
+
+    c.get("/healthz")
+    c.get("/healthz")
+    c.get("/metrics")
+
+    # File never created (no audit lines emitted).
+    assert not audit_path.exists() or audit_path.read_text() == ""
+
+
+def test_audit_log_hashes_api_key():
+    """When a Bearer token is present, audit logs the SHA256[:8] not the key."""
+    import json as _json
+
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    state["api_key"] = "supersecret"
+
+    # Replace _write_audit's stdout path by capturing via the file sink.
+    # (capsys is async-tricky in TestClient; use file path instead.)
+    import tempfile
+
+    f = tempfile.NamedTemporaryFile("w+", delete=False, suffix=".jsonl")
+    f.close()
+    state["audit_log_file"] = f.name
+
+    c = TestClient(app)
+    c.post(
+        "/v1/search",
+        json={"query": "x", "top_k": 1, "corpus_id": "missing"},
+        headers={"Authorization": "Bearer supersecret"},
+    )
+
+    with open(f.name) as fh:
+        line = fh.read().strip().split("\n")[-1]
+    entry = _json.loads(line)
+    # api_key_id is the 8-char SHA256 prefix, not "supersecret".
+    assert entry["api_key_id"] is not None
+    assert entry["api_key_id"] != "supersecret"
+    assert len(entry["api_key_id"]) == 8
+
+
 def test_readyz_503_before_encoder_loaded():
     """Default state: no engine, /readyz returns 503."""
     from fastapi.testclient import TestClient
