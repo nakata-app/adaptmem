@@ -187,6 +187,14 @@ def main() -> None:
              "with timestamp, request id, endpoint, status, duration, client IP, "
              "and api_key hash.",
     )
+    sv.add_argument(
+        "--persist-dir",
+        default=None,
+        help="Directory for the SQLite corpus store (corpora.db). When set, "
+             "/reindex writes to disk + memory; on startup the daemon reloads "
+             "all stored corpora. Falls back to ADAPTMEM_PERSIST_DIR env. "
+             "Unset = in-memory only (corpora lost on restart).",
+    )
     sv.set_defaults(func=_cmd_serve)
 
     args = ap.parse_args()
@@ -207,6 +215,7 @@ def _cmd_serve(args: argparse.Namespace) -> None:
         ssl_certfile=args.ssl_certfile,
         ssl_ca_certs=args.ssl_ca_certs,
         audit_log_file=args.audit_log_file,
+        persist_dir=args.persist_dir,
     )
 
 

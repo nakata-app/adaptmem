@@ -108,6 +108,8 @@ def _build_app() -> Any:
         # to stdout (configured by serve()). When None, logs go to stdout
         # via the standard logger.
         "audit_log_file": None,
+        # Optional CorpusStore for surviving restarts. None = in-memory only.
+        "store": None,
     }
 
     def verify_api_key(authorization: str | None = Header(default=None)) -> None:
@@ -322,6 +324,16 @@ def _build_app() -> Any:
         state["corpora"][req.corpus_id] = engine
         if state["engine"] is None:
             state["engine"] = engine
+
+        # Persist to disk if a store is configured. Survives restarts.
+        if state["store"] is not None:
+            state["store"].save_corpus(
+                corpus_id=req.corpus_id,
+                model=state["encoder_name"],
+                documents=[(d.id, d.text) for d in req.documents],
+                embeddings=engine._embeddings,
+            )
+
         elapsed_ms = round((time.perf_counter() - t0) * 1000.0, 2)
         return ReindexResponse(
             corpus_id=req.corpus_id, n_docs=len(req.documents), elapsed_ms=elapsed_ms
@@ -364,6 +376,7 @@ def serve(
     ssl_certfile: str | None = None,
     ssl_ca_certs: str | None = None,
     audit_log_file: str | None = None,
+    persist_dir: str | None = None,
 ) -> None:
     """Start the daemon. Blocks the calling thread.
 
@@ -393,6 +406,38 @@ def serve(
     resolved_key = api_key or os.environ.get("ADAPTMEM_API_KEY") or None
     state["api_key"] = resolved_key if resolved_key else None
     state["audit_log_file"] = audit_log_file or os.environ.get("ADAPTMEM_AUDIT_LOG") or None
+
+    # Optional SQLite-backed corpus store. When set, /reindex writes both to
+    # memory and to disk; on startup all stored corpora are reloaded so
+    # the daemon comes up ready (with /readyz still 503 until the encoder
+    # itself is loaded — that happens lazily on first request).
+    persist_path = persist_dir or os.environ.get("ADAPTMEM_PERSIST_DIR") or None
+    if persist_path:
+        from pathlib import Path as _Path
+
+        from adaptmem.persistence import CorpusStore
+
+        db_path = _Path(persist_path) / "corpora.db"
+        store = CorpusStore(db_path)
+        state["store"] = store
+
+        # Replay every persisted corpus into the in-memory state so /search
+        # works without a fresh /reindex.
+        for cid in store.list_corpora():
+            loaded = store.load_corpus(cid)
+            if loaded is None:
+                continue
+            docs, embeddings, model_name = loaded
+            from adaptmem.miner import CorpusEntry as _CorpusEntry
+            from sentence_transformers import SentenceTransformer as _ST
+
+            engine = AdaptMem(base_model=model_name, device=device)
+            engine._model = _ST(model_name, device=device or None)
+            engine._corpus = [_CorpusEntry(id=did, text=text) for did, text in docs]
+            engine._embeddings = embeddings
+            state["corpora"][cid] = engine
+            if state["engine"] is None:
+                state["engine"] = engine
 
     ssl_kwargs: dict[str, Any] = {}
     if ssl_keyfile and ssl_certfile:
