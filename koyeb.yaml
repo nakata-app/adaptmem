@@ -1,0 +1,23 @@
+name: adaptmem
+services:
+  - name: daemon
+    type: web
+    git:
+      repository: github.com/nakata-app/adaptmem
+      branch: master
+    build:
+      type: dockerfile
+      dockerfile: Dockerfile
+    env:
+      - key: ADAPTMEM_API_KEY
+        value: "${ADAPTMEM_API_KEY}"
+      - key: ADAPTMEM_RATE_LIMIT
+        value: "60/minute"
+    ports:
+      - port: 7800
+        protocol: http
+    health_checks:
+      - path: /healthz
+        port: 7800
+    instance_types:
+      - type: free
