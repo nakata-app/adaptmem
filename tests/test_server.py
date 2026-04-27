@@ -363,6 +363,48 @@ def test_tenant_filter_blocks_cross_tenant_search():
     assert r.status_code == 404
 
 
+def test_search_many_returns_partial_results_with_missing_corpora():
+    """search-many never errors for missing corpus_ids — they go in
+    `corpora_missing` while the rest are queried."""
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    c = TestClient(app)
+
+    r = c.post(
+        "/v1/search-many",
+        json={"query": "x", "top_k": 3, "corpus_ids": ["nope-a", "nope-b"]},
+    )
+    assert r.status_code == 200
+    body = r.json()
+    assert body["hits"] == []
+    assert body["corpora_queried"] == 0
+    assert sorted(body["corpora_missing"]) == ["nope-a", "nope-b"]
+
+
+def test_search_many_enforces_tenant_filter():
+    """search-many runs tenant_id check on every corpus_id, not just first."""
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    state["api_keys"] = {"t1-key": {"role": "viewer", "tenant_id": "t1"}}
+    c = TestClient(app)
+
+    # First corpus_id passes (t1/...), second escapes the tenant → 403.
+    r = c.post(
+        "/v1/search-many",
+        json={"query": "x", "top_k": 1, "corpus_ids": ["t1/ok", "t2/banned"]},
+        headers={"Authorization": "Bearer t1-key"},
+    )
+    assert r.status_code == 403
+
+
 def test_admin_unscoped_key_can_address_any_corpus():
     """Admin role with tenant_id=None should bypass tenant filter."""
     from fastapi.testclient import TestClient

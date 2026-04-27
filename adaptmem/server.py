@@ -54,6 +54,24 @@ if importlib.util.find_spec("pydantic") is not None:
         model: str
         elapsed_ms: float
 
+    class SearchManyRequest(BaseModel):
+        query: str
+        top_k: int = 5
+        corpus_ids: list[str]
+
+    class SearchManyHit(BaseModel):
+        id: str
+        text: str
+        score: float
+        corpus_id: str
+
+    class SearchManyResponse(BaseModel):
+        hits: list[SearchManyHit]
+        model: str
+        elapsed_ms: float
+        corpora_queried: int
+        corpora_missing: list[str]
+
     class ReindexDoc(BaseModel):
         id: str
         text: str
@@ -484,6 +502,55 @@ def _build_app() -> Any:
         elapsed_ms = round((time.perf_counter() - t0) * 1000.0, 2)
         return ReindexResponse(
             corpus_id=req.corpus_id, n_docs=len(req.documents), elapsed_ms=elapsed_ms
+        )
+
+    @data_router.post("/search-many", response_model=SearchManyResponse)
+    def search_many(
+        req: SearchManyRequest,
+        authorization: str | None = Header(default=None),
+    ) -> SearchManyResponse:
+        """Federated search across multiple indexed corpora.
+
+        Useful for tenant rollups ("search across all my corpora") and
+        cross-corpus queries. Returns top-k hits sorted by score across
+        all queried corpora; the `corpora_missing` field lists ids that
+        weren't indexed (no error — partial results are returned).
+
+        Each corpus_id still goes through the tenant filter, so a
+        viewer key with tenant_id="t1" can pass `["t1/a", "t1/b"]`
+        but not `["t1/a", "t2/c"]`.
+        """
+        # Tenant check on every corpus_id before any retrieval work.
+        for cid in req.corpus_ids:
+            _enforce_tenant(cid, authorization)
+
+        t0 = time.perf_counter()
+        all_hits: list[SearchManyHit] = []
+        missing: list[str] = []
+        for cid in req.corpus_ids:
+            engine = state["corpora"].get(cid)
+            if engine is None:
+                missing.append(cid)
+                continue
+            for h in engine.search(req.query, top_k=req.top_k):
+                all_hits.append(
+                    SearchManyHit(
+                        id=h.chunk_id,
+                        text=h.text,
+                        score=float(h.score),
+                        corpus_id=cid,
+                    )
+                )
+        # Global top-k by score across all corpora.
+        all_hits.sort(key=lambda h: h.score, reverse=True)
+        all_hits = all_hits[: req.top_k]
+        elapsed_ms = round((time.perf_counter() - t0) * 1000.0, 2)
+        return SearchManyResponse(
+            hits=all_hits,
+            model=state["encoder_name"],
+            elapsed_ms=elapsed_ms,
+            corpora_queried=len(req.corpus_ids) - len(missing),
+            corpora_missing=missing,
         )
 
     @data_router.post("/search", response_model=SearchResponse)
