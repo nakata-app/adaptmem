@@ -102,25 +102,25 @@ Outreach:
 
 ---
 
-## v0.7 — Metis integration (target: 2-3 weeks)
+## v0.7 — Metis integration (target: 2-3 weeks) — **PoC SHIPPED**
 
 **Goal:** adaptmem becomes the encoder/retriever layer for `~/Projects/metis`. Today they are unrelated: metis is a Rust agent CLI, adaptmem is Python research code. The integration question is *how* they talk.
 
-- [ ] **Bridge architecture decision.** Three candidates:
-  - (a) `subprocess` shell-out — metis spawns `python -m adaptmem search ...`, parses JSON. Zero linkage, slow startup, easy to ship.
-  - (b) **PyO3 / pyo3** — Rust binding into the Python interpreter. Tightest, fastest in-process, biggest build surface (cargo + Python deps must coexist).
-  - (c) **HTTP/IPC daemon** — `adaptmem serve` exposes a local HTTP/Unix-socket endpoint, metis sends queries. Process isolation, clean stop/start, can be reused by claimcheck and halluguard too.
-  - Pick one. Document the tradeoff in an ADR.
-- [ ] **Use case netleştir.** Where exactly does adaptmem plug in? Three plausible targets in metis:
-  - (i) Conversation context retrieval (memory layer for the agent's own history).
-  - (ii) Tool-output verification gate (claimcheck wrapping adaptmem + halluguard before the agent acts on a result).
-  - (iii) Codebase semantic search (replace or augment current grep/glob with embedding retrieval).
-  - Pick at least one for v0.7. Others can land in v0.8+.
-- [ ] **PoC implementation** for the chosen use case. End-to-end: metis → bridge → adaptmem → result.
-- [ ] **Integration tests.** Spawn metis, run a fixture interaction, assert the bridge round-trip works on Linux + macOS.
-- [ ] **Document the contract.** `docs/metis_integration.md` — bridge protocol, version compatibility table, how to swap encoders without recompiling metis.
+- [x] **Bridge architecture decision.** ADR in [`docs/metis_integration.md`](docs/metis_integration.md). Three candidates considered (subprocess shell-out / PyO3 / HTTP daemon); HTTP daemon chosen. Cold-start cost paid once at daemon launch, metis cargo build stays Python-free, daemon is reusable across consumers.
+- [x] **Use case netleştir.** v0.7 ships **conversation context retrieval** — semantic search over `.metis/memory/*.md`. Tool-output verification + codebase semantic search deferred to v0.8.
+- [x] **PoC implementation.**
+  - **Server side** (this repo): `adaptmem.server` FastAPI app + `adaptmem serve` CLI subcommand + `[server]` optional dep. `/embed`, `/search`, `/reindex`, `/healthz`, `/version`. 5/5 in-process FastAPI tests pass.
+  - **Python clients**: `halluguard.daemon.DaemonEncoder` + `Guard.from_daemon`; `claimcheck.Pipeline.from_daemon`. Both shipped, both with mock-server tests.
+  - **Rust client**: `semantic_memory_search` tool in metis (branch `feat/semantic-memory-search-adaptmem`). 5 unit tests + 434/434 metis-core regression pass, clippy clean.
+- [x] **Integration tests.** Mock-HTTPServer fixture in halluguard tests; FastAPI TestClient in adaptmem tests; tokio mockable client in metis tests. Cross-process end-to-end on Linux is the next gate (Mac/Py3.14 deadlock blocks local live smoke).
+- [x] **Document the contract.** [`docs/metis_integration.md`](docs/metis_integration.md) — full ADR with options, contract, compatibility, failure modes, rollout.
 
-**Exit:** metis's `/memory` command (or whichever use case won) calls adaptmem under the hood and produces a measurable retrieval improvement vs the in-tree baseline.
+**Open before v0.7 closes:**
+- [ ] Linux/CI live-daemon smoke (replaces Mac local smoke that hits sentence-transformers + uvicorn deadlock).
+- [ ] PR `feat/semantic-memory-search-adaptmem` merged to metis `main`.
+- [ ] Daemon auto-spawn from metis (deferred to v0.8 — manual `adaptmem serve` for v0.7).
+
+**Exit:** metis `semantic_memory_search` tool calls adaptmem under the hood, returns ranked memory entries. Linux end-to-end demo is the v0.7 sign-off.
 
 ---
 

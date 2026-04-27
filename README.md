@@ -112,6 +112,43 @@ adaptmem evaluate --model my-encoder/ --queries labelled.json --top-k 10
 make bench-longmemeval
 ```
 
+## Daemon mode (`adaptmem serve`)
+
+For multi-language consumers (e.g. metis, a Rust agent CLI) or for any
+deployment where you want **one model load shared across many callers**,
+run adaptmem as a long-lived HTTP daemon.
+
+```bash
+# Install the optional server extras (FastAPI + uvicorn + pydantic).
+pip install "adaptmem[server]"
+
+# Start the daemon. Bi-encoder model loads lazily on the first /embed call.
+adaptmem serve --port 7800 --base-model all-MiniLM-L6-v2
+# or, if you prefer a Unix-domain socket:
+adaptmem serve --uds /tmp/adaptmem.sock
+```
+
+Endpoint contract (full ADR in [`docs/metis_integration.md`](docs/metis_integration.md)):
+
+| Method | Path | Purpose |
+|---|---|---|
+| `GET` | `/healthz` | `{"ok": true, "uptime_s": …}` |
+| `GET` | `/version` | `{"adaptmem": …, "encoder": …, "corpora": [...]}` |
+| `POST` | `/embed` | `{"texts": [...]}` → `{"embeddings": [[…]], "dim": …}` |
+| `POST` | `/reindex` | per-corpus embedding (replace + re-encode) |
+| `POST` | `/search` | top-k retrieval against an indexed corpus |
+
+**Two clients ship today:**
+- [`halluguard.daemon.DaemonEncoder`](https://github.com/nakata-app/halluguard/blob/master/halluguard/daemon.py) — drop-in
+  `encoder` for `Guard.from_daemon(documents=[...], daemon_url=…)`.
+- [`claimcheck.Pipeline.from_daemon`](https://github.com/nakata-app/claimcheck/blob/main/claimcheck/pipeline.py) — same factory shape; NLI verifier
+  stays local.
+
+**One Rust client lands in metis** (`semantic_memory_search` tool, branch
+`feat/semantic-memory-search-adaptmem`) so an agent loop can issue
+domain-tuned semantic queries against `.metis/memory/*.md` without any
+Python in the build.
+
 ## What it is NOT
 
 - Not a generic embedder. The output model is **specialised** to the corpus you trained on.
