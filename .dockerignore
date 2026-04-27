@@ -1,0 +1,42 @@
+# Build context hygiene — don't ship dev-only artefacts in the image.
+
+# Git
+.git
+.gitignore
+.github
+
+# Python build / cache
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+.pytest_cache
+.ruff_cache
+.coverage
+htmlcov
+.venv
+venv
+.tox
+dist
+build
+
+# Editor / OS
+.idea
+.vscode
+.DS_Store
+*.swp
+
+# Project files we don't need at runtime
+benchmarks/
+docs/
+drafts/
+examples/
+tests/
+PROGRESS.md
+ROADMAP.md
+CHANGELOG.md
+CONTRIBUTING.md
+SECURITY.md
+.pre-commit-config.yaml
+Makefile
+config.toml.example

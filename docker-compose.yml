@@ -1,0 +1,33 @@
+# Local docker-compose example — adaptmem daemon + persistent HF cache.
+#
+#     docker compose up -d
+#     docker compose logs -f adaptmem
+#     docker compose down
+#
+# For mTLS / production: copy this to docker-compose.prod.yml and add
+# the `--ssl-keyfile`, `--ssl-certfile`, `--ssl-ca-certs` flags.
+services:
+  adaptmem:
+    build: .
+    image: adaptmem:latest
+    container_name: adaptmem
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:7800:7800"   # bind to localhost only by default
+    environment:
+      # Uncomment to enforce Bearer-token auth on /v1/embed, /v1/search, /v1/reindex.
+      # ADAPTMEM_API_KEY: "change-me-to-a-real-secret"
+      HF_HOME: /home/adaptmem/.cache/huggingface
+    volumes:
+      # Persist the HuggingFace model cache across container restarts.
+      - adaptmem_hf:/home/adaptmem/.cache/huggingface
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request, sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:7800/healthz', timeout=3).status == 200 else 1)"]
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+      retries: 3
+
+volumes:
+  adaptmem_hf:

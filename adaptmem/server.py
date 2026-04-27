@@ -71,6 +71,12 @@ if importlib.util.find_spec("pydantic") is not None:
         ok: bool
         uptime_s: float
 
+    class ReadyzResponse(BaseModel):
+        ready: bool
+        encoder_loaded: bool
+        corpora_indexed: int
+        uptime_s: float
+
     class VersionResponse(BaseModel):
         adaptmem: str
         encoder: str
@@ -80,7 +86,7 @@ if importlib.util.find_spec("pydantic") is not None:
 def _build_app() -> Any:
     """Build the FastAPI app + return (app, state). Imports gated to keep `[server]` optional."""
     try:
-        from fastapi import Depends, FastAPI, Header, HTTPException
+        from fastapi import APIRouter, Depends, FastAPI, Header, HTTPException
     except ImportError as e:  # pragma: no cover — exercised only without `[server]`
         raise SystemExit(
             "adaptmem.server requires the [server] extras. Run\n"
@@ -175,7 +181,34 @@ def _build_app() -> Any:
 
     @app.get("/healthz", response_model=HealthzResponse)
     def healthz() -> HealthzResponse:
+        """Liveness probe — process is up. Kubernetes-style.
+
+        Returns 200 as long as the daemon's HTTP server is responding.
+        Use this for restart loops (k8s livenessProbe).
+        """
         return HealthzResponse(ok=True, uptime_s=round(time.time() - _STARTED_AT, 2))
+
+    @app.get("/readyz", response_model=ReadyzResponse)
+    def readyz() -> Any:
+        """Readiness probe — daemon can serve real traffic.
+
+        Returns 200 once the encoder model has been loaded (lazy on first
+        embed/reindex). Returns 503 before that — k8s readinessProbe will
+        hold the daemon out of the load-balancer rotation until it's
+        actually ready.
+        """
+        from fastapi.responses import JSONResponse
+
+        encoder_loaded = state["engine"] is not None and state["engine"]._model is not None
+        body = ReadyzResponse(
+            ready=encoder_loaded,
+            encoder_loaded=encoder_loaded,
+            corpora_indexed=len(state["corpora"]),
+            uptime_s=round(time.time() - _STARTED_AT, 2),
+        )
+        if not encoder_loaded:
+            return JSONResponse(status_code=503, content=body.model_dump())
+        return body
 
     @app.get("/version", response_model=VersionResponse)
     def version() -> VersionResponse:
@@ -187,7 +220,12 @@ def _build_app() -> Any:
             corpora=sorted(state["corpora"].keys()),
         )
 
-    @app.post("/embed", response_model=EmbedResponse, dependencies=[Depends(verify_api_key)])
+    # Data endpoints live on a router so we can mount them under both
+    # `/v1/` (canonical) and `/` (legacy, deprecated). Same handler,
+    # two paths — clients can migrate at their own pace.
+    data_router = APIRouter(dependencies=[Depends(verify_api_key)])
+
+    @data_router.post("/embed", response_model=EmbedResponse)
     def embed(req: EmbedRequest) -> EmbedResponse:
         engine = _ensure_encoder()
         assert engine._model is not None  # _ensure_encoder post-condition
@@ -204,7 +242,7 @@ def _build_app() -> Any:
             dim=int(embeddings.shape[1]),
         )
 
-    @app.post("/reindex", response_model=ReindexResponse, dependencies=[Depends(verify_api_key)])
+    @data_router.post("/reindex", response_model=ReindexResponse)
     def reindex(req: ReindexRequest) -> ReindexResponse:
         from adaptmem.miner import CorpusEntry
         from sentence_transformers import SentenceTransformer
@@ -229,7 +267,7 @@ def _build_app() -> Any:
             corpus_id=req.corpus_id, n_docs=len(req.documents), elapsed_ms=elapsed_ms
         )
 
-    @app.post("/search", response_model=SearchResponse, dependencies=[Depends(verify_api_key)])
+    @data_router.post("/search", response_model=SearchResponse)
     def search(req: SearchRequest) -> SearchResponse:
         if req.corpus_id not in state["corpora"]:
             raise HTTPException(
@@ -245,6 +283,12 @@ def _build_app() -> Any:
             model=state["encoder_name"],
             elapsed_ms=elapsed_ms,
         )
+
+    # Mount the data router under both prefixes:
+    #   /v1/embed    /v1/search    /v1/reindex   ← canonical
+    #   /embed       /search       /reindex      ← legacy (deprecated, still works)
+    app.include_router(data_router, prefix="/v1")
+    app.include_router(data_router)  # legacy paths
 
     return app, state
 

@@ -224,6 +224,87 @@ def test_serve_mtls_when_ca_certs_provided(monkeypatch):
     assert captured["ssl_cert_reqs"] == _ssl.CERT_REQUIRED
 
 
+def test_readyz_503_before_encoder_loaded():
+    """Default state: no engine, /readyz returns 503."""
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    c = TestClient(app)
+
+    r = c.get("/readyz")
+    assert r.status_code == 503
+    body = r.json()
+    assert body["ready"] is False
+    assert body["encoder_loaded"] is False
+    assert body["corpora_indexed"] == 0
+
+
+def test_readyz_200_after_encoder_loaded():
+    """Once the engine has a loaded model, /readyz returns 200."""
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    c = TestClient(app)
+
+    # Stub a fake engine — readyz only checks structural truthiness.
+    class _FakeEngine:
+        _model = object()  # truthy
+
+    state["engine"] = _FakeEngine()
+    r = c.get("/readyz")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["ready"] is True
+    assert body["encoder_loaded"] is True
+
+
+def test_v1_prefix_routes_resolve():
+    """`/v1/embed`, `/v1/search`, `/v1/reindex` should reach the same handlers."""
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    c = TestClient(app)
+
+    # /v1/search 404s on a missing corpus, exactly like /search.
+    legacy = c.post(
+        "/search",
+        json={"query": "x", "top_k": 1, "corpus_id": "nope"},
+    )
+    canonical = c.post(
+        "/v1/search",
+        json={"query": "x", "top_k": 1, "corpus_id": "nope"},
+    )
+    assert legacy.status_code == 404
+    assert canonical.status_code == 404
+    # Same JSON shape for the same handler logic.
+    assert legacy.json() == canonical.json()
+
+
+def test_v1_prefix_inherits_auth_dependency():
+    """`/v1/embed` is also protected by api_key when configured."""
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    state["api_key"] = "k"
+    c = TestClient(app)
+
+    # No header → 401 on both prefixes.
+    assert c.post("/embed", json={"texts": ["x"]}).status_code == 401
+    assert c.post("/v1/embed", json={"texts": ["x"]}).status_code == 401
+
+
 def test_metrics_prometheus_format(client):
     c, _ = client
     # Prime counters with known traffic.
