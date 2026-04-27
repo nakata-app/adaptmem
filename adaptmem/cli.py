@@ -157,6 +157,12 @@ def main() -> None:
         default=None,
         help="Optional Unix-domain-socket path (overrides --host/--port).",
     )
+    sv.add_argument(
+        "--api-key",
+        default=None,
+        help="Bearer token required for /embed, /search, /reindex. "
+             "Falls back to ADAPTMEM_API_KEY env. Unset = auth disabled.",
+    )
     sv.set_defaults(func=_cmd_serve)
 
     args = ap.parse_args()
@@ -172,6 +178,7 @@ def _cmd_serve(args: argparse.Namespace) -> None:
         port=args.port,
         device=args.device,
         uds=args.uds,
+        api_key=args.api_key,
     )
 
 

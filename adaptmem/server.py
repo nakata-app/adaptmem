@@ -80,7 +80,7 @@ if importlib.util.find_spec("pydantic") is not None:
 def _build_app() -> Any:
     """Build the FastAPI app + return (app, state). Imports gated to keep `[server]` optional."""
     try:
-        from fastapi import FastAPI, HTTPException
+        from fastapi import Depends, FastAPI, Header, HTTPException
     except ImportError as e:  # pragma: no cover — exercised only without `[server]`
         raise SystemExit(
             "adaptmem.server requires the [server] extras. Run\n"
@@ -96,7 +96,25 @@ def _build_app() -> Any:
         "device": None,
         # Prometheus-style counters: endpoint -> {"count": int, "duration_s_sum": float}
         "metrics": {},
+        # API key (None = auth disabled; str = required Bearer token).
+        "api_key": None,
     }
+
+    def verify_api_key(authorization: str | None = Header(default=None)) -> None:
+        """Bearer-token auth. No-op when state["api_key"] is None.
+
+        Raises 401 when:
+        - the daemon is configured with an api_key but the request is missing one;
+        - the supplied key doesn't match.
+        """
+        configured = state["api_key"]
+        if configured is None:
+            return  # auth disabled
+        if not authorization or not authorization.lower().startswith("bearer "):
+            raise HTTPException(status_code=401, detail="missing Bearer token")
+        supplied = authorization.split(" ", 1)[1].strip()
+        if supplied != configured:
+            raise HTTPException(status_code=401, detail="invalid api key")
 
     def _record_metric(endpoint: str, duration_s: float) -> None:
         m = state["metrics"].setdefault(endpoint, {"count": 0, "duration_s_sum": 0.0})
@@ -169,7 +187,7 @@ def _build_app() -> Any:
             corpora=sorted(state["corpora"].keys()),
         )
 
-    @app.post("/embed", response_model=EmbedResponse)
+    @app.post("/embed", response_model=EmbedResponse, dependencies=[Depends(verify_api_key)])
     def embed(req: EmbedRequest) -> EmbedResponse:
         engine = _ensure_encoder()
         assert engine._model is not None  # _ensure_encoder post-condition
@@ -186,7 +204,7 @@ def _build_app() -> Any:
             dim=int(embeddings.shape[1]),
         )
 
-    @app.post("/reindex", response_model=ReindexResponse)
+    @app.post("/reindex", response_model=ReindexResponse, dependencies=[Depends(verify_api_key)])
     def reindex(req: ReindexRequest) -> ReindexResponse:
         from adaptmem.miner import CorpusEntry
         from sentence_transformers import SentenceTransformer
@@ -211,7 +229,7 @@ def _build_app() -> Any:
             corpus_id=req.corpus_id, n_docs=len(req.documents), elapsed_ms=elapsed_ms
         )
 
-    @app.post("/search", response_model=SearchResponse)
+    @app.post("/search", response_model=SearchResponse, dependencies=[Depends(verify_api_key)])
     def search(req: SearchRequest) -> SearchResponse:
         if req.corpus_id not in state["corpora"]:
             raise HTTPException(
@@ -237,8 +255,17 @@ def serve(
     port: int = 7800,
     device: str | None = None,
     uds: str | None = None,
+    api_key: str | None = None,
 ) -> None:
-    """Start the daemon. Blocks the calling thread."""
+    """Start the daemon. Blocks the calling thread.
+
+    Auth: when `api_key` is set (CLI flag or `ADAPTMEM_API_KEY` env),
+    `/embed`, `/search`, `/reindex` require `Authorization: Bearer <key>`.
+    `/healthz`, `/version`, `/metrics` stay open for health probes /
+    Prometheus scrape regardless.
+    """
+    import os
+
     try:
         import uvicorn
     except ImportError as e:  # pragma: no cover
@@ -250,6 +277,9 @@ def serve(
     app, state = _build_app()
     state["encoder_name"] = base_model
     state["device"] = device
+    # CLI flag wins; env var is the fallback. Empty strings ignored.
+    resolved_key = api_key or os.environ.get("ADAPTMEM_API_KEY") or None
+    state["api_key"] = resolved_key if resolved_key else None
 
     if uds:
         uvicorn.run(app, uds=uds, log_level="info")

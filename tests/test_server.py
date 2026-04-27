@@ -94,6 +94,73 @@ def test_embed(client):
     assert len(body["embeddings"][0]) == body["dim"]
 
 
+def test_auth_disabled_lets_protected_endpoints_through(client):
+    """Default state: api_key=None → /embed/search/reindex open."""
+    c, _ = client
+    # No Authorization header — should succeed (engine load required, so embed is the cheapest).
+    r = c.post("/embed", json={"texts": ["hello"]})
+    assert r.status_code == 200
+
+
+def test_auth_enabled_rejects_missing_token():
+    """When api_key is configured, missing Authorization header → 401."""
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    state["api_key"] = "secret-key-xyz"
+    c = TestClient(app)
+
+    # /healthz still open
+    assert c.get("/healthz").status_code == 200
+    # /metrics still open
+    assert c.get("/metrics").status_code == 200
+    # /embed without token → 401
+    r = c.post("/embed", json={"texts": ["x"]})
+    assert r.status_code == 401
+    assert "missing" in r.json()["detail"].lower()
+
+
+def test_auth_enabled_rejects_wrong_token():
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    state["api_key"] = "secret-key-xyz"
+    c = TestClient(app)
+
+    r = c.post(
+        "/embed",
+        json={"texts": ["x"]},
+        headers={"Authorization": "Bearer wrong-key"},
+    )
+    assert r.status_code == 401
+    assert "invalid" in r.json()["detail"].lower()
+
+
+def test_auth_enabled_accepts_correct_token():
+    from fastapi.testclient import TestClient
+
+    from adaptmem.server import _build_app
+
+    app, state = _build_app()
+    state["encoder_name"] = "all-MiniLM-L6-v2"
+    state["api_key"] = "secret-key-xyz"
+    c = TestClient(app)
+
+    r = c.post(
+        "/embed",
+        json={"texts": ["x"]},
+        headers={"Authorization": "Bearer secret-key-xyz"},
+    )
+    assert r.status_code == 200
+    assert "embeddings" in r.json()
+
+
 def test_metrics_prometheus_format(client):
     c, _ = client
     # Prime counters with known traffic.
