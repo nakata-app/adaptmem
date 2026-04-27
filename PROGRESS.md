@@ -10,9 +10,17 @@ state of play. Updated at the end of each working session.
 ```
 v0.1 skeleton          ████████████  done
 v0.2 first bench       ████████████  done   (FT-100 R@5=0.978 self-contained shipped, Colab-trained Mac-tested)
-v0.3 multi-bench       ████░░░░░░░░  ~35%   (per-qtype done, encoder swap PoC + ConvoMem + MemBench kalan)
-v0.4 production-ready  ███████████░  ~90%   (CE rerank/streaming/evaluate/token-cost/py.typed/CI/release-workflow done; PyPI publish token bekliyor)
-v0.5 mempal outreach   ░░░░░░░░░░░░  0%     (matched-protocol run via MemPalace/mempalace + GitHub Discussion)
+v0.3 multi-bench       █████░░░░░░░  ~45%   (per-qtype done, encoder swap PoC done = honest null,
+                                             raw MiniLM 400q baseline matches mempal published 0.965/0.966;
+                                             ConvoMem + MemBench dataset-blocked)
+v0.4 production-ready  ████████████  done   (CE rerank/streaming/evaluate/token-cost/py.typed/CI/release-workflow
+                                             + mypy --strict; PyPI publish token Atakan-gated)
+v0.5 mempal outreach   ░░░░░░░░░░░░  0%     (matched-protocol run via MemPalace/mempalace + GitHub Discussion;
+                                             3-seed reproduce blocker is the same Mac/Py3.14 train deadlock)
+v0.6 multi-bench/PyPI  ░░░░░░░░░░░░  0%     (planned)
+v0.7 Metis integration ███████████░  ~85%   (ADR + adaptmem.server FastAPI + DaemonEncoder + Guard.from_daemon
+                                             + Pipeline.from_daemon + metis semantic_memory_search tool all
+                                             shipped; Linux live-smoke pending, metis PR merge pending)
 ```
 
 **Public:** https://github.com/nakata-app/adaptmem (master, CI green).
@@ -86,16 +94,19 @@ matched table.
 
 ## How to resume (next session)
 
-1. Read this file + `README.md` + `ROADMAP.md`.
-2. v0.2 closed. Next priorities (in order):
-   - **Encoder swap PoC** — re-run bench with `--st-model BAAI/bge-small-en-v1.5`,
-     commit a `results_bge_small.json` row alongside the MiniLM ones.
-   - **v0.5 mempal matched-protocol** — clone `MemPalace/mempalace`
-     (default branch `develop`), plug `AdaptMem.encode` into their
-     `longmemeval_bench.py`, run, commit a `results_mempal_protocol.json`
-     row. This is the apples-to-apples claim.
-   - 3-seed reproduce (mean ± stddev) before mempal outreach.
-3. PyPI release — token-gated; needs Atakan onayı.
+1. Read this file + `README.md` + `ROADMAP.md` + `docs/metis_integration.md`.
+2. v0.7 (Metis integration) sign-off — Linux live-daemon smoke:
+   - `pip install "adaptmem[server]"`
+   - `adaptmem serve --port 7800 --base-model all-MiniLM-L6-v2`
+   - `curl -X POST http://127.0.0.1:7800/reindex -d '{"corpus_id":"demo","documents":[{"id":"a","text":"..."}]}'`
+   - `curl -X POST http://127.0.0.1:7800/search -d '{"query":"...","corpus_id":"demo","top_k":3}'`
+   - Mac local smoke deadlocks inside `model.encode()` (Py3.14 + sentence-transformers + uvicorn cluster).
+3. Merge metis PR `feat/semantic-memory-search-adaptmem` (Atakan-gated).
+4. v0.5 mempal outreach — clone `MemPalace/mempalace` (default branch
+   `develop`), plug `AdaptMem.encode` into their `longmemeval_bench.py`,
+   run, commit a `results_mempal_protocol.json` row. **3-seed reproduce
+   blocker:** Mac/Py3.14 train pipeline deadlock; need a Linux box.
+5. PyPI release — token-gated; needs Atakan onayı.
 
 ## Toolchain
 
