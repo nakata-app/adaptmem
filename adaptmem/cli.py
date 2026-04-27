@@ -140,8 +140,39 @@ def main() -> None:
     e.add_argument("--rerank-model", default=None)
     e.set_defaults(func=_cmd_evaluate)
 
+    sv = sub.add_parser(
+        "serve",
+        help="run the long-lived HTTP daemon (Metis / claimcheck consumers)",
+    )
+    sv.add_argument("--base-model", default="all-MiniLM-L6-v2")
+    sv.add_argument("--host", default="127.0.0.1")
+    sv.add_argument("--port", type=int, default=7800)
+    sv.add_argument(
+        "--device",
+        default=None,
+        help="PyTorch device override: 'cpu', 'cuda', 'mps'",
+    )
+    sv.add_argument(
+        "--uds",
+        default=None,
+        help="Optional Unix-domain-socket path (overrides --host/--port).",
+    )
+    sv.set_defaults(func=_cmd_serve)
+
     args = ap.parse_args()
     args.func(args)
+
+
+def _cmd_serve(args: argparse.Namespace) -> None:
+    from adaptmem.server import serve
+
+    serve(
+        base_model=args.base_model,
+        host=args.host,
+        port=args.port,
+        device=args.device,
+        uds=args.uds,
+    )
 
 
 if __name__ == "__main__":
