@@ -32,7 +32,7 @@ class AdaptMem:
         self.base_model_name = base_model
         self._model = None
         self._corpus: list[CorpusEntry] = []
-        self._embeddings: np.ndarray | None = None
+        self._embeddings: np.ndarray[Any, Any] | None = None
         # Optional cross-encoder rerank stage. Disabled by default; when enabled,
         # `search` fetches a wider bi-encoder candidate set and reorders it with
         # the cross-encoder before returning top_k.
@@ -141,7 +141,7 @@ class AdaptMem:
         return list(self._corpus)
 
     @property
-    def embeddings(self) -> np.ndarray | None:
+    def embeddings(self) -> np.ndarray[Any, Any] | None:
         """The L2-normalised embedding matrix aligned with `corpus`."""
         return self._embeddings
 
