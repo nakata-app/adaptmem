@@ -10,11 +10,11 @@
 
 You point adaptmem at a domain (a corpus + a handful of labelled queries). It mines hard negatives, fine-tunes a tiny embedder on the contrastive objective, and hands you back a retriever that outperforms much larger generic models on your data.
 
-This is the pipeline that pushed our internal LongMemEval R@5 from `0.966` (off-the-shelf MiniLM, matching MemPalace's "raw" headline) to **`0.9950`** on a generalisable held-out split — without any LLM in the loop, without hand-tuning, in a single epoch on CPU.
+This is the pipeline that pushed our internal LongMemEval R@5 from `0.966` (off-the-shelf MiniLM, matching MemPalace's "raw" headline) to **`0.9950`** on a generalisable held-out split, without any LLM in the loop, without hand-tuning, in a single epoch on CPU.
 
 ## Why this exists
 
-The retrieval-quality literature has converged on a default: pick a 100M+ parameter generic embedder (bge-base, gte-base, mxbai), throw it at your data, hope it generalises. It usually doesn't — generic embedders compress concepts that **don't** matter in your domain and lose distinctions that **do**.
+The retrieval-quality literature has converged on a default: pick a 100M+ parameter generic embedder (bge-base, gte-base, mxbai), throw it at your data, hope it generalises. It usually doesn't, generic embedders compress concepts that **don't** matter in your domain and lose distinctions that **do**.
 
 Domain adaptation works. The papers know it (DPR, ColBERT, SBERT). But the open-source workflow is fragmented:
 
@@ -49,22 +49,25 @@ The recipe is small on purpose. Every choice is documented. Every step is one me
 
 | System | R@1 | R@5 | R@10 | n | LLM | Hand-tune | Generalisable |
 |---|---|---|---|---|---|---|---|
-| BM25 sparse baseline | — | 0.70 | — | 500 | ✗ | ✗ | ✓ |
-| Stella dense (academic) | — | ~0.85 | — | 500 | ✗ | ✗ | ✓ |
-| MemPalace raw (ChromaDB + MiniLM) | — | 0.966 | — | 500 | ✗ | ✗ | ✓ |
-| MemPalace hybrid v4 generalisable | — | 0.984 | — | 500 | ✗ | ✗ | ✓ |
-| MemPalace + Haiku rerank | — | 1.000 | — | 500 | ✓ | ✓ (3 q spot-fix) | ✗ |
+| BM25 sparse baseline |, | 0.70 |, | 500 | ✗ | ✗ | ✓ |
+| Stella dense (academic) |, | ~0.85 |, | 500 | ✗ | ✗ | ✓ |
+| MemPalace raw (ChromaDB + MiniLM) |, | 0.966 |, | 500 | ✗ | ✗ | ✓ |
+| MemPalace hybrid v4 generalisable |, | 0.984 |, | 500 | ✗ | ✗ | ✓ |
+| MemPalace + Haiku rerank |, | 1.000 |, | 500 | ✓ | ✓ (3 q spot-fix) | ✗ |
 | **MiniLM-L6 raw (our eval, no FT)** | 0.795 | **0.965** | 0.980 | 400 | ✗ | ✗ | ✓ |
 | BGE-small-en-v1.5 raw (our eval, no FT) | 0.80 | 0.98 | 1.00 | 50 | ✗ | ✗ | ✓ |
 | adaptmem (FT-100 dense, **self-contained**) | 0.855 | 0.978 | 0.992 | 400 | ✗ | ✗ | ✓ |
 | adaptmem (FT-200 dense) | 0.900 | 0.990 | 0.995 | 200 | ✗ | ✗ | ✓ |
 | **adaptmem (FT-300 dense)** | **0.915** | **0.995** | **0.995** | 200 | **✗** | **✗** | **✓** |
+| MemPalace raw (matched-protocol, their bench script) | 0.806 | 0.966 | 0.982 | 500 | ✗ | ✗ | ✓ |
+| MemPalace raw + adaptmem FT-300 (matched-protocol) | 0.862 | 0.980 | 0.994 | 500 | ✗ | ✗ | ✓ |
+| **MemPalace hybrid_v4 + adaptmem FT-300 (matched-protocol)** | **0.916** | **0.990** | **0.998** | 500 | **✗** | **✗** | **✓** |
 
-Adaptmem numbers reproduced from committed runs — see [`benchmarks/results_ft300_direct.json`](benchmarks/results_ft300_direct.json), [`benchmarks/results_ft200_direct.json`](benchmarks/results_ft200_direct.json), [`benchmarks/results_ft100_400.json`](benchmarks/results_ft100_400.json), [`benchmarks/results_minilm_baseline_400.json`](benchmarks/results_minilm_baseline_400.json), [`benchmarks/results_bge_small_50.json`](benchmarks/results_bge_small_50.json), and [`benchmarks/results_minilm_baseline_50.json`](benchmarks/results_minilm_baseline_50.json). Reproduce harness: `python benchmarks/bench_st_inline.py --split benchmarks/data/split_ids_100_400.json --st-model <hf-id-or-path> --out <results.json>`.
+Adaptmem numbers reproduced from committed runs, see [`benchmarks/results_ft300_direct.json`](benchmarks/results_ft300_direct.json), [`benchmarks/results_ft200_direct.json`](benchmarks/results_ft200_direct.json), [`benchmarks/results_ft100_400.json`](benchmarks/results_ft100_400.json), [`benchmarks/results_minilm_baseline_400.json`](benchmarks/results_minilm_baseline_400.json), [`benchmarks/results_bge_small_50.json`](benchmarks/results_bge_small_50.json), and [`benchmarks/results_minilm_baseline_50.json`](benchmarks/results_minilm_baseline_50.json). Reproduce harness: `python benchmarks/bench_st_inline.py --split benchmarks/data/split_ids_100_400.json --st-model <hf-id-or-path> --out <results.json>`.
 
 **Two findings:**
-1. **Our raw MiniLM 400q (R@5=0.965) matches MemPalace's published raw (0.966) within 0.1pt** — same encoder family, same protocol, independent eval. The protocol is sound.
-2. **Encoder swap (BGE-small) does not lift R@5 by itself** — 0.98 vs 0.98 on 50q matched split. The lift comes from the **fine-tune step**, not the base model. FT-100 lifts +1.3pt over MiniLM raw on the same 400q split; FT-300 lifts +3.0pt over the published mempal raw.
+1. **Our raw MiniLM 400q (R@5=0.965) matches MemPalace's published raw (0.966) within 0.1pt**, same encoder family, same protocol, independent eval. The protocol is sound.
+2. **Encoder swap (BGE-small) does not lift R@5 by itself**, 0.98 vs 0.98 on 50q matched split. The lift comes from the **fine-tune step**, not the base model. FT-100 lifts +1.3pt over MiniLM raw on the same 400q split; FT-300 lifts +3.0pt over the published mempal raw.
 
 Train-set size scales recall as expected: 100→200→300 train queries gives R@5 0.978→0.990→0.995 and R@1 0.855→0.900→0.915. The FT-100 row sits 0.7pt below the ROADMAP v0.2 sanity bar (R@5 ≥ 0.985); 200+ train queries clear it comfortably.
 
@@ -77,7 +80,7 @@ python benchmarks/longmemeval_eval.py --mode test \
     --results-out benchmarks/results_ft300_direct.json
 ```
 
-A cross-encoder rerank stage (R@1 lift) is on the v0.4 roadmap — a JSON capture is not yet committed.
+A cross-encoder rerank stage (R@1 lift) is on the v0.4 roadmap, a JSON capture is not yet committed.
 
 ## Usage (planned API)
 
@@ -108,7 +111,7 @@ CLI parity:
 adaptmem train --corpus corpus.json --queries queries.json --out my-encoder/ \
     [--rerank --rerank-model cross-encoder/ms-marco-MiniLM-L-12-v2]
 
-# Serve a query — bi-encoder by default, or force CE rerank for an A/B
+# Serve a query, bi-encoder by default, or force CE rerank for an A/B
 adaptmem search --model my-encoder/ --query "..." --top-k 5 [--rerank --rerank-top-k 15]
 
 # Score a saved model against a labelled queries file (R@1 / R@5 / R@k)
@@ -163,9 +166,9 @@ Endpoint contract (full ADR in [`docs/metis_integration.md`](docs/metis_integrat
 | `POST` | `/search` | top-k retrieval against an indexed corpus |
 
 **Two clients ship today:**
-- [`halluguard.daemon.DaemonEncoder`](https://github.com/nakata-app/halluguard/blob/master/halluguard/daemon.py) — drop-in
+- [`halluguard.daemon.DaemonEncoder`](https://github.com/nakata-app/halluguard/blob/master/halluguard/daemon.py), drop-in
   `encoder` for `Guard.from_daemon(documents=[...], daemon_url=…)`.
-- [`claimcheck.Pipeline.from_daemon`](https://github.com/nakata-app/claimcheck/blob/main/claimcheck/pipeline.py) — same factory shape; NLI verifier
+- [`claimcheck.Pipeline.from_daemon`](https://github.com/nakata-app/claimcheck/blob/main/claimcheck/pipeline.py), same factory shape; NLI verifier
   stays local.
 
 **One Rust client lands in metis** (`semantic_memory_search` tool, branch
@@ -173,11 +176,11 @@ Endpoint contract (full ADR in [`docs/metis_integration.md`](docs/metis_integrat
 domain-tuned semantic queries against `.metis/memory/*.md` without any
 Python in the build.
 
-## The cluster — adaptmem in context
+## The cluster, adaptmem in context
 
 `adaptmem` is one of four sibling packages that together cover the
 **no-LLM-judge LLM safety stack.** Each one solves a different slice
-of "is this AI claim trustworthy?" — pick what you need.
+of "is this AI claim trustworthy?", pick what you need.
 
 ```
                                            ┌────────────────┐
@@ -212,7 +215,7 @@ of "is this AI claim trustworthy?" — pick what you need.
 | **[halluguard](https://github.com/nakata-app/halluguard)** | `Guard.from_documents(docs).check(answer)` | You have an LLM answer and a corpus. Did the LLM stay grounded? |
 | **[claimcheck](https://github.com/nakata-app/claimcheck)** | `Pipeline.from_corpus(...)`, `from_daemon(...)`, `check(answer)` | Composition: domain-tuned retrieval **plus** verification, behind one API. |
 | **promptguard** (pre-v0.1) | `PromptGuard().check(user_input)` | Block prompt-injection / jailbreak attempts before they reach your LLM. |
-| **truthcheck** (pre-v0.1) | `WebFactChecker().check(claim)` | Claim isn't in your corpus — does the open web back it up? |
+| **truthcheck** (pre-v0.1) | `WebFactChecker().check(claim)` | Claim isn't in your corpus, does the open web back it up? |
 
 All five are **vendor-neutral** (no Anthropic / OpenAI / Google
 required), all five are **deterministic where possible** (no LLM
@@ -228,7 +231,7 @@ full stack.
 
 ## Status
 
-`v0.4` in flight — production-ready surface mostly landed:
+`v0.4` in flight, production-ready surface mostly landed:
 
 - **API:** hard-negative mining + contrastive FT + persistence (v0.1), optional
   cross-encoder rerank (`AdaptMem(rerank=True)`), streaming index updates
@@ -256,7 +259,7 @@ expected direction (more train data → higher recall). See
 **Reproducibility caveat (v0.2 open item):** the self-contained 100/400
 train+test target (`make bench-longmemeval`) is wired up and
 deterministic on its split, but on this Mac mini configuration the
-contrastive fine-tune step silently exits after model load — both on
+contrastive fine-tune step silently exits after model load, both on
 MPS (default) and on `--device cpu`. The bench harness, split file,
 and Makefile all work; the bottleneck is local PyTorch+sentence-
 transformers compatibility, not the pipeline. A v0.3 follow-up will
