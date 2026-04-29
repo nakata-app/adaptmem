@@ -4,7 +4,7 @@
 
 Please **do not** open a public GitHub issue for security-sensitive
 findings. Instead, email the maintainer at
-**ataknakbaba@gmail.com** with:
+**hey@nakata.app** with:
 
 - A description of the issue.
 - Steps to reproduce (a minimal repro is enough).
@@ -27,7 +27,7 @@ Out of scope:
 - Performance issues without a security impact (file regular issues
   instead).
 
-## Threat model — daemon mode
+## Threat model, daemon mode
 
 `adaptmem serve` is a **localhost-only, single-user** daemon by
 default. It does not implement authentication or authorisation. Do
