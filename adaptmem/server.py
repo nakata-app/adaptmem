@@ -449,11 +449,19 @@ def _build_app() -> Any:
     data_router = APIRouter(dependencies=[Depends(verify_api_key)])
 
     @data_router.post("/embed", response_model=EmbedResponse)
-    def embed(req: EmbedRequest) -> EmbedResponse:
+    async def embed(req: EmbedRequest) -> EmbedResponse:
+        import asyncio
+
         engine = _ensure_encoder()
         assert engine._model is not None  # _ensure_encoder post-condition
-        embeddings = engine._model.encode(
-            req.texts,
+        model = engine._model
+        texts = req.texts
+
+        # Run blocking encode off the event-loop thread to avoid
+        # deadlocking uvicorn's async loop on macOS (tokenizers + fork).
+        embeddings = await asyncio.to_thread(
+            model.encode,
+            texts,
             normalize_embeddings=True,
             convert_to_numpy=True,
             show_progress_bar=False,
@@ -470,38 +478,56 @@ def _build_app() -> Any:
         response_model=ReindexResponse,
         dependencies=[Depends(require_admin)],
     )
-    def reindex(
+    async def reindex(
         req: ReindexRequest,
         authorization: str | None = Header(default=None),
     ) -> ReindexResponse:
+        import asyncio
+
         _enforce_tenant(req.corpus_id, authorization)
 
         from adaptmem.miner import CorpusEntry
-        from sentence_transformers import SentenceTransformer
 
         t0 = time.perf_counter()
-        engine = AdaptMem(base_model=state["encoder_name"], device=state.get("device"))
-        model = SentenceTransformer(state["encoder_name"], device=state.get("device") or None)
-        engine._model = model
-        engine._corpus = [CorpusEntry(id=d.id, text=d.text) for d in req.documents]
-        engine._embeddings = model.encode(
-            [d.text for d in req.documents],
+
+        # Reuse the shared model rather than constructing a new
+        # SentenceTransformer per call — loading the model inside a
+        # uvicorn thread pool worker causes a deadlock on macOS with
+        # Python 3.13+ due to tokenizers (Rust) + threading interaction.
+        shared_engine = _ensure_encoder()
+        assert shared_engine._model is not None
+        model = shared_engine._model
+
+        docs = [CorpusEntry(id=d.id, text=d.text) for d in req.documents]
+        texts = [d.text for d in req.documents]
+
+        # Blocking encode → offload to a thread so the event loop stays
+        # responsive and we avoid the Mac tokenizers deadlock.
+        embeddings = await asyncio.to_thread(
+            model.encode,
+            texts,
             normalize_embeddings=True,
             convert_to_numpy=True,
             show_progress_bar=False,
             batch_size=64,
         )
+
+        engine = AdaptMem(base_model=state["encoder_name"], device=state.get("device"))
+        engine._model = model  # shared reference — no second load
+        engine._corpus = docs
+        engine._embeddings = embeddings
         state["corpora"][req.corpus_id] = engine
         if state["engine"] is None:
             state["engine"] = engine
 
         # Persist to disk if a store is configured. Survives restarts.
         if state["store"] is not None:
-            state["store"].save_corpus(
-                corpus_id=req.corpus_id,
-                model=state["encoder_name"],
-                documents=[(d.id, d.text) for d in req.documents],
-                embeddings=engine._embeddings,
+            await asyncio.to_thread(
+                state["store"].save_corpus,
+                req.corpus_id,
+                state["encoder_name"],
+                [(d.id, d.text) for d in req.documents],
+                embeddings,
             )
 
         elapsed_ms = round((time.perf_counter() - t0) * 1000.0, 2)
