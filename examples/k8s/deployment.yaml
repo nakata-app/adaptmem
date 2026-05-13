@@ -93,6 +93,5 @@ spec:
         - name: hf-cache
           emptyDir:
             # Up the size for embedded GPU models — MiniLM is small,
-            # cross-encoder NLI checkpoints (used by halluguard) are
-            # ~700MB.
+            # cross-encoder NLI checkpoints are ~700MB.
             sizeLimit: 2Gi

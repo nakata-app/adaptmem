@@ -1,7 +1,7 @@
 # Contributing to adaptmem
 
 Thanks for considering a contribution. The repo is small enough that the
-review pipeline is short — keep changes focused, the bar is "honest
+review pipeline is short, keep changes focused, the bar is "honest
 numbers + clear tradeoffs."
 
 ## Quickstart for a local dev loop
@@ -28,7 +28,7 @@ pass them locally won't pass CI either.
 ## What lands easily
 
 - Bug fixes with a regression test that fails before / passes after.
-- New benchmarks. We track honest numbers — null results are valuable
+- New benchmarks. We track honest numbers, null results are valuable
   and will land. See `benchmarks/results_*.json` for the expected
   shape.
 - Encoder / dataset support. Drop a new harness in `benchmarks/`
@@ -40,9 +40,9 @@ pass them locally won't pass CI either.
 
 - Anything that changes the public API surface of `AdaptMem` (search /
   train / save / load / encoder / corpus / embeddings).
-- LLM-as-judge coupling — adaptmem is intentionally LLM-free. If you
+- LLM-as-judge coupling, adaptmem is intentionally LLM-free. If you
   think a use case demands an LLM, open an issue first; we'll usually
-  point you at halluguard or claimcheck.
+  point you at claimcheck.
 - New required dependencies. We try hard to keep the core install
   small; new heavy dependencies should be `[optional]` extras.
 

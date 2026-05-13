@@ -130,8 +130,8 @@ class AdaptMem:
     def encoder(self) -> Any:
         """The underlying SentenceTransformer (after .train() or .load()).
 
-        Exposed so downstream packages (e.g. halluguard) can plug the tuned
-        encoder into their own retrievers without reaching into `_model`.
+        Exposed so downstream packages can plug the tuned encoder into their
+        own retrievers without reaching into `_model`.
         """
         return self._model
 

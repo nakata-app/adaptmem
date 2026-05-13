@@ -8,7 +8,7 @@ CPU; the longest is well under a minute on an M-series Mac.
 | [`01_basic_usage.py`](01_basic_usage.py) | Train on a 6-document corpus + 4 labelled queries, save, reload, search. The "does my install work?" smoke test. | ~30 s |
 | [`02_with_rerank.py`](02_with_rerank.py) | Same shape but with `rerank=True`. Lazy-loads the cross-encoder on the first `.search()`. Returned scores are CE logits, not cosines. | ~30 s + first-time CE download |
 | [`03_streaming_corpus.py`](03_streaming_corpus.py) | Use `add_corpus()` to extend the index without retraining. Demonstrates id-based de-duplication. | ~15 s |
-| [`04_daemon_quickstart.py`](04_daemon_quickstart.py) | `adaptmem serve` daemon — POST `/reindex` and `/search` from any process / language. Shows the contract that halluguard / claimcheck / metis use. | requires `adaptmem serve` running |
+| [`04_daemon_quickstart.py`](04_daemon_quickstart.py) | `adaptmem serve` daemon, POST `/reindex` and `/search` from any process / language. Shows the contract that claimcheck / metis use. | requires `adaptmem serve` running |
 
 ## Run
 

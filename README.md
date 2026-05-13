@@ -165,11 +165,10 @@ Endpoint contract (full ADR in [`docs/metis_integration.md`](docs/metis_integrat
 | `POST` | `/reindex` | per-corpus embedding (replace + re-encode) |
 | `POST` | `/search` | top-k retrieval against an indexed corpus |
 
-**Two clients ship today:**
-- [`halluguard.daemon.DaemonEncoder`](https://github.com/nakata-app/halluguard/blob/master/halluguard/daemon.py), drop-in
-  `encoder` for `Guard.from_daemon(documents=[...], daemon_url=…)`.
-- [`claimcheck.Pipeline.from_daemon`](https://github.com/nakata-app/claimcheck/blob/main/claimcheck/pipeline.py), same factory shape; NLI verifier
-  stays local.
+**One Python client ships today:**
+- [`claimcheck.Pipeline.from_daemon`](https://github.com/nakata-app/claimcheck/blob/main/claimcheck/pipeline.py), drop-in
+  factory pointing at the adaptmem daemon for tuned retrieval; the NLI
+  verifier stays local.
 
 **One Rust client lands in metis** (`semantic_memory_search` tool, branch
 `feat/semantic-memory-search-adaptmem`) so an agent loop can issue
@@ -178,7 +177,7 @@ Python in the build.
 
 ## The cluster, adaptmem in context
 
-`adaptmem` is one of four sibling packages that together cover the
+`adaptmem` is one of several sibling packages that together cover the
 **no-LLM-judge LLM safety stack.** Each one solves a different slice
 of "is this AI claim trustworthy?", pick what you need.
 
@@ -195,13 +194,9 @@ of "is this AI claim trustworthy?", pick what you need.
         (this repo)             │             └────┬─────┘
                                 │                  │
                                 │                  ▼
-                                │             halluguard ◄─────── output gate
-                                │             (corpus-grounded)    (closed world)
-                                │                  │
-                                │                  ▼
-                                └──────────►  claimcheck ◄───────── orchestration
-                                              (adaptmem + halluguard,
-                                               one Pipeline)
+                                └──────────►  claimcheck ◄───────── verification
+                                              (corpus-grounded NLI    + orchestration
+                                               + adaptmem retrieval)
                                                    │
                                           (claim isn't in the corpus)
                                                    ▼
@@ -212,16 +207,15 @@ of "is this AI claim trustworthy?", pick what you need.
 | Package | Surface | When to reach for it |
 |---|---|---|
 | **[adaptmem](https://github.com/nakata-app/adaptmem)** | `AdaptMem.train(corpus, queries) / .search(q)` | Your retrieval is too generic. You have a corpus + a few labelled queries and want a domain-tuned encoder in 5 lines. |
-| **[halluguard](https://github.com/nakata-app/halluguard)** | `Guard.from_documents(docs).check(answer)` | You have an LLM answer and a corpus. Did the LLM stay grounded? |
-| **[claimcheck](https://github.com/nakata-app/claimcheck)** | `Pipeline.from_corpus(...)`, `from_daemon(...)`, `check(answer)` | Composition: domain-tuned retrieval **plus** verification, behind one API. |
+| **[claimcheck](https://github.com/nakata-app/claimcheck)** | `Pipeline.from_corpus(...)`, `from_daemon(...)`, `check(answer)` | Domain-tuned retrieval **plus** corpus-grounded NLI verification, behind one API. |
 | **promptguard** (pre-v0.1) | `PromptGuard().check(user_input)` | Block prompt-injection / jailbreak attempts before they reach your LLM. |
 | **truthcheck** (pre-v0.1) | `WebFactChecker().check(claim)` | Claim isn't in your corpus, does the open web back it up? |
 
-All five are **vendor-neutral** (no Anthropic / OpenAI / Google
-required), all five are **deterministic where possible** (no LLM
-judge in the inference path of halluguard / promptguard), and all
-five compose into a single safety pipeline if your stack needs the
-full stack.
+All four are **vendor-neutral** (no Anthropic / OpenAI / Google
+required), all four are **deterministic where possible** (no LLM
+judge in the inference path of claimcheck's verifier or promptguard),
+and all four compose into a single safety pipeline if your stack
+needs it.
 
 ## What it is NOT
 
