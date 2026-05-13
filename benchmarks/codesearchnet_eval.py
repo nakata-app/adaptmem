@@ -23,8 +23,7 @@ from pathlib import Path
 
 import numpy as np
 from datasets import load_dataset
-
-from adaptmem.core import AdaptMem
+from sentence_transformers import SentenceTransformer
 
 
 def load_test(n: int) -> tuple[list[str], list[str], list[str]]:
@@ -60,15 +59,17 @@ def load_test(n: int) -> tuple[list[str], list[str], list[str]]:
 
 
 def evaluate(checkpoint: Path, n: int, out: Path) -> dict:
-    print(f"[eval] loading checkpoint {checkpoint}")
-    am = AdaptMem.load(checkpoint)
+    print(f"[eval] loading model from {checkpoint}")
+    # Bypass AdaptMem.load() to avoid the corpus.tsv newline-in-body issue
+    # (function bodies can contain characters that break the tsv parser).
+    # We only need the encoder for retrieval eval, not the training corpus.
+    model = SentenceTransformer(str(Path(checkpoint) / "model"))
     print(f"[eval] loading test split (n={'all' if n < 0 else n})")
     t0 = time.time()
     queries, truths, corpus_ids = load_test(n)
     print(f"[eval] {len(queries)} queries, {len(corpus_ids)} corpus entries in {time.time()-t0:.1f}s")
 
     print("[eval] encoding test corpus with checkpoint model")
-    model = am.encoder  # underlying SentenceTransformer
     from datasets import load_dataset as _ld
     ds = _ld("code_search_net", "python", split="test")
     body_by_id: dict[str, str] = {}
