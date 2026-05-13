@@ -1,0 +1,219 @@
+{
+  "runs": [
+    {
+      "file": "run3_v335_raw_default.jsonl",
+      "mempal_version": "v3.3.5",
+      "mode": "raw",
+      "encoder": "default",
+      "n": 500,
+      "session": {
+        "r1": 0.806,
+        "r5": 0.966,
+        "r10": 0.982
+      },
+      "per_type": {
+        "knowledge-update": {
+          "n": 78,
+          "r1": 0.8974,
+          "r5": 1.0,
+          "r10": 1.0
+        },
+        "multi-session": {
+          "n": 133,
+          "r1": 0.8571,
+          "r5": 0.9925,
+          "r10": 1.0
+        },
+        "single-session-assistant": {
+          "n": 56,
+          "r1": 0.9464,
+          "r5": 0.9643,
+          "r10": 0.9643
+        },
+        "single-session-preference": {
+          "n": 30,
+          "r1": 0.7,
+          "r5": 0.9667,
+          "r10": 0.9667
+        },
+        "single-session-user": {
+          "n": 70,
+          "r1": 0.7143,
+          "r5": 0.9143,
+          "r10": 0.9714
+        },
+        "temporal-reasoning": {
+          "n": 133,
+          "r1": 0.7143,
+          "r5": 0.9474,
+          "r10": 0.9699
+        }
+      }
+    },
+    {
+      "file": "run4_v335_raw_ft300.jsonl",
+      "mempal_version": "v3.3.5",
+      "mode": "raw",
+      "encoder": "FT-300",
+      "n": 500,
+      "session": {
+        "r1": 0.932,
+        "r5": 0.992,
+        "r10": 0.996
+      },
+      "per_type": {
+        "knowledge-update": {
+          "n": 78,
+          "r1": 0.9487,
+          "r5": 1.0,
+          "r10": 1.0
+        },
+        "multi-session": {
+          "n": 133,
+          "r1": 0.9624,
+          "r5": 1.0,
+          "r10": 1.0
+        },
+        "single-session-assistant": {
+          "n": 56,
+          "r1": 0.9286,
+          "r5": 0.9464,
+          "r10": 0.9821
+        },
+        "single-session-preference": {
+          "n": 30,
+          "r1": 0.7667,
+          "r5": 0.9667,
+          "r10": 0.9667
+        },
+        "single-session-user": {
+          "n": 70,
+          "r1": 0.9286,
+          "r5": 1.0,
+          "r10": 1.0
+        },
+        "temporal-reasoning": {
+          "n": 133,
+          "r1": 0.9323,
+          "r5": 1.0,
+          "r10": 1.0
+        }
+      }
+    },
+    {
+      "file": "run5_v335_hybrid_v4_ft300.jsonl",
+      "mempal_version": "v3.3.5",
+      "mode": "hybrid_v4",
+      "encoder": "FT-300",
+      "n": 500,
+      "session": {
+        "r1": 0.95,
+        "r5": 0.998,
+        "r10": 1.0
+      },
+      "per_type": {
+        "knowledge-update": {
+          "n": 78,
+          "r1": 0.9872,
+          "r5": 1.0,
+          "r10": 1.0
+        },
+        "multi-session": {
+          "n": 133,
+          "r1": 0.9624,
+          "r5": 1.0,
+          "r10": 1.0
+        },
+        "single-session-assistant": {
+          "n": 56,
+          "r1": 0.9643,
+          "r5": 1.0,
+          "r10": 1.0
+        },
+        "single-session-preference": {
+          "n": 30,
+          "r1": 0.7,
+          "r5": 1.0,
+          "r10": 1.0
+        },
+        "single-session-user": {
+          "n": 70,
+          "r1": 0.9714,
+          "r5": 1.0,
+          "r10": 1.0
+        },
+        "temporal-reasoning": {
+          "n": 133,
+          "r1": 0.9549,
+          "r5": 0.9925,
+          "r10": 1.0
+        }
+      }
+    },
+    {
+      "file": "run4b_v333_raw_ft300.jsonl",
+      "mempal_version": "v3.3.3",
+      "mode": "raw",
+      "encoder": "FT-300",
+      "n": 500,
+      "session": {
+        "r1": 0.932,
+        "r5": 0.992,
+        "r10": 0.996
+      },
+      "per_type": {
+        "knowledge-update": {
+          "n": 78,
+          "r1": 0.9487,
+          "r5": 1.0,
+          "r10": 1.0
+        },
+        "multi-session": {
+          "n": 133,
+          "r1": 0.9624,
+          "r5": 1.0,
+          "r10": 1.0
+        },
+        "single-session-assistant": {
+          "n": 56,
+          "r1": 0.9286,
+          "r5": 0.9464,
+          "r10": 0.9821
+        },
+        "single-session-preference": {
+          "n": 30,
+          "r1": 0.7667,
+          "r5": 0.9667,
+          "r10": 0.9667
+        },
+        "single-session-user": {
+          "n": 70,
+          "r1": 0.9286,
+          "r5": 1.0,
+          "r10": 1.0
+        },
+        "temporal-reasoning": {
+          "n": 133,
+          "r1": 0.9323,
+          "r5": 1.0,
+          "r10": 1.0
+        }
+      }
+    }
+  ],
+  "meta": {
+    "dataset": "longmemeval_s_cleaned.json",
+    "n_questions": 500,
+    "bench_script": "mempalace/benchmarks/longmemeval_bench.py (unchanged across v3.3.3 and v3.3.5)",
+    "encoder_swap": "adaptmem/benchmarks/mempal_bench_with_ft.py (monkey-patches _bench_embed_fn)",
+    "ft_model": "minilm-lme-ft-300 (sha256 c794cf2e..., mtime 2026-04-26, unchanged)",
+    "venv_lib_versions_at_run_time": {
+      "chromadb": "1.5.8",
+      "sentence-transformers": "5.4.1",
+      "numpy": "2.4.4",
+      "transformers": "5.6.2"
+    },
+    "comparison_notes": "run4 (v3.3.5) and run4b (v3.3.3) identical under same venv -> mempal core has no effect on raw retrieval. Apr 28 -> 2026-05-13 delta in raw+FT-300 attributable to venv lib upgrade only.",
+    "generated": "2026-05-13"
+  }
+}

@@ -1,0 +1,30 @@
+============================================================
+  Time: 164.2s (0.33s per question)
+
+  SESSION-LEVEL METRICS:
+    Recall@ 1: 0.932    NDCG@ 1: 0.932
+    Recall@ 3: 0.980    NDCG@ 3: 0.960
+    Recall@ 5: 0.992    NDCG@ 5: 0.964
+    Recall@10: 0.996    NDCG@10: 0.965
+    Recall@30: 1.000    NDCG@30: 0.965
+    Recall@50: 1.000    NDCG@50: 0.965
+
+  TURN-LEVEL METRICS:
+    Recall@ 1: 0.932    NDCG@ 1: 0.932
+    Recall@ 3: 0.980    NDCG@ 3: 0.960
+    Recall@ 5: 0.992    NDCG@ 5: 0.964
+    Recall@10: 0.996    NDCG@10: 0.965
+    Recall@30: 1.000    NDCG@30: 0.965
+    Recall@50: 1.000    NDCG@50: 0.965
+
+  PER-TYPE BREAKDOWN (session recall_any@10):
+    knowledge-update                    R@10=1.000  (n=78)
+    multi-session                       R@10=1.000  (n=133)
+    single-session-assistant            R@10=0.982  (n=56)
+    single-session-preference           R@10=0.967  (n=30)
+    single-session-user                 R@10=1.000  (n=70)
+    temporal-reasoning                  R@10=1.000  (n=133)
+
+============================================================
+
+  Results saved to: /Users/macmini/Projects/adaptmem/benchmarks/v335/run4b_v333_raw_ft300.jsonl
