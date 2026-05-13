@@ -287,7 +287,7 @@ def _daemon_request(
     """Common HTTP wrapper for `corpora` subcommands. Imports requests
     lazily so the rest of the CLI works without [server] extras."""
     try:
-        import requests  # type: ignore[import-untyped]
+        import requests
     except ImportError as e:
         raise SystemExit(
             "`corpora` subcommands need `requests`. Run "
