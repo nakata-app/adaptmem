@@ -60,3 +60,9 @@ strict = true
 # yüklü değil — mypy bu yüzden import-not-found atar. Override'la sustur.
 module = ["opentelemetry.*", "argcomplete"]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# `requests` `[server]` extra üzerinden lazy import; types-requests CI'da
+# yüklü ama bench venv'lerinde yok — iki environment'ta da temiz geçsin.
+module = ["requests", "requests.*"]
+ignore_missing_imports = true
