@@ -4,4 +4,4 @@ from adaptmem.miner import HardNegativeMiner
 from adaptmem.types import LabelledQuery, RetrievalHit
 
 __all__ = ["AdaptMem", "HardNegativeMiner", "LabelledQuery", "RetrievalHit"]
-__version__ = "0.5.1"
+__version__ = "0.6.0"

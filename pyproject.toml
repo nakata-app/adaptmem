@@ -1,6 +1,6 @@
 [project]
 name = "adaptmem"
-version = "0.5.1"
+version = "0.6.0"
 description = "One-shot domain adaptation for retrieval — beat your baseline with 200 lines of hard-negative mining."
 readme = "README.md"
 license = { file = "LICENSE" }

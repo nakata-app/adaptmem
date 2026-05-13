@@ -33,7 +33,7 @@ spec:
       containers:
         - name: adaptmem
           # Pin a tag in production. Replace with your registry path.
-          image: nakata-app/adaptmem:0.5.1
+          image: nakata-app/adaptmem:0.6.0
           imagePullPolicy: IfNotPresent
           args:
             - "serve"

@@ -24,7 +24,7 @@ v0.7 Metis integration ████████████  done  (ADR + adaptm
                                              shipped; metis PR #6 merged to master 2026-04-27)
 ```
 
-**Public:** https://github.com/nakata-app/adaptmem (master, CI green) · **PyPI:** https://pypi.org/project/adaptmem/ (v0.5.1, `pip install adaptmem` / `pip install "adaptmem[server]"`).
+**Public:** https://github.com/nakata-app/adaptmem (master, CI green) · **PyPI:** https://pypi.org/project/adaptmem/ (v0.6.0, `pip install adaptmem` / `pip install "adaptmem[server]"`).
 
 ## Bench results, what's actually committed
 

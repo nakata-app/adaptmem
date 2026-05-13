@@ -1,21 +1,21 @@
 # Kubernetes deployment example
 
 Reference manifests for running `adaptmem serve` on Kubernetes. Each
-file is a starting point — adjust resource limits, image tag, and
+file is a starting point, adjust resource limits, image tag, and
 host names for your cluster.
 
 ## Quickstart
 
 ```bash
 # 1. Build + push the image (or use the public one once it's published).
-docker build -t your-registry.example/adaptmem:0.5.1 ../..
-docker push your-registry.example/adaptmem:0.5.1
+docker build -t your-registry.example/adaptmem:0.6.0 ../..
+docker push your-registry.example/adaptmem:0.6.0
 
-# 2. Edit deployment.yaml — image: line, replica count, resources.
+# 2. Edit deployment.yaml, image: line, replica count, resources.
 
 # 3. Create the secret with your API key. NEVER commit secret.yaml.
 cp secret.yaml.example secret.yaml
-# edit secret.yaml — fill in your real ADAPTMEM_API_KEY base64
+# edit secret.yaml, fill in your real ADAPTMEM_API_KEY base64
 kubectl apply -f secret.yaml
 
 # 4. Apply the rest.
@@ -40,7 +40,7 @@ curl http://127.0.0.1:7800/healthz
 | `secret.yaml.example` | API key + optional TLS certs (copy → secret.yaml, fill in) |
 | `deployment.yaml` | 3 replicas by default, with /healthz + /readyz probes wired |
 | `service.yaml` | ClusterIP exposing 7800; internal traffic only |
-| `hpa.yaml` | HorizontalPodAutoscaler — scale 2-10 pods on CPU > 70% |
+| `hpa.yaml` | HorizontalPodAutoscaler, scale 2-10 pods on CPU > 70% |
 | `servicemonitor.yaml` | Prometheus Operator: scrape /metrics every 15s |
 
 ## Production checklist
@@ -58,6 +58,6 @@ Before going live:
 ## Helm chart
 
 Not provided yet. The manifests above are the "raw kubectl" path. A
-Helm chart that templates the same shape lands in v0.6 — until then,
+Helm chart that templates the same shape lands in v0.6, until then,
 copy these files into your chart's `templates/` directory and
 parameterise as needed.
