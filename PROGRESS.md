@@ -44,13 +44,15 @@ expected direction (more train data → higher recall).
 | System | R@1 | R@5 | R@10 | n | Source |
 |---|---|---|---|---|---|
 | MemPalace raw (sanity) | 0.806 | **0.966** | 0.982 | 500 | `benchmarks/run0_raw_default.jsonl` ✅ |
-| MemPalace raw + FT-300 | 0.862 | **0.980** | 0.994 | 500 | `benchmarks/run1_raw_ft300.jsonl` ✅ |
-| MemPalace hybrid_v4 + FT-300 | 0.916 | **0.990** | 0.998 | 500 | `benchmarks/run2_hybrid_v4_ft300.jsonl` ✅ |
+| MemPalace raw + FT-300 (Apr venv) | 0.862 | **0.980** | 0.994 | 500 | `benchmarks/run1_raw_ft300.jsonl` |
+| MemPalace raw + FT-300 (v3.3.5 venv) | 0.932 | **0.992** | 0.996 | 500 | `benchmarks/v335/run4_v335_raw_ft300.jsonl` ✅ |
+| MemPalace hybrid_v4 + FT-300 (v3.3.5) | 0.950 | **0.998** | 1.000 | 500 | `benchmarks/v335/run5_v335_hybrid_v4_ft300.jsonl` ✅ |
 
 **Sanity check passed**: raw default → R@5=0.966, mempal'ın yayınladığı rakamla birebir.
-**FT-300 lift (raw mode)**: +1.4 pt R@5, +1.2 pt R@10.
-**FT-300 lift (hybrid_v4 mode)**: +0.6 pt R@5, +1.4 pt R@10.
+**FT-300 lift (raw mode, v3.3.5 venv)**: +12.6 pt R@1, +2.6 pt R@5. Apr→May venv delta (chromadb 1.5.8 + sentence-transformers 5.4.1) sorumlu; model değişmedi (sha256 aynı). Discussion #1384 May-13 yorumunda açıklandı.
+**FT-300 lift (hybrid_v4, v3.3.5)**: +14.4 pt R@1, +3.2 pt R@5.
 LLM-free, no spot-fix, mempal'ın kendi eval script'iyle matched-protocol.
+Bkz. `benchmarks/v335/results_v335_summary.json`.
 
 ### Direct-eval results (internal test split)
 
