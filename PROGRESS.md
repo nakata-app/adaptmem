@@ -39,20 +39,27 @@ expected direction (more train data → higher recall).
 
 ## MemPalace comparison, where we stand
 
+### Matched-protocol results (v0.5, Colab T4, mempal's own `longmemeval_bench.py`)
+
+| System | R@1 | R@5 | R@10 | n | Source |
+|---|---|---|---|---|---|
+| MemPalace raw (sanity) | 0.806 | **0.966** | 0.982 | 500 | `benchmarks/run0_raw_default.jsonl` ✅ |
+| MemPalace raw + FT-300 | 0.862 | **0.980** | 0.994 | 500 | `benchmarks/run1_raw_ft300.jsonl` ✅ |
+| MemPalace hybrid_v4 + FT-300 | 0.916 | **0.990** | 0.998 | 500 | `benchmarks/run2_hybrid_v4_ft300.jsonl` ✅ |
+
+**Sanity check passed**: raw default → R@5=0.966, mempal'ın yayınladığı rakamla birebir.
+**FT-300 lift (raw mode)**: +1.4 pt R@5, +1.2 pt R@10.
+**FT-300 lift (hybrid_v4 mode)**: +0.6 pt R@5, +1.4 pt R@10.
+LLM-free, no spot-fix, mempal'ın kendi eval script'iyle matched-protocol.
+
+### Direct-eval results (internal test split)
+
 | System | R@5 | Source | Verified |
 |---|---|---|---|
-| MemPalace raw | 0.966 | their published number | not independently re-run |
+| MemPalace raw | 0.966 | their published number | ✅ matched in protocol run |
 | MemPalace hybrid v4 | 0.984 | their published number | not independently re-run |
 | MemPalace + Haiku rerank | 1.000 | their published number | LLM + 3 q spot-fix (out of category) |
-| **adaptmem FT-300** | **0.995** | `results_ft300_direct.json` | committed |
-
-**+2.9 pt over raw, +1.1 pt over hybrid v4.** LLM-free, no spot-fix.
-
-**Caveat (v0.5 work):** sayılar same dataset / same protocol description
-üzerinde, ama mempal'ın **kendi eval script'iyle** koşturulmadı. Apples-
-to-apples kanıt v0.5'te: clone `MemPalace/mempalace`, plug
-`AdaptMem.encode` into their `longmemeval_bench.py`, re-run, post the
-matched table.
+| **adaptmem FT-300 (direct)** | **0.995** | `results_ft300_direct.json` | committed |
 
 ## Open items
 
@@ -89,17 +96,13 @@ matched table.
 
 ### v0.5, mempal outreach
 - [ ] Three-seed reproduce of FT-300 with mean ± stddev.
-- [ ] Matched-protocol run via mempal's `longmemeval_bench.py`.
-  - Wrapper hazır: `benchmarks/mempal_bench_with_ft.py` (monkey-patches
-    `_bench_embed_fn` global, ZERO modification to mempal script).
-  - Colab notebook: `benchmarks/colab_mempal_matched_protocol.ipynb`
-    (3 ardışık run: raw default sanity → raw+FT-300 → hybrid_v4+FT-300).
-  - Mac 8GB'da koşmaz (memory tight) → Colab'da koşulacak. Drive layout
-    notebook header'ında. Bu Mac sırasında dataset/model upload + run.
+- [x] Matched-protocol run via mempal's `longmemeval_bench.py`. **DONE 2026-05-15.**
+  - Colab T4, `benchmarks/colab_mempal_matched_protocol.ipynb`, 3 run × 500q.
+  - Sanity R@5=0.966 ✓ (matched mempal published). raw+FT-300 → 0.980. hybrid_v4+FT-300 → 0.990.
+  - JSONL committed: `run0_raw_default.jsonl`, `run1_raw_ft300.jsonl`, `run2_hybrid_v4_ft300.jsonl`.
 - [ ] Open a GitHub Discussion on `MemPalace/mempalace` framed as
   "we extended your work", not "we beat your benchmark."
-  - Draft hazır: `drafts/mempal_discussion.md`, matched-protocol
-    sayıları gelince caveat satırı silinecek + tabloya ek sütun.
+  - Draft hazır: `drafts/mempal_discussion.md`. **Artık matched-protocol sayılar var; caveat satırını sil + tabloya sütun ekle, sonra post et.**
 
 ## How to resume (next session)
 
