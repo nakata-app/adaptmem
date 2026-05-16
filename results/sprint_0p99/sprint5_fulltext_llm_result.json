@@ -1,0 +1,142 @@
+{
+  "experiment": "Sprint 5 full-text + count-aware LLM rerank (self-consistency=5)",
+  "model": "meta/llama-3.3-70b-instruct",
+  "top_k": 10,
+  "runs": 5,
+  "text_cap": 4000,
+  "helped": 1,
+  "hurt": 0,
+  "pre_fails_run8": 9,
+  "post_total_fails": 8,
+  "R@1_estimate": 0.984,
+  "results": [
+    {
+      "qid": "6d550036",
+      "type": "multi-session",
+      "gold_rank": 2,
+      "in_hit": 0,
+      "picks": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "majority": 1,
+      "final_hit": 0,
+      "action": "trust_baseline"
+    },
+    {
+      "qid": "06f04340",
+      "type": "single-session-preference",
+      "gold_rank": 5,
+      "in_hit": 0,
+      "picks": [
+        3,
+        3,
+        0,
+        4,
+        3
+      ],
+      "majority": 4,
+      "final_hit": 0,
+      "action": "override"
+    },
+    {
+      "qid": "d905b33f",
+      "type": "multi-session",
+      "gold_rank": 2,
+      "in_hit": 0,
+      "picks": [
+        4,
+        2,
+        null,
+        null,
+        null
+      ],
+      "majority": 5,
+      "final_hit": 0,
+      "action": "override"
+    },
+    {
+      "qid": "gpt4_45189cb4",
+      "type": "temporal-reasoning",
+      "gold_rank": 2,
+      "in_hit": 0,
+      "picks": [
+        1,
+        0,
+        0,
+        5,
+        3
+      ],
+      "majority": 1,
+      "final_hit": 0,
+      "action": "trust_baseline"
+    },
+    {
+      "qid": "gpt4_ec93e27f",
+      "type": "temporal-reasoning",
+      "gold_rank": 2,
+      "in_hit": 0,
+      "picks": [
+        2,
+        2,
+        2,
+        1,
+        1
+      ],
+      "majority": 3,
+      "final_hit": 1,
+      "action": "override"
+    },
+    {
+      "qid": "gpt4_4929293b",
+      "type": "temporal-reasoning",
+      "gold_rank": 2,
+      "in_hit": 0,
+      "picks": [
+        0,
+        0,
+        5,
+        0,
+        0
+      ],
+      "majority": 1,
+      "final_hit": 0,
+      "action": "trust_baseline"
+    },
+    {
+      "qid": "9a707b82",
+      "type": "temporal-reasoning",
+      "gold_rank": 2,
+      "in_hit": 0,
+      "picks": [
+        7,
+        9,
+        9,
+        0,
+        0
+      ],
+      "majority": 10,
+      "final_hit": 0,
+      "action": "override"
+    },
+    {
+      "qid": "eac54add",
+      "type": "temporal-reasoning",
+      "gold_rank": 5,
+      "in_hit": 0,
+      "picks": [
+        3,
+        3,
+        null,
+        3,
+        null
+      ],
+      "majority": 4,
+      "final_hit": 0,
+      "action": "override"
+    }
+  ]
+}
