@@ -39,7 +39,7 @@ See [`values.yaml`](values.yaml) for the full list. Highlights:
 | Path | Default | What it does |
 |---|---|---|
 | `image.repository` | `nakata-app/adaptmem` | Container image |
-| `image.tag` | `""` (uses Chart.appVersion) | Image tag — pin in production |
+| `image.tag` | `""` (uses Chart.appVersion) | Image tag (pin in production) |
 | `replicaCount` | `3` | Pod count when autoscaling is off |
 | `config.baseModel` | `all-MiniLM-L6-v2` | Encoder model the daemon loads |
 | `config.rateLimit` | `120/minute` | Per-IP cap; tighten for public APIs |
