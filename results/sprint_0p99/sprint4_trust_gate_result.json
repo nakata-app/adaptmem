@@ -1,0 +1,112 @@
+{
+  "experiment": "Sprint 4 trust-gated CE rerank",
+  "margin": 1.0,
+  "top_k": 20,
+  "n": 500,
+  "R@1_baseline_ftv4_raw": 0.968,
+  "R@1_final": 0.978,
+  "fails_baseline": 16,
+  "fails_final": 11,
+  "by_type": {
+    "knowledge-update": {
+      "n": 78,
+      "R@1_baseline": 1.0,
+      "R@1_final": 1.0,
+      "overrides": 10,
+      "trust_kept": 68,
+      "override_helped": 0,
+      "override_hurt": 0
+    },
+    "multi-session": {
+      "n": 133,
+      "R@1_baseline": 0.985,
+      "R@1_final": 0.985,
+      "overrides": 25,
+      "trust_kept": 108,
+      "override_helped": 1,
+      "override_hurt": 1
+    },
+    "single-session-assistant": {
+      "n": 56,
+      "R@1_baseline": 0.9643,
+      "R@1_final": 1.0,
+      "overrides": 2,
+      "trust_kept": 54,
+      "override_helped": 2,
+      "override_hurt": 0
+    },
+    "single-session-preference": {
+      "n": 30,
+      "R@1_baseline": 0.8667,
+      "R@1_final": 0.9667,
+      "overrides": 3,
+      "trust_kept": 27,
+      "override_helped": 3,
+      "override_hurt": 0
+    },
+    "single-session-user": {
+      "n": 70,
+      "R@1_baseline": 0.9857,
+      "R@1_final": 0.9857,
+      "overrides": 0,
+      "trust_kept": 0,
+      "override_helped": 0,
+      "override_hurt": 0
+    },
+    "temporal-reasoning": {
+      "n": 133,
+      "R@1_baseline": 0.9474,
+      "R@1_final": 0.9474,
+      "overrides": 16,
+      "trust_kept": 117,
+      "override_helped": 3,
+      "override_hurt": 3
+    }
+  },
+  "remaining_fails": [
+    [
+      "6d550036",
+      "multi-session"
+    ],
+    [
+      "d905b33f",
+      "multi-session"
+    ],
+    [
+      "06f04340",
+      "single-session-preference"
+    ],
+    [
+      "f4f1d8a4_abs",
+      "single-session-user"
+    ],
+    [
+      "4dfccbf8",
+      "temporal-reasoning"
+    ],
+    [
+      "71017277",
+      "temporal-reasoning"
+    ],
+    [
+      "9a707b82",
+      "temporal-reasoning"
+    ],
+    [
+      "eac54add",
+      "temporal-reasoning"
+    ],
+    [
+      "gpt4_45189cb4",
+      "temporal-reasoning"
+    ],
+    [
+      "gpt4_4929293b",
+      "temporal-reasoning"
+    ],
+    [
+      "gpt4_ec93e27f",
+      "temporal-reasoning"
+    ]
+  ]
+}

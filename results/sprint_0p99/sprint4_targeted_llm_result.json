@@ -1,0 +1,93 @@
+{
+  "experiment": "Sprint 4 phase 3b targeted LLM rerank (full text + CoT + throttle)",
+  "model": "meta/llama-3.3-70b-instruct",
+  "top_k": 10,
+  "n_attackable": 8,
+  "helped": 4,
+  "hurt": 0,
+  "pre_fails_in_run8": 9,
+  "post_total_fails_estimate": 5,
+  "R@1_estimate": 0.99,
+  "results": [
+    {
+      "qid": "6d550036",
+      "type": "multi-session",
+      "gold_rank": 2,
+      "in_hit": 0,
+      "pick": 2,
+      "final_hit": 1,
+      "action": "override",
+      "reply": "votes=[1, 1, 0]"
+    },
+    {
+      "qid": "06f04340",
+      "type": "single-session-preference",
+      "gold_rank": 5,
+      "in_hit": 0,
+      "pick": 5,
+      "final_hit": 1,
+      "action": "override",
+      "reply": "votes=[4, None, None]"
+    },
+    {
+      "qid": "d905b33f",
+      "type": "multi-session",
+      "gold_rank": 2,
+      "in_hit": 0,
+      "pick": null,
+      "final_hit": 0,
+      "action": "llm_failed",
+      "reply": "votes=[None, None, None]"
+    },
+    {
+      "qid": "gpt4_45189cb4",
+      "type": "temporal-reasoning",
+      "gold_rank": 2,
+      "in_hit": 0,
+      "pick": 4,
+      "final_hit": 1,
+      "action": "override",
+      "reply": "votes=[None, 3, 3]"
+    },
+    {
+      "qid": "gpt4_ec93e27f",
+      "type": "temporal-reasoning",
+      "gold_rank": 2,
+      "in_hit": 0,
+      "pick": 2,
+      "final_hit": 1,
+      "action": "override",
+      "reply": "votes=[1, 1, 1]"
+    },
+    {
+      "qid": "gpt4_4929293b",
+      "type": "temporal-reasoning",
+      "gold_rank": 2,
+      "in_hit": 0,
+      "pick": 3,
+      "final_hit": 0,
+      "action": "override",
+      "reply": "votes=[None, None, 2]"
+    },
+    {
+      "qid": "9a707b82",
+      "type": "temporal-reasoning",
+      "gold_rank": 2,
+      "in_hit": 0,
+      "pick": 4,
+      "final_hit": 0,
+      "action": "override",
+      "reply": "votes=[3, None, 3]"
+    },
+    {
+      "qid": "eac54add",
+      "type": "temporal-reasoning",
+      "gold_rank": 5,
+      "in_hit": 0,
+      "pick": null,
+      "final_hit": 0,
+      "action": "llm_failed",
+      "reply": "votes=[None, None, None]"
+    }
+  ]
+}
