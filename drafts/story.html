@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1920px;
+    background: #08090c;
+    font-family: 'Inter', sans-serif;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  /* Subtle top gradient */
+  .top-glow {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 600px;
+    background: radial-gradient(ellipse 800px 400px at 50% -50px, rgba(79,70,229,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 2;
+    padding: 100px 88px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 100px;
+  }
+
+  .topbar-label {
+    font-size: 20px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .verified {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.06em;
+  }
+
+  .verified-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 8px rgba(74,222,128,0.6);
+  }
+
+  /* ── KICKER ── */
+  .kicker {
+    font-size: 18px;
+    font-weight: 500;
+    color: rgba(99,102,241,0.8);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  /* ── HEADLINE ── */
+  .headline {
+    font-size: 100px;
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    margin-bottom: 24px;
+  }
+
+  .headline span {
+    color: rgba(255,255,255,0.2);
+  }
+
+  /* ── SUBLINE ── */
+  .subline {
+    font-size: 24px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.38);
+    line-height: 1.55;
+    margin-bottom: 80px;
+    max-width: 700px;
+  }
+
+  .subline em {
+    font-style: normal;
+    color: rgba(255,255,255,0.6);
+    font-weight: 500;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255,255,255,0.07);
+    margin-bottom: 56px;
+  }
+
+  /* ── TABLE ── */
+  .table {
+    width: 100%;
+    margin-bottom: 56px;
+  }
+
+  .table-head {
+    display: grid;
+    grid-template-columns: 1fr 120px 120px 120px;
+    padding: 0 0 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 8px;
+  }
+
+  .th {
+    font-size: 17px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: right;
+  }
+  .th:first-child { text-align: left; }
+
+  .tr {
+    display: grid;
+    grid-template-columns: 1fr 120px 120px 120px;
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    align-items: center;
+  }
+
+  .tr.winner {
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .td-label {
+    font-size: 22px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .tr.winner .td-label {
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+  }
+
+  .td-val {
+    text-align: right;
+    font-size: 24px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tr.winner .td-val {
+    color: rgba(255,255,255,0.55);
+  }
+
+  .td-val.accent {
+    color: #818cf8;
+    font-weight: 700;
+    font-size: 26px;
+  }
+
+  .winner-tag {
+    display: inline-block;
+    background: rgba(99,102,241,0.12);
+    border: 1px solid rgba(99,102,241,0.22);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #818cf8;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-left: 12px;
+    vertical-align: middle;
+  }
+
+  /* ── STATS ROW ── */
+  .stats {
+    display: flex;
+    gap: 0;
+    margin-bottom: 56px;
+  }
+
+  .stat {
+    flex: 1;
+    padding: 40px 0;
+    border-top: 2px solid rgba(255,255,255,0.06);
+  }
+
+  .stat:not(:last-child) {
+    border-right: 1px solid rgba(255,255,255,0.05);
+    padding-right: 48px;
+    margin-right: 48px;
+  }
+
+  .stat-val {
+    font-size: 52px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  .stat-val.green { color: #4ade80; }
+  .stat-val.indigo { color: #818cf8; }
+
+  .stat-label {
+    font-size: 18px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.3);
+    line-height: 1.4;
+  }
+
+  /* ── NOTE ── */
+  .note {
+    font-size: 19px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.2);
+    line-height: 1.6;
+    border-left: 2px solid rgba(99,102,241,0.3);
+    padding-left: 24px;
+    margin-bottom: 80px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .footer-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: -0.01em;
+  }
+
+  .footer-url {
+    font-size: 18px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.02em;
+  }
+
+  .footer-tag {
+    font-size: 20px;
+    font-weight: 500;
+    color: rgba(99,102,241,0.6);
+    text-align: right;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+  <div class="top-glow"></div>
+
+  <div class="wrap">
+
+    <div class="topbar">
+      <div class="topbar-label">LongMemEval · 500 questions</div>
+      <div class="verified">
+        <div class="verified-dot"></div>
+        Matched protocol
+      </div>
+    </div>
+
+    <div class="kicker">Retrieval benchmark</div>
+    <div class="headline">Fine-tuned<br>encoder.<br><span>No LLM.</span></div>
+    <div class="subline">
+      Swapped adaptmem's domain-tuned encoder into<br>
+      <em>MemPal's own benchmark script.</em> Zero changes to their eval logic.
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="table">
+      <div class="table-head">
+        <div class="th">System</div>
+        <div class="th">R@1</div>
+        <div class="th">R@5</div>
+        <div class="th">R@10</div>
+      </div>
+
+      <div class="tr">
+        <div class="td-label">MemPal raw default</div>
+        <div class="td-val">0.806</div>
+        <div class="td-val">0.966</div>
+        <div class="td-val">0.982</div>
+      </div>
+
+      <div class="tr">
+        <div class="td-label">MemPal raw + adaptmem</div>
+        <div class="td-val">0.862</div>
+        <div class="td-val">0.980</div>
+        <div class="td-val">0.994</div>
+      </div>
+
+      <div class="tr winner">
+        <div class="td-label">hybrid_v4 + adaptmem <span class="winner-tag">best</span></div>
+        <div class="td-val">0.916</div>
+        <div class="td-val accent">0.990</div>
+        <div class="td-val accent">0.998</div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-val green">+1.4pt</div>
+        <div class="stat-label">R@5 lift<br>over raw baseline</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val indigo">+11pt</div>
+        <div class="stat-label">R@1 lift<br>with hybrid_v4</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">90MB</div>
+        <div class="stat-label">encoder size,<br>no GPU required</div>
+      </div>
+    </div>
+
+    <div class="note">
+      Fine-tune and hybrid retrieval stack orthogonally —
+      each adds lift on top of the other.
+      Raw baseline R@5 = 0.966 matches MemPal's published number exactly.
+    </div>
+
+    <div class="footer">
+      <div class="footer-left">
+        <div class="footer-title">adaptmem</div>
+        <div class="footer-url">github.com/nakata-app/adaptmem</div>
+      </div>
+      <div class="footer-tag">@igorls1<br>@bensig</div>
+    </div>
+
+  </div>
+</body>
+</html>
