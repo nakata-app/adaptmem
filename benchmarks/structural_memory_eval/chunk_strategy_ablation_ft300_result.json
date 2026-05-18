@@ -1,0 +1,697 @@
+{
+  "corpus": "/private/tmp/chunk_ablation_corpus_curated",
+  "n_probes": 20,
+  "n_results": 10,
+  "chunk_sizes": [
+    800
+  ],
+  "strategies": {
+    "A_paragraph_aware__cs800": {
+      "drawer_count": 1256,
+      "mine_secs": 16.15,
+      "mrr": 0.5642,
+      "recall_at_5_pct": 70.0,
+      "recall_at_10_pct": 80.0,
+      "probes": [
+        {
+          "query": "How does the stop hook save diary entries?",
+          "expected": "hooks_cli.py",
+          "rank": 8,
+          "rr": 0.125,
+          "top3": [
+            "CLAUDE.md",
+            "mcp_server.py",
+            "2026-04-25-checkpoint-collection-split.md"
+          ]
+        },
+        {
+          "query": "ChromaDB HNSW segment quarantine for stale indexes",
+          "expected": "backends/chroma.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "chroma.py",
+            "chroma.py",
+            "chroma.py"
+          ]
+        },
+        {
+          "query": "BM25 tokenization with None-document safety",
+          "expected": "searcher.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "searcher.py",
+            "CLAUDE.md",
+            "chroma.py"
+          ]
+        },
+        {
+          "query": "How is a wing name normalized \u2014 hyphens vs underscores?",
+          "expected": "config.py",
+          "rank": 3,
+          "rr": 0.3333,
+          "top3": [
+            "palace_graph.py",
+            "miner.py",
+            "config.py"
+          ]
+        },
+        {
+          "query": "Validate chunk_size to prevent the infinite loop hazard",
+          "expected": "miner.py",
+          "rank": 8,
+          "rr": 0.125,
+          "top3": [
+            "convo_miner.py",
+            "2026-05-06-chunking-strategy-ablation.md",
+            "2026-05-06-chunking-strategy-ablation.md"
+          ]
+        },
+        {
+          "query": "Pre-PreCompact transcript auto-mining via daemon /mine endpoint",
+          "expected": "hooks_cli.py",
+          "rank": 2,
+          "rr": 0.5,
+          "top3": [
+            "README.md",
+            "hooks_cli.py",
+            "hooks_cli.py"
+          ]
+        },
+        {
+          "query": "Topic-routing branch routing checkpoint diary writes to a separate collection",
+          "expected": "palace.py",
+          "rank": null,
+          "rr": 0.0,
+          "top3": [
+            "2026-04-25-checkpoint-collection-split.md",
+            "2026-04-25-checkpoint-collection-split.md",
+            "2026-04-25-checkpoint-collection-split.md"
+          ]
+        },
+        {
+          "query": "Knowledge-graph entity validation that allows commas and parentheses",
+          "expected": "config.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "config.py",
+            "config.py",
+            "mcp-tools.md"
+          ]
+        },
+        {
+          "query": "Closet-boost rank constants used to re-order vector hits",
+          "expected": "searcher.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "searcher.py",
+            "searcher.py",
+            "CLAUDE.md"
+          ]
+        },
+        {
+          "query": "Hybrid rank combining BM25 with cosine similarity",
+          "expected": "searcher.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "searcher.py",
+            "searcher.py",
+            "searcher.py"
+          ]
+        },
+        {
+          "query": "Wing assignment from Claude Code transcript path regex",
+          "expected": "convo_miner.py",
+          "rank": null,
+          "rr": 0.0,
+          "top3": [
+            "CLAUDE.md",
+            "hooks_cli.py",
+            "hooks_cli.py"
+          ]
+        },
+        {
+          "query": "Detect HNSW capacity divergence and quarantine the segment",
+          "expected": "backends/chroma.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "chroma.py",
+            "chroma.py",
+            "chroma.py"
+          ]
+        },
+        {
+          "query": "Spellcheck user prose before writing to drawers",
+          "expected": "spellcheck.py",
+          "rank": 2,
+          "rr": 0.5,
+          "top3": [
+            "convo_miner.py",
+            "spellcheck.py",
+            "spellcheck.py"
+          ]
+        },
+        {
+          "query": "Slack JSON export normalization with positional speaker roles",
+          "expected": "normalize.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "normalize.py",
+            "normalize.py",
+            "normalize.py"
+          ]
+        },
+        {
+          "query": "Build the where filter for wing/room scoping in chromadb queries",
+          "expected": "searcher.py",
+          "rank": 2,
+          "rr": 0.5,
+          "top3": [
+            "layers.py",
+            "searcher.py",
+            "palace_graph.py"
+          ]
+        },
+        {
+          "query": "Why did we move checkpoints into a separate recovery collection?",
+          "expected": "2026-04-25-checkpoint-collection-split.md",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "2026-04-25-checkpoint-collection-split.md",
+            "2026-04-25-checkpoint-collection-split.md",
+            "2026-04-25-checkpoint-collection-split.md"
+          ]
+        },
+        {
+          "query": "Verbatim-only Phase 2 architecture and migration plan",
+          "expected": "2026-05-05-verbatim-only-design.md",
+          "rank": null,
+          "rr": 0.0,
+          "top3": [
+            "README.md",
+            "README.md",
+            "README.md"
+          ]
+        },
+        {
+          "query": "Pre-release grep checklist for mempalace-mcp entry point alignment",
+          "expected": "RELEASING.md",
+          "rank": null,
+          "rr": 0.0,
+          "top3": [
+            "CLAUDE.md",
+            "README.md",
+            "README.md"
+          ]
+        },
+        {
+          "query": "Fork-ahead row inventory and upstream PR tracking table",
+          "expected": "CLAUDE.md",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "CLAUDE.md",
+            "CLAUDE.md",
+            "CLAUDE.md"
+          ]
+        },
+        {
+          "query": "Hook silent_save vs block-mode behavior \u2014 why one beats the other",
+          "expected": "CLAUDE.md",
+          "rank": 5,
+          "rr": 0.2,
+          "top3": [
+            "2026-05-06-chunking-strategy-ablation.md",
+            "2026-05-06-chunking-strategy-ablation.md",
+            "hooks_cli.py"
+          ]
+        }
+      ]
+    },
+    "B_heading_aware_md__cs800": {
+      "drawer_count": 1288,
+      "mine_secs": 14.75,
+      "mrr": 0.5396,
+      "recall_at_5_pct": 75.0,
+      "recall_at_10_pct": 80.0,
+      "probes": [
+        {
+          "query": "How does the stop hook save diary entries?",
+          "expected": "hooks_cli.py",
+          "rank": null,
+          "rr": 0.0,
+          "top3": [
+            "2026-04-25-checkpoint-collection-split.md",
+            "2026-04-25-checkpoint-collection-split.md",
+            "2026-04-25-checkpoint-collection-split.md"
+          ]
+        },
+        {
+          "query": "ChromaDB HNSW segment quarantine for stale indexes",
+          "expected": "backends/chroma.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "chroma.py",
+            "chroma.py",
+            "chroma.py"
+          ]
+        },
+        {
+          "query": "BM25 tokenization with None-document safety",
+          "expected": "searcher.py",
+          "rank": 4,
+          "rr": 0.25,
+          "top3": [
+            "CLAUDE.md",
+            "CLAUDE.md",
+            "chroma.py"
+          ]
+        },
+        {
+          "query": "How is a wing name normalized \u2014 hyphens vs underscores?",
+          "expected": "config.py",
+          "rank": 2,
+          "rr": 0.5,
+          "top3": [
+            "palace_graph.py",
+            "config.py",
+            "spellcheck.py"
+          ]
+        },
+        {
+          "query": "Validate chunk_size to prevent the infinite loop hazard",
+          "expected": "miner.py",
+          "rank": 8,
+          "rr": 0.125,
+          "top3": [
+            "2026-05-06-chunking-strategy-ablation.md",
+            "2026-05-06-chunking-strategy-ablation.md",
+            "2026-05-06-chunking-strategy-ablation.md"
+          ]
+        },
+        {
+          "query": "Pre-PreCompact transcript auto-mining via daemon /mine endpoint",
+          "expected": "hooks_cli.py",
+          "rank": 3,
+          "rr": 0.3333,
+          "top3": [
+            "README.md",
+            "CLAUDE.md",
+            "hooks_cli.py"
+          ]
+        },
+        {
+          "query": "Topic-routing branch routing checkpoint diary writes to a separate collection",
+          "expected": "palace.py",
+          "rank": null,
+          "rr": 0.0,
+          "top3": [
+            "2026-04-25-checkpoint-collection-split.md",
+            "2026-04-25-checkpoint-collection-split.md",
+            "2026-04-25-checkpoint-collection-split.md"
+          ]
+        },
+        {
+          "query": "Knowledge-graph entity validation that allows commas and parentheses",
+          "expected": "config.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "config.py",
+            "config.py",
+            "mcp-tools.md"
+          ]
+        },
+        {
+          "query": "Closet-boost rank constants used to re-order vector hits",
+          "expected": "searcher.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "searcher.py",
+            "CLAUDE.md",
+            "searcher.py"
+          ]
+        },
+        {
+          "query": "Hybrid rank combining BM25 with cosine similarity",
+          "expected": "searcher.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "searcher.py",
+            "README.md",
+            "searcher.py"
+          ]
+        },
+        {
+          "query": "Wing assignment from Claude Code transcript path regex",
+          "expected": "convo_miner.py",
+          "rank": null,
+          "rr": 0.0,
+          "top3": [
+            "hooks_cli.py",
+            "hooks_cli.py",
+            "normalize.py"
+          ]
+        },
+        {
+          "query": "Detect HNSW capacity divergence and quarantine the segment",
+          "expected": "backends/chroma.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "chroma.py",
+            "chroma.py",
+            "chroma.py"
+          ]
+        },
+        {
+          "query": "Spellcheck user prose before writing to drawers",
+          "expected": "spellcheck.py",
+          "rank": 2,
+          "rr": 0.5,
+          "top3": [
+            "convo_miner.py",
+            "spellcheck.py",
+            "spellcheck.py"
+          ]
+        },
+        {
+          "query": "Slack JSON export normalization with positional speaker roles",
+          "expected": "normalize.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "normalize.py",
+            "normalize.py",
+            "normalize.py"
+          ]
+        },
+        {
+          "query": "Build the where filter for wing/room scoping in chromadb queries",
+          "expected": "searcher.py",
+          "rank": 3,
+          "rr": 0.3333,
+          "top3": [
+            "mcp-tools.md",
+            "mcp-tools.md",
+            "searcher.py"
+          ]
+        },
+        {
+          "query": "Why did we move checkpoints into a separate recovery collection?",
+          "expected": "2026-04-25-checkpoint-collection-split.md",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "2026-04-25-checkpoint-collection-split.md",
+            "2026-04-25-checkpoint-collection-split.md",
+            "2026-04-25-checkpoint-collection-split.md"
+          ]
+        },
+        {
+          "query": "Verbatim-only Phase 2 architecture and migration plan",
+          "expected": "2026-05-05-verbatim-only-design.md",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "2026-05-05-verbatim-only-design.md",
+            "README.md",
+            "README.md"
+          ]
+        },
+        {
+          "query": "Pre-release grep checklist for mempalace-mcp entry point alignment",
+          "expected": "RELEASING.md",
+          "rank": null,
+          "rr": 0.0,
+          "top3": [
+            "CLAUDE.md",
+            "README.md",
+            "README.md"
+          ]
+        },
+        {
+          "query": "Fork-ahead row inventory and upstream PR tracking table",
+          "expected": "CLAUDE.md",
+          "rank": 2,
+          "rr": 0.5,
+          "top3": [
+            "README.md",
+            "CLAUDE.md",
+            "CLAUDE.md"
+          ]
+        },
+        {
+          "query": "Hook silent_save vs block-mode behavior \u2014 why one beats the other",
+          "expected": "CLAUDE.md",
+          "rank": 4,
+          "rr": 0.25,
+          "top3": [
+            "2026-05-06-chunking-strategy-ablation.md",
+            "hooks_cli.py",
+            "README.md"
+          ]
+        }
+      ]
+    },
+    "C_plus_ast_python__cs800": {
+      "drawer_count": 1337,
+      "mine_secs": 16.73,
+      "mrr": 0.5655,
+      "recall_at_5_pct": 75.0,
+      "recall_at_10_pct": 80.0,
+      "probes": [
+        {
+          "query": "How does the stop hook save diary entries?",
+          "expected": "hooks_cli.py",
+          "rank": null,
+          "rr": 0.0,
+          "top3": [
+            "2026-04-25-checkpoint-collection-split.md",
+            "2026-04-25-checkpoint-collection-split.md",
+            "2026-04-25-checkpoint-collection-split.md"
+          ]
+        },
+        {
+          "query": "ChromaDB HNSW segment quarantine for stale indexes",
+          "expected": "backends/chroma.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "chroma.py",
+            "chroma.py",
+            "chroma.py"
+          ]
+        },
+        {
+          "query": "BM25 tokenization with None-document safety",
+          "expected": "searcher.py",
+          "rank": 3,
+          "rr": 0.3333,
+          "top3": [
+            "CLAUDE.md",
+            "CLAUDE.md",
+            "searcher.py"
+          ]
+        },
+        {
+          "query": "How is a wing name normalized \u2014 hyphens vs underscores?",
+          "expected": "config.py",
+          "rank": 4,
+          "rr": 0.25,
+          "top3": [
+            "palace_graph.py",
+            "palace_graph.py",
+            "palace_graph.py"
+          ]
+        },
+        {
+          "query": "Validate chunk_size to prevent the infinite loop hazard",
+          "expected": "miner.py",
+          "rank": 7,
+          "rr": 0.1429,
+          "top3": [
+            "2026-05-06-chunking-strategy-ablation.md",
+            "2026-05-06-chunking-strategy-ablation.md",
+            "2026-05-06-chunking-strategy-ablation.md"
+          ]
+        },
+        {
+          "query": "Pre-PreCompact transcript auto-mining via daemon /mine endpoint",
+          "expected": "hooks_cli.py",
+          "rank": 3,
+          "rr": 0.3333,
+          "top3": [
+            "CLAUDE.md",
+            "README.md",
+            "hooks_cli.py"
+          ]
+        },
+        {
+          "query": "Topic-routing branch routing checkpoint diary writes to a separate collection",
+          "expected": "palace.py",
+          "rank": null,
+          "rr": 0.0,
+          "top3": [
+            "2026-04-25-checkpoint-collection-split.md",
+            "2026-04-25-checkpoint-collection-split.md",
+            "2026-04-25-checkpoint-collection-split.md"
+          ]
+        },
+        {
+          "query": "Knowledge-graph entity validation that allows commas and parentheses",
+          "expected": "config.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "config.py",
+            "config.py",
+            "mcp-tools.md"
+          ]
+        },
+        {
+          "query": "Closet-boost rank constants used to re-order vector hits",
+          "expected": "searcher.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "searcher.py",
+            "CLAUDE.md",
+            "searcher.py"
+          ]
+        },
+        {
+          "query": "Hybrid rank combining BM25 with cosine similarity",
+          "expected": "searcher.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "searcher.py",
+            "README.md",
+            "searcher.py"
+          ]
+        },
+        {
+          "query": "Wing assignment from Claude Code transcript path regex",
+          "expected": "convo_miner.py",
+          "rank": null,
+          "rr": 0.0,
+          "top3": [
+            "hooks_cli.py",
+            "hooks_cli.py",
+            "dialect.py"
+          ]
+        },
+        {
+          "query": "Detect HNSW capacity divergence and quarantine the segment",
+          "expected": "backends/chroma.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "chroma.py",
+            "chroma.py",
+            "chroma.py"
+          ]
+        },
+        {
+          "query": "Spellcheck user prose before writing to drawers",
+          "expected": "spellcheck.py",
+          "rank": 2,
+          "rr": 0.5,
+          "top3": [
+            "convo_miner.py",
+            "spellcheck.py",
+            "spellcheck.py"
+          ]
+        },
+        {
+          "query": "Slack JSON export normalization with positional speaker roles",
+          "expected": "normalize.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "normalize.py",
+            "normalize.py",
+            "normalize.py"
+          ]
+        },
+        {
+          "query": "Build the where filter for wing/room scoping in chromadb queries",
+          "expected": "searcher.py",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "searcher.py",
+            "searcher.py",
+            "mcp-tools.md"
+          ]
+        },
+        {
+          "query": "Why did we move checkpoints into a separate recovery collection?",
+          "expected": "2026-04-25-checkpoint-collection-split.md",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "2026-04-25-checkpoint-collection-split.md",
+            "2026-04-25-checkpoint-collection-split.md",
+            "2026-04-25-checkpoint-collection-split.md"
+          ]
+        },
+        {
+          "query": "Verbatim-only Phase 2 architecture and migration plan",
+          "expected": "2026-05-05-verbatim-only-design.md",
+          "rank": 1,
+          "rr": 1.0,
+          "top3": [
+            "2026-05-05-verbatim-only-design.md",
+            "README.md",
+            "README.md"
+          ]
+        },
+        {
+          "query": "Pre-release grep checklist for mempalace-mcp entry point alignment",
+          "expected": "RELEASING.md",
+          "rank": null,
+          "rr": 0.0,
+          "top3": [
+            "CLAUDE.md",
+            "README.md",
+            "README.md"
+          ]
+        },
+        {
+          "query": "Fork-ahead row inventory and upstream PR tracking table",
+          "expected": "CLAUDE.md",
+          "rank": 2,
+          "rr": 0.5,
+          "top3": [
+            "README.md",
+            "CLAUDE.md",
+            "CLAUDE.md"
+          ]
+        },
+        {
+          "query": "Hook silent_save vs block-mode behavior \u2014 why one beats the other",
+          "expected": "CLAUDE.md",
+          "rank": 4,
+          "rr": 0.25,
+          "top3": [
+            "2026-05-06-chunking-strategy-ablation.md",
+            "hooks_cli.py",
+            "README.md"
+          ]
+        }
+      ]
+    }
+  }
+}
