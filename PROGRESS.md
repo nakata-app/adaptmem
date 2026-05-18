@@ -102,9 +102,15 @@ Bkz. `benchmarks/v335/results_v335_summary.json`.
   - Colab T4, `benchmarks/colab_mempal_matched_protocol.ipynb`, 3 run × 500q.
   - Sanity R@5=0.966 ✓ (matched mempal published). raw+FT-300 → 0.980. hybrid_v4+FT-300 → 0.990.
   - JSONL committed: `run0_raw_default.jsonl`, `run1_raw_ft300.jsonl`, `run2_hybrid_v4_ft300.jsonl`.
+- [x] FT-Code checkpoints trained. **DONE 2026-05-15, Colab T4.**
+  - FT-Code-300 (loss=0.397, 69s), FT-Code-1000 (loss=0.277, 45s), FT-Code-5000 (loss=0.161, 189s).
+  - Saved to Drive: `/content/drive/MyDrive/adaptmem-bench/ft-code/`.
+  - Chunk×encoder cross (v335) with FT-Code: results in `benchmarks/v335/chunk_x_encoder_ftcode*/`.
+  - **Finding:** FT-Code-1000 beats FT-300 on A/B strategies (+0.092 vs +0.054 MRR at cs400). C+cs800 resists all encoders.
+  - [ ] CodeSearchNet 19k test split eval pending (needs checkpoints local or Colab session).
 - [ ] Open a GitHub Discussion on `MemPalace/mempalace` framed as
   "we extended your work", not "we beat your benchmark."
-  - Draft hazır: `drafts/mempal_discussion.md`. **Artık matched-protocol sayılar var; caveat satırını sil + tabloya sütun ekle, sonra post et.**
+  - Draft hazır: `drafts/mempal_discussion.md`. **Matched-protocol + FT-Code sonuçları var, post edilebilir.**
 
 ## How to resume (next session)
 
