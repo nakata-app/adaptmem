@@ -251,7 +251,7 @@ class AdaptMem:
     def rerank(
         self,
         query: str,
-        candidates: list[str] | list[tuple[str, str]] | list[dict],
+        candidates: list[str] | list[tuple[str, str]] | list[dict[str, Any]],
         top_k: int | None = None,
     ) -> list[tuple[int, float]]:
         """Cross-encoder rerank for externally-retrieved candidates.
@@ -270,15 +270,19 @@ class AdaptMem:
         """
         if not candidates:
             return []
-        if isinstance(candidates[0], tuple):
-            texts = [c[1] for c in candidates]
-        elif isinstance(candidates[0], dict):
-            texts = [c["text"] for c in candidates]
+        first = candidates[0]
+        texts: list[str]
+        if isinstance(first, tuple):
+            texts = [c[1] for c in candidates]  # type: ignore[index]
+        elif isinstance(first, dict):
+            texts = [c["text"] for c in candidates]  # type: ignore[index, call-overload]
         else:
-            texts = list(candidates)
+            texts = list(candidates)  # type: ignore[arg-type]
         self._ensure_rerank_model()
+        ce = self._rerank_model
+        assert ce is not None  # _ensure_rerank_model populates it
         pairs = [(query, t) for t in texts]
-        ce_scores = self._rerank_model.predict(pairs, show_progress_bar=False)
+        ce_scores = ce.predict(pairs, show_progress_bar=False)
         ranked = sorted(enumerate(ce_scores), key=lambda x: -float(x[1]))
         if top_k is not None:
             ranked = ranked[:top_k]
