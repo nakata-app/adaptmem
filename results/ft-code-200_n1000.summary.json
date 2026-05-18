@@ -1,0 +1,9 @@
+{
+  "checkpoint": "checkpoints/ft-code/ft-code-200",
+  "n_queries": 1000,
+  "n_corpus": 1000,
+  "R@1": 0.814,
+  "R@5": 0.948,
+  "R@10": 0.964,
+  "MRR": 0.8739338287889606
+}

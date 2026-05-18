@@ -1,0 +1,40 @@
+{
+  "experiment": "CodeSearchNet Python — bi-encoder vs bi+cross-encoder rerank",
+  "run_date": "2026-05-16",
+  "platform": "Kaggle",
+  "wallclock_minutes_approx": 120,
+  "n_queries": 21935,
+  "n_rerank_pairs": 438700,
+  "bi_alone": {
+    "R@1": 0.9260998404376567,
+    "R@5": 0.9823113745156143,
+    "R@10": 0.9854114428994757,
+    "MRR": 0.9519868292619051
+  },
+  "reranked": {
+    "R@1": 0.9370868475039891,
+    "R@5": 0.9838158194666059,
+    "R@10": 0.9863232277182585,
+    "MRR": 0.9587108676077547
+  },
+  "delta": {
+    "R@1": 0.010987007066332346,
+    "MRR": 0.006724038345849491
+  },
+  "verdict": "PASS (marjinal). Cross-encoder rerank R@1 +1.10pt, MRR +0.67pt. Pahalı (~2sa) ve marjinal kazanç; karar: prod'da default açma, sadece kritik query subset'inde değerlendir.",
+  "provenance_unknown": [
+    "bi_encoder_model_name",
+    "rerank_top_k",
+    "hard_negative_set_used"
+  ],
+  "artifacts": {
+    "model_checkpoint": "/Users/macmini/Projects/adaptmem/checkpoints/codecrossenc-v2-20260516/codecrossenc_v2/",
+    "model_safetensors_sha256": "e1c18fc39bace866caacfde0987364d6754e1c2e1ef107391ebd2dfeb4534f4f",
+    "model_safetensors_size_mb": 86.7,
+    "eval_dir": "/Users/macmini/Projects/adaptmem/results/kaggle_20260516/eval/",
+    "notebooks": "/Users/macmini/Projects/adaptmem/results/kaggle_20260516/*.ipynb",
+    "kaggle_dataset": "https://www.kaggle.com/datasets/atakanakbaba/codecrossenc-v2-20260516",
+    "kaggle_notebook": "https://www.kaggle.com/code/atakanakbaba/notebook3f2bfbf0de"
+  },
+  "raw_stdout_paste": "Loading weights: 100%|█| 105/105 [00:00<00:00, 1213.80it/s, Materializing param=\n[cross] 438700 pairs\nbi-alone : R@1=0.9261  MRR=0.952\nreranked : R@1=0.9371  MRR=0.9587\nPASS (marjinal)"
+}

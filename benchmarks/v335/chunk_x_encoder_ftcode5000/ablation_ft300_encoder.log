@@ -1,0 +1,671 @@
+============================================================
+  RUN: ft300_encoder  (encoder=FT-300)
+============================================================
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 103/103 [00:00<00:00, 7111.33it/s]
+[patch] encoder swapped to FT-300
+  No mempalace.yaml found in /Users/macmini/Projects/jphein-mempalace/mempalace — using auto-detected defaults (wing='mempalace'). Directories with the same basename will share a wing; add mempalace.yaml to disambiguate.
+  No mempalace.yaml found in /Users/macmini/Projects/jphein-mempalace/mempalace — using auto-detected defaults (wing='mempalace'). Directories with the same basename will share a wing; add mempalace.yaml to disambiguate.
+  No mempalace.yaml found in /Users/macmini/Projects/jphein-mempalace/mempalace — using auto-detected defaults (wing='mempalace'). Directories with the same basename will share a wing; add mempalace.yaml to disambiguate.
+  No mempalace.yaml found in /Users/macmini/Projects/jphein-mempalace/mempalace — using auto-detected defaults (wing='mempalace'). Directories with the same basename will share a wing; add mempalace.yaml to disambiguate.
+  No mempalace.yaml found in /Users/macmini/Projects/jphein-mempalace/mempalace — using auto-detected defaults (wing='mempalace'). Directories with the same basename will share a wing; add mempalace.yaml to disambiguate.
+  No mempalace.yaml found in /Users/macmini/Projects/jphein-mempalace/mempalace — using auto-detected defaults (wing='mempalace'). Directories with the same basename will share a wing; add mempalace.yaml to disambiguate.
+Corpus:    /Users/macmini/Projects/jphein-mempalace/mempalace
+Probes:    20
+Top-K:     10
+chunk_sizes: [400, 800]
+Strategies: A_paragraph_aware__cs400, B_heading_aware_md__cs400, C_plus_ast_python__cs400, A_paragraph_aware__cs800, B_heading_aware_md__cs800, C_plus_ast_python__cs800
+
+Workdir:   /var/folders/_g/xs7f_pwd71n61lz052dz6l200000gn/T/chunk_ablation_jcage4d_
+
+=== Strategy: A_paragraph_aware__cs400 ===
+
+=======================================================
+  MemPalace Mine
+=======================================================
+  Wing:    mempalace
+  Rooms:   general
+  Files:   73
+  Palace:  /var/folders/_g/xs7f_pwd71n61lz052dz6l200000gn/T/chunk_ablation_jcage4d_/A_paragraph_aware__cs400
+  Device:  coreml
+-------------------------------------------------------
+
+  + [   1/73] repair.py                                          +202
+  + [   2/73] sync.py                                            +38
+  + [   3/73] convo_scanner.py                                   +17
+  + [   4/73] project_scanner.py                                 +87
+  + [   5/73] config.py                                          +64
+  + [   6/73] version.py                                         +1
+  + [   7/73] miner.py                                           +174
+  + [   8/73] palace_graph.py                                    +91
+  + [   9/73] room_detector_local.py                             +36
+  + [  10/73] embedding.py                                       +18
+  + [  11/73] dialect.py                                         +117
+  + [  12/73] knowledge_graph.py                                 +73
+  + [  13/73] onboarding.py                                      +57
+  + [  14/73] searcher.py                                        +170
+  + [  15/73] exporter.py                                        +27
+  + [  16/73] normalize.py                                       +91
+  + [  17/73] spellcheck.py                                      +34
+  + [  18/73] __init__.py                                        +5
+  + [  19/73] fact_checker.py                                    +43
+  + [  20/73] README.md                                          +9
+  + [  21/73] general_extractor.py                               +51
+  + [  22/73] llm_refine.py                                      +65
+  + [  23/73] cli.py                                             +274
+  + [  24/73] dedup.py                                           +31
+  + [  25/73] llm_client.py                                      +56
+  + [  26/73] corpus_origin.py                                   +57
+  + [  27/73] _stdio.py                                          +10
+  + [  28/73] entity_registry.py                                 +83
+  + [  29/73] knowledge_graph_age.py                             +11
+  + [  30/73] sweeper.py                                         +42
+  + [  31/73] palace.py                                          +81
+  + [  32/73] instructions_cli.py                                +3
+  + [  33/73] closet_llm.py                                      +46
+  + [  34/73] split_mega_files.py                                +36
+  + [  35/73] layers.py                                          +68
+  + [  36/73] diary_ingest.py                                    +31
+  + [  37/73] migrate.py                                         +43
+  + [  38/73] __main__.py                                        +1
+  + [  39/73] hooks_cli.py                                       +120
+  + [  40/73] query_sanitizer.py                                 +26
+  + [  41/73] mcp_server.py                                      +309
+  + [  42/73] entity_detector.py                                 +93
+  + [  43/73] convo_miner.py                                     +73
+  + [  44/73] search.md                                          +7
+  + [  45/73] status.md                                          +6
+  + [  46/73] help.md                                            +14
+  + [  47/73] init.md                                            +11
+  + [  48/73] mine.md                                            +6
+  + [  49/73] registry.py                                        +20
+  + [  50/73] __init__.py                                        +7
+  + [  51/73] postgres.py                                        +111
+  + [  52/73] chroma.py                                          +215
+  + [  53/73] base.py                                            +41
+  + [  54/73] transforms.py                                      +27
+  + [  55/73] registry.py                                        +18
+  + [  56/73] __init__.py                                        +6
+  + [  57/73] context.py                                         +21
+  + [  58/73] base.py                                            +32
+  + [  59/73] ja.json                                            +4
+  + [  60/73] de.json                                            +19
+  + [  61/73] ru.json                                            +14
+  + [  62/73] zh-CN.json                                         +12
+  + [  63/73] be.json                                            +16
+  + [  64/73] __init__.py                                        +37
+  + [  65/73] en.json                                            +23
+  + [  66/73] it.json                                            +16
+  + [  67/73] fr.json                                            +17
+  + [  68/73] hi.json                                            +12
+  + [  69/73] pt-br.json                                         +14
+  + [  70/73] ko.json                                            +4
+  + [  71/73] zh-TW.json                                         +12
+  + [  72/73] id.json                                            +23
+  + [  73/73] es.json                                            +18
+
+=======================================================
+  Done.
+  Files processed: 73
+  Files skipped (already filed): 0
+  Drawers filed: 3747
+
+  By room:
+    general              73 files
+
+  Next: mempalace search "what you're looking for"
+=======================================================
+
+  drawers: 3747  mine_secs: 30.6
+  MRR: 0.543  Recall@5: 70.0%  Recall@10: 70.0%
+
+=== Strategy: B_heading_aware_md__cs400 ===
+
+=======================================================
+  MemPalace Mine
+=======================================================
+  Wing:    mempalace
+  Rooms:   general
+  Files:   73
+  Palace:  /var/folders/_g/xs7f_pwd71n61lz052dz6l200000gn/T/chunk_ablation_jcage4d_/B_heading_aware_md__cs400
+  Device:  coreml
+-------------------------------------------------------
+
+  + [   1/73] repair.py                                          +202
+  + [   2/73] sync.py                                            +38
+  + [   3/73] convo_scanner.py                                   +17
+  + [   4/73] project_scanner.py                                 +87
+  + [   5/73] config.py                                          +64
+  + [   6/73] version.py                                         +1
+  + [   7/73] miner.py                                           +174
+  + [   8/73] palace_graph.py                                    +91
+  + [   9/73] room_detector_local.py                             +36
+  + [  10/73] embedding.py                                       +18
+  + [  11/73] dialect.py                                         +117
+  + [  12/73] knowledge_graph.py                                 +73
+  + [  13/73] onboarding.py                                      +57
+  + [  14/73] searcher.py                                        +170
+  + [  15/73] exporter.py                                        +27
+  + [  16/73] normalize.py                                       +91
+  + [  17/73] spellcheck.py                                      +34
+  + [  18/73] __init__.py                                        +5
+  + [  19/73] fact_checker.py                                    +43
+  + [  20/73] README.md                                          +10
+  + [  21/73] general_extractor.py                               +51
+  + [  22/73] llm_refine.py                                      +65
+  + [  23/73] cli.py                                             +274
+  + [  24/73] dedup.py                                           +31
+  + [  25/73] llm_client.py                                      +56
+  + [  26/73] corpus_origin.py                                   +57
+  + [  27/73] _stdio.py                                          +10
+  + [  28/73] entity_registry.py                                 +83
+  + [  29/73] knowledge_graph_age.py                             +11
+  + [  30/73] sweeper.py                                         +42
+  + [  31/73] palace.py                                          +81
+  + [  32/73] instructions_cli.py                                +3
+  + [  33/73] closet_llm.py                                      +46
+  + [  34/73] split_mega_files.py                                +36
+  + [  35/73] layers.py                                          +68
+  + [  36/73] diary_ingest.py                                    +31
+  + [  37/73] migrate.py                                         +43
+  + [  38/73] __main__.py                                        +1
+  + [  39/73] hooks_cli.py                                       +120
+  + [  40/73] query_sanitizer.py                                 +26
+  + [  41/73] mcp_server.py                                      +309
+  + [  42/73] entity_detector.py                                 +93
+  + [  43/73] convo_miner.py                                     +73
+  + [  44/73] search.md                                          +9
+  + [  45/73] status.md                                          +7
+  + [  46/73] help.md                                            +16
+  + [  47/73] init.md                                            +13
+  + [  48/73] mine.md                                            +10
+  + [  49/73] registry.py                                        +20
+  + [  50/73] __init__.py                                        +7
+  + [  51/73] postgres.py                                        +111
+  + [  52/73] chroma.py                                          +215
+  + [  53/73] base.py                                            +41
+  + [  54/73] transforms.py                                      +27
+  + [  55/73] registry.py                                        +18
+  + [  56/73] __init__.py                                        +6
+  + [  57/73] context.py                                         +21
+  + [  58/73] base.py                                            +32
+  + [  59/73] ja.json                                            +4
+  + [  60/73] de.json                                            +19
+  + [  61/73] ru.json                                            +14
+  + [  62/73] zh-CN.json                                         +12
+  + [  63/73] be.json                                            +16
+  + [  64/73] __init__.py                                        +37
+  + [  65/73] en.json                                            +23
+  + [  66/73] it.json                                            +16
+  + [  67/73] fr.json                                            +17
+  + [  68/73] hi.json                                            +12
+  + [  69/73] pt-br.json                                         +14
+  + [  70/73] ko.json                                            +4
+  + [  71/73] zh-TW.json                                         +12
+  + [  72/73] id.json                                            +23
+  + [  73/73] es.json                                            +18
+
+=======================================================
+  Done.
+  Files processed: 73
+  Files skipped (already filed): 0
+  Drawers filed: 3759
+
+  By room:
+    general              73 files
+
+  Next: mempalace search "what you're looking for"
+=======================================================
+
+  drawers: 3759  mine_secs: 30.0
+  MRR: 0.543  Recall@5: 70.0%  Recall@10: 70.0%
+
+=== Strategy: C_plus_ast_python__cs400 ===
+
+=======================================================
+  MemPalace Mine
+=======================================================
+  Wing:    mempalace
+  Rooms:   general
+  Files:   73
+  Palace:  /var/folders/_g/xs7f_pwd71n61lz052dz6l200000gn/T/chunk_ablation_jcage4d_/C_plus_ast_python__cs400
+  Device:  coreml
+-------------------------------------------------------
+
+  + [   1/73] repair.py                                          +202
+  + [   2/73] sync.py                                            +38
+  + [   3/73] convo_scanner.py                                   +19
+  + [   4/73] project_scanner.py                                 +89
+  + [   5/73] config.py                                          +65
+  + [   6/73] version.py                                         +1
+  + [   7/73] miner.py                                           +168
+  + [   8/73] palace_graph.py                                    +96
+  + [   9/73] room_detector_local.py                             +37
+  + [  10/73] embedding.py                                       +18
+  + [  11/73] dialect.py                                         +117
+  + [  12/73] knowledge_graph.py                                 +73
+  + [  13/73] onboarding.py                                      +55
+  + [  14/73] searcher.py                                        +171
+  + [  15/73] exporter.py                                        +29
+  + [  16/73] normalize.py                                       +91
+  + [  17/73] spellcheck.py                                      +34
+  + [  18/73] __init__.py                                        +5
+  + [  19/73] fact_checker.py                                    +46
+  + [  20/73] README.md                                          +10
+  + [  21/73] general_extractor.py                               +51
+  + [  22/73] llm_refine.py                                      +65
+  + [  23/73] cli.py                                             +281
+  + [  24/73] dedup.py                                           +30
+  + [  25/73] llm_client.py                                      +56
+  + [  26/73] corpus_origin.py                                   +59
+  + [  27/73] _stdio.py                                          +10
+  + [  28/73] entity_registry.py                                 +83
+  + [  29/73] knowledge_graph_age.py                             +11
+  + [  30/73] sweeper.py                                         +41
+  + [  31/73] palace.py                                          +85
+  + [  32/73] instructions_cli.py                                +3
+  + [  33/73] closet_llm.py                                      +45
+  + [  34/73] split_mega_files.py                                +35
+  + [  35/73] layers.py                                          +68
+  + [  36/73] diary_ingest.py                                    +31
+  + [  37/73] migrate.py                                         +44
+  + [  38/73] __main__.py                                        +1
+  + [  39/73] hooks_cli.py                                       +120
+  + [  40/73] query_sanitizer.py                                 +26
+  + [  41/73] mcp_server.py                                      +319
+  + [  42/73] entity_detector.py                                 +92
+  + [  43/73] convo_miner.py                                     +71
+  + [  44/73] search.md                                          +9
+  + [  45/73] status.md                                          +7
+  + [  46/73] help.md                                            +16
+  + [  47/73] init.md                                            +13
+  + [  48/73] mine.md                                            +10
+  + [  49/73] registry.py                                        +23
+  + [  50/73] __init__.py                                        +7
+  + [  51/73] postgres.py                                        +113
+  + [  52/73] chroma.py                                          +218
+  + [  53/73] base.py                                            +45
+  + [  54/73] transforms.py                                      +31
+  + [  55/73] registry.py                                        +18
+  + [  56/73] __init__.py                                        +6
+  + [  57/73] context.py                                         +21
+  + [  58/73] base.py                                            +34
+  + [  59/73] ja.json                                            +4
+  + [  60/73] de.json                                            +19
+  + [  61/73] ru.json                                            +14
+  + [  62/73] zh-CN.json                                         +12
+  + [  63/73] be.json                                            +16
+  + [  64/73] __init__.py                                        +40
+  + [  65/73] en.json                                            +23
+  + [  66/73] it.json                                            +16
+  + [  67/73] fr.json                                            +17
+  + [  68/73] hi.json                                            +12
+  + [  69/73] pt-br.json                                         +14
+  + [  70/73] ko.json                                            +4
+  + [  71/73] zh-TW.json                                         +12
+  + [  72/73] id.json                                            +23
+  + [  73/73] es.json                                            +18
+
+=======================================================
+  Done.
+  Files processed: 73
+  Files skipped (already filed): 0
+  Drawers filed: 3806
+
+  By room:
+    general              73 files
+
+  Next: mempalace search "what you're looking for"
+=======================================================
+
+  drawers: 3806  mine_secs: 29.8
+  MRR: 0.560  Recall@5: 70.0%  Recall@10: 70.0%
+
+=== Strategy: A_paragraph_aware__cs800 ===
+
+=======================================================
+  MemPalace Mine
+=======================================================
+  Wing:    mempalace
+  Rooms:   general
+  Files:   73
+  Palace:  /var/folders/_g/xs7f_pwd71n61lz052dz6l200000gn/T/chunk_ablation_jcage4d_/A_paragraph_aware__cs800
+  Device:  coreml
+-------------------------------------------------------
+
+  + [   1/73] repair.py                                          +99
+  + [   2/73] sync.py                                            +18
+  + [   3/73] convo_scanner.py                                   +9
+  + [   4/73] project_scanner.py                                 +43
+  + [   5/73] config.py                                          +30
+  + [   6/73] version.py                                         +1
+  + [   7/73] miner.py                                           +86
+  + [   8/73] palace_graph.py                                    +46
+  + [   9/73] room_detector_local.py                             +20
+  + [  10/73] embedding.py                                       +8
+  + [  11/73] dialect.py                                         +61
+  + [  12/73] knowledge_graph.py                                 +38
+  + [  13/73] onboarding.py                                      +27
+  + [  14/73] searcher.py                                        +87
+  + [  15/73] exporter.py                                        +13
+  + [  16/73] normalize.py                                       +47
+  + [  17/73] spellcheck.py                                      +15
+  + [  18/73] __init__.py                                        +3
+  + [  19/73] fact_checker.py                                    +22
+  + [  20/73] README.md                                          +4
+  + [  21/73] general_extractor.py                               +24
+  + [  22/73] llm_refine.py                                      +32
+  + [  23/73] cli.py                                             +137
+  + [  24/73] dedup.py                                           +14
+  + [  25/73] llm_client.py                                      +28
+  + [  26/73] corpus_origin.py                                   +30
+  + [  27/73] _stdio.py                                          +6
+  + [  28/73] entity_registry.py                                 +43
+  + [  29/73] knowledge_graph_age.py                             +6
+  + [  30/73] sweeper.py                                         +22
+  + [  31/73] palace.py                                          +42
+  + [  32/73] instructions_cli.py                                +2
+  + [  33/73] closet_llm.py                                      +22
+  + [  34/73] split_mega_files.py                                +19
+  + [  35/73] layers.py                                          +31
+  + [  36/73] diary_ingest.py                                    +15
+  + [  37/73] migrate.py                                         +20
+  + [  38/73] __main__.py                                        +1
+  + [  39/73] hooks_cli.py                                       +60
+  + [  40/73] query_sanitizer.py                                 +13
+  + [  41/73] mcp_server.py                                      +154
+  + [  42/73] entity_detector.py                                 +47
+  + [  43/73] convo_miner.py                                     +35
+  + [  44/73] search.md                                          +4
+  + [  45/73] status.md                                          +3
+  + [  46/73] help.md                                            +7
+  + [  47/73] init.md                                            +5
+  + [  48/73] mine.md                                            +3
+  + [  49/73] registry.py                                        +11
+  + [  50/73] __init__.py                                        +3
+  + [  51/73] postgres.py                                        +56
+  + [  52/73] chroma.py                                          +108
+  + [  53/73] base.py                                            +20
+  + [  54/73] transforms.py                                      +14
+  + [  55/73] registry.py                                        +9
+  + [  56/73] __init__.py                                        +3
+  + [  57/73] context.py                                         +10
+  + [  58/73] base.py                                            +14
+  + [  59/73] ja.json                                            +2
+  + [  60/73] de.json                                            +9
+  + [  61/73] ru.json                                            +7
+  + [  62/73] zh-CN.json                                         +6
+  + [  63/73] be.json                                            +8
+  + [  64/73] __init__.py                                        +18
+  + [  65/73] en.json                                            +11
+  + [  66/73] it.json                                            +8
+  + [  67/73] fr.json                                            +9
+  + [  68/73] hi.json                                            +6
+  + [  69/73] pt-br.json                                         +7
+  + [  70/73] ko.json                                            +2
+  + [  71/73] zh-TW.json                                         +6
+  + [  72/73] id.json                                            +12
+  + [  73/73] es.json                                            +9
+
+=======================================================
+  Done.
+  Files processed: 73
+  Files skipped (already filed): 0
+  Drawers filed: 1870
+
+  By room:
+    general              73 files
+
+  Next: mempalace search "what you're looking for"
+=======================================================
+
+  drawers: 1870  mine_secs: 24.7
+  MRR: 0.533  Recall@5: 70.0%  Recall@10: 70.0%
+
+=== Strategy: B_heading_aware_md__cs800 ===
+
+=======================================================
+  MemPalace Mine
+=======================================================
+  Wing:    mempalace
+  Rooms:   general
+  Files:   73
+  Palace:  /var/folders/_g/xs7f_pwd71n61lz052dz6l200000gn/T/chunk_ablation_jcage4d_/B_heading_aware_md__cs800
+  Device:  coreml
+-------------------------------------------------------
+
+  + [   1/73] repair.py                                          +99
+  + [   2/73] sync.py                                            +18
+  + [   3/73] convo_scanner.py                                   +9
+  + [   4/73] project_scanner.py                                 +43
+  + [   5/73] config.py                                          +30
+  + [   6/73] version.py                                         +1
+  + [   7/73] miner.py                                           +86
+  + [   8/73] palace_graph.py                                    +46
+  + [   9/73] room_detector_local.py                             +20
+  + [  10/73] embedding.py                                       +8
+  + [  11/73] dialect.py                                         +61
+  + [  12/73] knowledge_graph.py                                 +38
+  + [  13/73] onboarding.py                                      +27
+  + [  14/73] searcher.py                                        +87
+  + [  15/73] exporter.py                                        +13
+  + [  16/73] normalize.py                                       +47
+  + [  17/73] spellcheck.py                                      +15
+  + [  18/73] __init__.py                                        +3
+  + [  19/73] fact_checker.py                                    +22
+  + [  20/73] README.md                                          +6
+  + [  21/73] general_extractor.py                               +24
+  + [  22/73] llm_refine.py                                      +32
+  + [  23/73] cli.py                                             +137
+  + [  24/73] dedup.py                                           +14
+  + [  25/73] llm_client.py                                      +28
+  + [  26/73] corpus_origin.py                                   +30
+  + [  27/73] _stdio.py                                          +6
+  + [  28/73] entity_registry.py                                 +43
+  + [  29/73] knowledge_graph_age.py                             +6
+  + [  30/73] sweeper.py                                         +22
+  + [  31/73] palace.py                                          +42
+  + [  32/73] instructions_cli.py                                +2
+  + [  33/73] closet_llm.py                                      +22
+  + [  34/73] split_mega_files.py                                +19
+  + [  35/73] layers.py                                          +31
+  + [  36/73] diary_ingest.py                                    +15
+  + [  37/73] migrate.py                                         +20
+  + [  38/73] __main__.py                                        +1
+  + [  39/73] hooks_cli.py                                       +60
+  + [  40/73] query_sanitizer.py                                 +13
+  + [  41/73] mcp_server.py                                      +154
+  + [  42/73] entity_detector.py                                 +47
+  + [  43/73] convo_miner.py                                     +35
+  + [  44/73] search.md                                          +8
+  + [  45/73] status.md                                          +6
+  + [  46/73] help.md                                            +12
+  + [  47/73] init.md                                            +10
+  + [  48/73] mine.md                                            +10
+  + [  49/73] registry.py                                        +11
+  + [  50/73] __init__.py                                        +3
+  + [  51/73] postgres.py                                        +56
+  + [  52/73] chroma.py                                          +108
+  + [  53/73] base.py                                            +20
+  + [  54/73] transforms.py                                      +14
+  + [  55/73] registry.py                                        +9
+  + [  56/73] __init__.py                                        +3
+  + [  57/73] context.py                                         +10
+  + [  58/73] base.py                                            +14
+  + [  59/73] ja.json                                            +2
+  + [  60/73] de.json                                            +9
+  + [  61/73] ru.json                                            +7
+  + [  62/73] zh-CN.json                                         +6
+  + [  63/73] be.json                                            +8
+  + [  64/73] __init__.py                                        +18
+  + [  65/73] en.json                                            +11
+  + [  66/73] it.json                                            +8
+  + [  67/73] fr.json                                            +9
+  + [  68/73] hi.json                                            +6
+  + [  69/73] pt-br.json                                         +7
+  + [  70/73] ko.json                                            +2
+  + [  71/73] zh-TW.json                                         +6
+  + [  72/73] id.json                                            +12
+  + [  73/73] es.json                                            +9
+
+=======================================================
+  Done.
+  Files processed: 73
+  Files skipped (already filed): 0
+  Drawers filed: 1896
+
+  By room:
+    general              73 files
+
+  Next: mempalace search "what you're looking for"
+=======================================================
+
+  drawers: 1896  mine_secs: 25.8
+  MRR: 0.529  Recall@5: 70.0%  Recall@10: 70.0%
+
+=== Strategy: C_plus_ast_python__cs800 ===
+
+=======================================================
+  MemPalace Mine
+=======================================================
+  Wing:    mempalace
+  Rooms:   general
+  Files:   73
+  Palace:  /var/folders/_g/xs7f_pwd71n61lz052dz6l200000gn/T/chunk_ablation_jcage4d_/C_plus_ast_python__cs800
+  Device:  coreml
+-------------------------------------------------------
+
+  + [   1/73] repair.py                                          +106
+  + [   2/73] sync.py                                            +21
+  + [   3/73] convo_scanner.py                                   +11
+  + [   4/73] project_scanner.py                                 +51
+  + [   5/73] config.py                                          +34
+  + [   6/73] version.py                                         +1
+  + [   7/73] miner.py                                           +92
+  + [   8/73] palace_graph.py                                    +51
+  + [   9/73] room_detector_local.py                             +20
+  + [  10/73] embedding.py                                       +10
+  + [  11/73] dialect.py                                         +61
+  + [  12/73] knowledge_graph.py                                 +41
+  + [  13/73] onboarding.py                                      +29
+  + [  14/73] searcher.py                                        +89
+  + [  15/73] exporter.py                                        +16
+  + [  16/73] normalize.py                                       +48
+  + [  17/73] spellcheck.py                                      +16
+  + [  18/73] __init__.py                                        +3
+  + [  19/73] fact_checker.py                                    +24
+  + [  20/73] README.md                                          +6
+  + [  21/73] general_extractor.py                               +25
+  + [  22/73] llm_refine.py                                      +35
+  + [  23/73] cli.py                                             +146
+  + [  24/73] dedup.py                                           +16
+  + [  25/73] llm_client.py                                      +30
+  + [  26/73] corpus_origin.py                                   +32
+  + [  27/73] _stdio.py                                          +6
+  + [  28/73] entity_registry.py                                 +43
+  + [  29/73] knowledge_graph_age.py                             +6
+  + [  30/73] sweeper.py                                         +22
+  + [  31/73] palace.py                                          +47
+  + [  32/73] instructions_cli.py                                +2
+  + [  33/73] closet_llm.py                                      +23
+  + [  34/73] split_mega_files.py                                +22
+  + [  35/73] layers.py                                          +32
+  + [  36/73] diary_ingest.py                                    +17
+  + [  37/73] migrate.py                                         +21
+  + [  38/73] __main__.py                                        +1
+  + [  39/73] hooks_cli.py                                       +62
+  + [  40/73] query_sanitizer.py                                 +13
+  + [  41/73] mcp_server.py                                      +165
+  + [  42/73] entity_detector.py                                 +47
+  + [  43/73] convo_miner.py                                     +35
+  + [  44/73] search.md                                          +8
+  + [  45/73] status.md                                          +6
+  + [  46/73] help.md                                            +12
+  + [  47/73] init.md                                            +10
+  + [  48/73] mine.md                                            +10
+  + [  49/73] registry.py                                        +14
+  + [  50/73] __init__.py                                        +3
+  + [  51/73] postgres.py                                        +59
+  + [  52/73] chroma.py                                          +114
+  + [  53/73] base.py                                            +28
+  + [  54/73] transforms.py                                      +20
+  + [  55/73] registry.py                                        +11
+  + [  56/73] __init__.py                                        +3
+  + [  57/73] context.py                                         +11
+  + [  58/73] base.py                                            +21
+  + [  59/73] ja.json                                            +2
+  + [  60/73] de.json                                            +9
+  + [  61/73] ru.json                                            +7
+  + [  62/73] zh-CN.json                                         +6
+  + [  63/73] be.json                                            +8
+  + [  64/73] __init__.py                                        +21
+  + [  65/73] en.json                                            +11
+  + [  66/73] it.json                                            +8
+  + [  67/73] fr.json                                            +9
+  + [  68/73] hi.json                                            +6
+  + [  69/73] pt-br.json                                         +7
+  + [  70/73] ko.json                                            +2
+  + [  71/73] zh-TW.json                                         +6
+  + [  72/73] id.json                                            +12
+  + [  73/73] es.json                                            +9
+
+=======================================================
+  Done.
+  Files processed: 73
+  Files skipped (already filed): 0
+  Drawers filed: 2031
+
+  By room:
+    general              73 files
+
+  Next: mempalace search "what you're looking for"
+=======================================================
+
+  drawers: 2031  mine_secs: 26.3
+  MRR: 0.517  Recall@5: 65.0%  Recall@10: 70.0%
+
+==========================================================================================
+chunk_size=400                A_paragraph_aware    B_heading_aware_md     C_plus_ast_python
+------------------------------------------------------------------------------------------
+  drawer_count                            3747                  3759                  3806
+  mrr                                   0.5433                0.5433                  0.56
+  recall_at_5_pct                         70.0                  70.0                  70.0
+  recall_at_10_pct                        70.0                  70.0                  70.0
+==========================================================================================
+
+==========================================================================================
+chunk_size=800                A_paragraph_aware    B_heading_aware_md     C_plus_ast_python
+------------------------------------------------------------------------------------------
+  drawer_count                            1870                  1896                  2031
+  mrr                                   0.5333                0.5292                0.5167
+  recall_at_5_pct                         70.0                  70.0                  65.0
+  recall_at_10_pct                        70.0                  70.0                  70.0
+==========================================================================================
+
+Per-probe rank table ('-' = not in top-K).
+Columns: A_paragraph_aware cs400, B_heading_aware_md cs400, C_plus_ast_python cs400, A_paragraph_aware cs800, B_heading_aware_md cs800, C_plus_ast_python cs800
+  [  3,  3,  4,  3,  3,  3]  expects=hooks_cli.py           q=How does the stop hook save diary entries?
+  [  1,  1,  1,  1,  1,  1]  expects=chroma.py              q=ChromaDB HNSW segment quarantine for stale indexes
+  [  1,  1,  1,  1,  1,  1]  expects=searcher.py            q=BM25 tokenization with None-document safety
+  [  2,  2,  2,  3,  3,  3]  expects=config.py              q=How is a wing name normalized — hyphens vs underscores?
+  [  1,  1,  1,  3,  3,  2]  expects=miner.py               q=Validate chunk_size to prevent the infinite loop hazard
+  [  1,  1,  1,  1,  1,  1]  expects=hooks_cli.py           q=Pre-PreCompact transcript auto-mining via daemon /mine 
+  [  5,  5,  5,  3,  4,  6]  expects=palace.py              q=Topic-routing branch routing checkpoint diary writes to
+  [  1,  1,  1,  1,  1,  1]  expects=config.py              q=Knowledge-graph entity validation that allows commas an
+  [  1,  1,  1,  1,  1,  1]  expects=searcher.py            q=Closet-boost rank constants used to re-order vector hit
+  [  1,  1,  1,  1,  1,  1]  expects=searcher.py            q=Hybrid rank combining BM25 with cosine similarity
+  [  -,  -,  -,  -,  -,  -]  expects=convo_miner.py         q=Wing assignment from Claude Code transcript path regex
+  [  2,  2,  4,  3,  3,  2]  expects=chroma.py              q=Detect HNSW capacity divergence and quarantine the segm
+  [  3,  3,  1,  1,  1,  2]  expects=spellcheck.py          q=Spellcheck user prose before writing to drawers
+  [  1,  1,  1,  1,  1,  1]  expects=normalize.py           q=Slack JSON export normalization with positional speaker
+  [  1,  1,  1,  1,  1,  1]  expects=searcher.py            q=Build the where filter for wing/room scoping in chromad
+  [  -,  -,  -,  -,  -,  -]  expects=2026-04-25-checkpoint-collection-split.md q=Why did we move checkpoints into a separate recovery co
+  [  -,  -,  -,  -,  -,  -]  expects=2026-05-05-verbatim-only-design.md q=Verbatim-only Phase 2 architecture and migration plan
+  [  -,  -,  -,  -,  -,  -]  expects=RELEASING.md           q=Pre-release grep checklist for mempalace-mcp entry poin
+  [  -,  -,  -,  -,  -,  -]  expects=CLAUDE.md              q=Fork-ahead row inventory and upstream PR tracking table
+  [  -,  -,  -,  -,  -,  -]  expects=CLAUDE.md              q=Hook silent_save vs block-mode behavior — why one beats
+
+Full results: /Users/macmini/Projects/adaptmem/benchmarks/v335/chunk_x_encoder_ftcode5000/ablation_ft300_encoder.json
+
+[exit] 0

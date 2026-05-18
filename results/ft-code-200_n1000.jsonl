@@ -1,0 +1,1000 @@
+{"qi": 0, "query": "Extracts video ID from URL.", "truth": "ts0", "rank": 2, "top1": "ts27"}
+{"qi": 1, "query": "str->list", "truth": "ts1", "rank": 5, "top1": "ts472"}
+{"qi": 2, "query": "From http://cdn37.atwikiimg.com/sitescript/pub/dksitescript/FC2.site.js", "truth": "ts2", "rank": 1, "top1": "ts2"}
+{"qi": 3, "query": "Downloads Dailymotion videos by URL.", "truth": "ts4", "rank": 1, "top1": "ts4"}
+{"qi": 4, "query": "http://stackoverflow.com/a/30923963/2946714", "truth": "ts5", "rank": 50, "top1": "ts568"}
+{"qi": 5, "query": "video page", "truth": "ts6", "rank": 9, "top1": "ts24"}
+{"qi": 6, "query": "course page", "truth": "ts7", "rank": 1, "top1": "ts7"}
+{"qi": 7, "query": "Downloads a Sina video by its unique vid.", "truth": "ts8", "rank": 1, "top1": "ts8"}
+{"qi": 8, "query": "Downloads a Sina video by its unique vkey.", "truth": "ts9", "rank": 1, "top1": "ts9"}
+{"qi": 9, "query": "Downloads Sina videos by URL.", "truth": "ts10", "rank": 3, "top1": "ts8"}
+{"qi": 10, "query": "Get item_id", "truth": "ts12", "rank": 4, "top1": "ts290"}
+{"qi": 11, "query": "Source: Android mobile", "truth": "ts13", "rank": 2, "top1": "ts47"}
+{"qi": 12, "query": "self, str->None", "truth": "ts14", "rank": 44, "top1": "ts172"}
+{"qi": 13, "query": "Extracts video ID from live.qq.com.", "truth": "ts15", "rank": 1, "top1": "ts15"}
+{"qi": 14, "query": "Format text with color or other effects into ANSI escaped string.", "truth": "ts16", "rank": 1, "top1": "ts16"}
+{"qi": 15, "query": "Print a log message to standard error.", "truth": "ts17", "rank": 1, "top1": "ts17"}
+{"qi": 16, "query": "Print an error log message.", "truth": "ts18", "rank": 3, "top1": "ts17"}
+{"qi": 17, "query": "What a Terrible Failure!", "truth": "ts19", "rank": 2, "top1": "ts348"}
+{"qi": 18, "query": "Detect operating system.", "truth": "ts20", "rank": 1, "top1": "ts20"}
+{"qi": 19, "query": "Source: Android mobile", "truth": "ts21", "rank": 3, "top1": "ts47"}
+{"qi": 20, "query": "str/int->None", "truth": "ts23", "rank": 91, "top1": "ts112"}
+{"qi": 21, "query": "try:", "truth": "ts24", "rank": 56, "top1": "ts574"}
+{"qi": 22, "query": "str->dict", "truth": "ts25", "rank": 11, "top1": "ts682"}
+{"qi": 23, "query": "Splicing URLs according to video ID to get video details", "truth": "ts26", "rank": 1, "top1": "ts26"}
+{"qi": 24, "query": "Extracts video ID from URL.", "truth": "ts27", "rank": 1, "top1": "ts27"}
+{"qi": 25, "query": "str->list of str", "truth": "ts28", "rank": 55, "top1": "ts472"}
+{"qi": 26, "query": "Get (branch, commit) from HEAD of a git repo.", "truth": "ts29", "rank": 1, "top1": "ts29"}
+{"qi": 27, "query": "Converts a string to a valid filename.", "truth": "ts30", "rank": 1, "top1": "ts30"}
+{"qi": 28, "query": "Get (width, height) of the current terminal.", "truth": "ts31", "rank": 1, "top1": "ts31"}
+{"qi": 29, "query": "Downloads CBS videos by URL.", "truth": "ts32", "rank": 1, "top1": "ts32"}
+{"qi": 30, "query": "Override the original one", "truth": "ts33", "rank": 11, "top1": "ts901"}
+{"qi": 31, "query": "str, str, str, bool, bool ->None", "truth": "ts34", "rank": 685, "top1": "ts1010"}
+{"qi": 32, "query": "Main entry point.", "truth": "ts35", "rank": 8, "top1": "ts407"}
+{"qi": 33, "query": "str, str->True", "truth": "ts36", "rank": 13, "top1": "ts1010"}
+{"qi": 34, "query": "Scans through a string for substrings matched some patterns (first-subgroups only).", "truth": "ts37", "rank": 1, "top1": "ts37"}
+{"qi": 35, "query": "Scans through a string for substrings matched some patterns.", "truth": "ts38", "rank": 1, "top1": "ts38"}
+{"qi": 36, "query": "Parses the query string of a URL and returns the value of a parameter.", "truth": "ts39", "rank": 1, "top1": "ts39"}
+{"qi": 37, "query": "Decompresses data for Content-Encoding: gzip.", "truth": "ts40", "rank": 1, "top1": "ts40"}
+{"qi": 38, "query": "Decompresses data for Content-Encoding: deflate.", "truth": "ts41", "rank": 1, "top1": "ts41"}
+{"qi": 39, "query": "Gets the content of a URL via sending a HTTP GET request.", "truth": "ts42", "rank": 1, "top1": "ts42"}
+{"qi": 40, "query": "Post the content of a URL via sending a HTTP POST request.", "truth": "ts43", "rank": 1, "top1": "ts43"}
+{"qi": 41, "query": "Parses host name and port number from a string.", "truth": "ts44", "rank": 1, "top1": "ts44"}
+{"qi": 42, "query": "Overload default print function as py (<3.3) does not support 'flush' keyword.", "truth": "ts45", "rank": 1, "top1": "ts45"}
+{"qi": 43, "query": "Source: Android mobile", "truth": "ts47", "rank": 1, "top1": "ts47"}
+{"qi": 44, "query": "JSON, int, int, int->str", "truth": "ts48", "rank": 2, "top1": "ts261"}
+{"qi": 45, "query": "int->None", "truth": "ts49", "rank": 444, "top1": "ts516"}
+{"qi": 46, "query": "int, int, int->None", "truth": "ts50", "rank": 432, "top1": "ts516"}
+{"qi": 47, "query": "int, int->list", "truth": "ts51", "rank": 391, "top1": "ts1002"}
+{"qi": 48, "query": "Checks if a task is either queued or running in this executor", "truth": "ts52", "rank": 1, "top1": "ts52"}
+{"qi": 49, "query": "Returns and flush the event buffer. In case dag_ids is specified", "truth": "ts53", "rank": 1, "top1": "ts53"}
+{"qi": 50, "query": "one method to fetch connection params as a dict", "truth": "ts54", "rank": 1, "top1": "ts54"}
+{"qi": 51, "query": "override DbApiHook get_uri method for get_sqlalchemy_engine()", "truth": "ts55", "rank": 1, "top1": "ts55"}
+{"qi": 52, "query": "Returns a snowflake.connection object", "truth": "ts56", "rank": 1, "top1": "ts56"}
+{"qi": 53, "query": "returns aws_access_key_id, aws_secret_access_key", "truth": "ts57", "rank": 1, "top1": "ts57"}
+{"qi": 54, "query": "Fetches a field from extras, and returns it. This is some Airflow", "truth": "ts58", "rank": 1, "top1": "ts58"}
+{"qi": 55, "query": "Executes SQL using psycopg2 copy_expert method.", "truth": "ts59", "rank": 1, "top1": "ts59"}
+{"qi": 56, "query": "Loads a tab-delimited file into a database table", "truth": "ts60", "rank": 2, "top1": "ts67"}
+{"qi": 57, "query": "Dumps a database table into a tab-delimited file", "truth": "ts61", "rank": 1, "top1": "ts61"}
+{"qi": 58, "query": "Uploads the file to Google cloud storage", "truth": "ts62", "rank": 1, "top1": "ts62"}
+{"qi": 59, "query": "Gets the max partition for a table.", "truth": "ts63", "rank": 3, "top1": "ts551"}
+{"qi": 60, "query": "This function finds the date in a list closest to the target date.", "truth": "ts64", "rank": 1, "top1": "ts64"}
+{"qi": 61, "query": "This function finds the date in a list closest to the target date.", "truth": "ts65", "rank": 2, "top1": "ts64"}
+{"qi": 62, "query": "Returns a mysql connection object", "truth": "ts66", "rank": 1, "top1": "ts66"}
+{"qi": 63, "query": "Loads a tab-delimited file into a database table", "truth": "ts67", "rank": 1, "top1": "ts67"}
+{"qi": 64, "query": "Checks whether new objects have been uploaded and the inactivity_period", "truth": "ts68", "rank": 1, "top1": "ts68"}
+{"qi": 65, "query": "Helps debug deadlocks by printing stacktraces when this gets a SIGQUIT", "truth": "ts69", "rank": 1, "top1": "ts69"}
+{"qi": 66, "query": "Creates a dag run for the specified dag", "truth": "ts70", "rank": 13, "top1": "ts477"}
+{"qi": 67, "query": "Deletes all DB records related to the specified dag", "truth": "ts71", "rank": 3, "top1": "ts288"}
+{"qi": 68, "query": "Returns the unmet dependencies for a task instance from the perspective of the", "truth": "ts72", "rank": 3, "top1": "ts165"}
+{"qi": 69, "query": "Returns the state of a TaskInstance at the command line.", "truth": "ts73", "rank": 1, "top1": "ts73"}
+{"qi": 70, "query": "Returns the state of a DagRun at the command line.", "truth": "ts74", "rank": 1, "top1": "ts74"}
+{"qi": 71, "query": "Returns the next execution datetime of a DAG at the command line.", "truth": "ts75", "rank": 1, "top1": "ts75"}
+{"qi": 72, "query": "Runs forever, monitoring the child processes of @gunicorn_master_proc and", "truth": "ts76", "rank": 1, "top1": "ts76"}
+{"qi": 73, "query": "Retrieves connection to Cloud Translate", "truth": "ts77", "rank": 1, "top1": "ts77"}
+{"qi": 74, "query": "Translate a string or list of strings.", "truth": "ts78", "rank": 1, "top1": "ts78"}
+{"qi": 75, "query": "Execute the bash command in a temporary directory", "truth": "ts79", "rank": 2, "top1": "ts646"}
+{"qi": 76, "query": "Retrieves a resource containing information about a Cloud SQL instance.", "truth": "ts80", "rank": 1, "top1": "ts80"}
+{"qi": 77, "query": "Creates a new Cloud SQL instance.", "truth": "ts81", "rank": 3, "top1": "ts749"}
+{"qi": 78, "query": "Updates settings of a Cloud SQL instance.", "truth": "ts82", "rank": 1, "top1": "ts82"}
+{"qi": 79, "query": "Deletes a Cloud SQL instance.", "truth": "ts83", "rank": 3, "top1": "ts87"}
+{"qi": 80, "query": "Retrieves a database resource from a Cloud SQL instance.", "truth": "ts84", "rank": 1, "top1": "ts84"}
+{"qi": 81, "query": "Creates a new database inside a Cloud SQL instance.", "truth": "ts85", "rank": 1, "top1": "ts85"}
+{"qi": 82, "query": "Updates a database resource inside a Cloud SQL instance.", "truth": "ts86", "rank": 2, "top1": "ts750"}
+{"qi": 83, "query": "Deletes a database from a Cloud SQL instance.", "truth": "ts87", "rank": 1, "top1": "ts87"}
+{"qi": 84, "query": "Exports data from a Cloud SQL instance to a Cloud Storage bucket as a SQL dump", "truth": "ts88", "rank": 2, "top1": "ts235"}
+{"qi": 85, "query": "Waits for the named operation to complete - checks status of the", "truth": "ts89", "rank": 3, "top1": "ts155"}
+{"qi": 86, "query": "Starts Cloud SQL Proxy.", "truth": "ts90", "rank": 1, "top1": "ts90"}
+{"qi": 87, "query": "Stops running proxy.", "truth": "ts91", "rank": 1, "top1": "ts91"}
+{"qi": 88, "query": "Returns version of the Cloud SQL Proxy.", "truth": "ts92", "rank": 1, "top1": "ts92"}
+{"qi": 89, "query": "Create connection in the Connection table, according to whether it uses", "truth": "ts93", "rank": 2, "top1": "ts94"}
+{"qi": 90, "query": "Retrieves the dynamically created connection from the Connection table.", "truth": "ts94", "rank": 1, "top1": "ts94"}
+{"qi": 91, "query": "Delete the dynamically created connection from the Connection table.", "truth": "ts95", "rank": 1, "top1": "ts95"}
+{"qi": 92, "query": "Retrieve Cloud SQL Proxy runner. It is used to manage the proxy", "truth": "ts96", "rank": 1, "top1": "ts96"}
+{"qi": 93, "query": "Retrieve database hook. This is the actual Postgres or MySQL database hook", "truth": "ts97", "rank": 1, "top1": "ts97"}
+{"qi": 94, "query": "Clean up database hook after it was used.", "truth": "ts98", "rank": 1, "top1": "ts98"}
+{"qi": 95, "query": "Reserve free TCP port to be used by Cloud SQL Proxy", "truth": "ts99", "rank": 1, "top1": "ts99"}
+{"qi": 96, "query": "Replaces invalid MLEngine job_id characters with '_'.", "truth": "ts100", "rank": 1, "top1": "ts100"}
+{"qi": 97, "query": "Extract error code from ftp exception", "truth": "ts101", "rank": 1, "top1": "ts101"}
+{"qi": 98, "query": "Integrate plugins to the context", "truth": "ts102", "rank": 5, "top1": "ts280"}
+{"qi": 99, "query": "Remove any existing DAG runs for the perf test DAGs.", "truth": "ts103", "rank": 1, "top1": "ts103"}
+{"qi": 100, "query": "Remove any existing task instances for the perf test DAGs.", "truth": "ts104", "rank": 1, "top1": "ts104"}
+{"qi": 101, "query": "Toggle the pause state of the DAGs in the test.", "truth": "ts105", "rank": 1, "top1": "ts105"}
+{"qi": 102, "query": "Print operational metrics for the scheduler test.", "truth": "ts106", "rank": 1, "top1": "ts106"}
+{"qi": 103, "query": "Override the scheduler heartbeat to determine when the test is complete", "truth": "ts107", "rank": 1, "top1": "ts107"}
+{"qi": 104, "query": "Invoke Lambda Function", "truth": "ts108", "rank": 1, "top1": "ts108"}
+{"qi": 105, "query": "Return the task object identified by the given dag_id and task_id.", "truth": "ts109", "rank": 4, "top1": "ts243"}
+{"qi": 106, "query": "Creates Operators needed for model evaluation and returns.", "truth": "ts110", "rank": 1, "top1": "ts110"}
+{"qi": 107, "query": "Creates the directory specified by path, creating intermediate directories", "truth": "ts111", "rank": 1, "top1": "ts111"}
+{"qi": 108, "query": "A small helper function to convert a string to a numeric value", "truth": "ts112", "rank": 1, "top1": "ts112"}
+{"qi": 109, "query": "Get the current date and time in UTC", "truth": "ts113", "rank": 1, "top1": "ts113"}
+{"qi": 110, "query": "Gets the epoch in the users timezone", "truth": "ts114", "rank": 1, "top1": "ts114"}
+{"qi": 111, "query": "Returns the datetime with the default timezone added if timezone", "truth": "ts115", "rank": 1, "top1": "ts115"}
+{"qi": 112, "query": "Make a naive datetime.datetime in a given time zone aware.", "truth": "ts116", "rank": 3, "top1": "ts117"}
+{"qi": 113, "query": "Make an aware datetime.datetime naive in a given time zone.", "truth": "ts117", "rank": 1, "top1": "ts117"}
+{"qi": 114, "query": "Wrapper around datetime.datetime that adds settings.TIMEZONE if tzinfo not specified", "truth": "ts118", "rank": 1, "top1": "ts118"}
+{"qi": 115, "query": "Sets the environment variable `GOOGLE_APPLICATION_CREDENTIALS` with either:", "truth": "ts119", "rank": 1, "top1": "ts119"}
+{"qi": 116, "query": "Fetches a field from extras, and returns it. This is some Airflow", "truth": "ts120", "rank": 2, "top1": "ts58"}
+{"qi": 117, "query": "Establish a connection to druid broker.", "truth": "ts121", "rank": 1, "top1": "ts121"}
+{"qi": 118, "query": "Returns http session for use with requests", "truth": "ts122", "rank": 1, "top1": "ts122"}
+{"qi": 119, "query": "Performs the request", "truth": "ts123", "rank": 1, "top1": "ts123"}
+{"qi": 120, "query": "Checks the status code and raise an AirflowException exception on non 2XX or 3XX", "truth": "ts124", "rank": 1, "top1": "ts124"}
+{"qi": 121, "query": "Grabs extra options like timeout and actually runs the request,", "truth": "ts125", "rank": 1, "top1": "ts125"}
+{"qi": 122, "query": "Runs Hook.run() with a Tenacity decorator attached to it. This is useful for", "truth": "ts126", "rank": 1, "top1": "ts126"}
+{"qi": 123, "query": "Contextmanager that will create and teardown a session.", "truth": "ts127", "rank": 1, "top1": "ts127"}
+{"qi": 124, "query": "Function decorator that provides a session if it isn't provided.", "truth": "ts128", "rank": 1, "top1": "ts128"}
+{"qi": 125, "query": "Clear out the database", "truth": "ts129", "rank": 2, "top1": "ts142"}
+{"qi": 126, "query": "Upload a file to Azure Blob Storage.", "truth": "ts130", "rank": 1, "top1": "ts130"}
+{"qi": 127, "query": "Returns a connection object", "truth": "ts131", "rank": 7, "top1": "ts826"}
+{"qi": 128, "query": "Parses some DatabaseError to provide a better error message", "truth": "ts132", "rank": 1, "top1": "ts132"}
+{"qi": 129, "query": "Get a set of records from Presto", "truth": "ts133", "rank": 1, "top1": "ts133"}
+{"qi": 130, "query": "Get a pandas dataframe from a sql query.", "truth": "ts134", "rank": 2, "top1": "ts827"}
+{"qi": 131, "query": "Execute the statement against Presto. Can be used to create views.", "truth": "ts135", "rank": 1, "top1": "ts135"}
+{"qi": 132, "query": "A generic way to insert a set of tuples into a table.", "truth": "ts136", "rank": 1, "top1": "ts136"}
+{"qi": 133, "query": "Return a cosmos db client.", "truth": "ts137", "rank": 1, "top1": "ts137"}
+{"qi": 134, "query": "Checks if a collection exists in CosmosDB.", "truth": "ts138", "rank": 1, "top1": "ts138"}
+{"qi": 135, "query": "Creates a new collection in the CosmosDB database.", "truth": "ts139", "rank": 2, "top1": "ts145"}
+{"qi": 136, "query": "Checks if a database exists in CosmosDB.", "truth": "ts140", "rank": 1, "top1": "ts140"}
+{"qi": 137, "query": "Creates a new database in CosmosDB.", "truth": "ts141", "rank": 1, "top1": "ts141"}
+{"qi": 138, "query": "Deletes an existing database in CosmosDB.", "truth": "ts142", "rank": 1, "top1": "ts142"}
+{"qi": 139, "query": "Deletes an existing collection in the CosmosDB database.", "truth": "ts143", "rank": 1, "top1": "ts143"}
+{"qi": 140, "query": "Inserts a new document (or updates an existing one) into an existing", "truth": "ts144", "rank": 1, "top1": "ts144"}
+{"qi": 141, "query": "Insert a list of new documents into an existing collection in the CosmosDB database.", "truth": "ts145", "rank": 1, "top1": "ts145"}
+{"qi": 142, "query": "Delete an existing document out of a collection in the CosmosDB database.", "truth": "ts146", "rank": 1, "top1": "ts146"}
+{"qi": 143, "query": "Get a document from an existing collection in the CosmosDB database.", "truth": "ts147", "rank": 1, "top1": "ts147"}
+{"qi": 144, "query": "Get a list of documents from an existing collection in the CosmosDB database via SQL query.", "truth": "ts148", "rank": 1, "top1": "ts148"}
+{"qi": 145, "query": "Return python code of a given dag_id.", "truth": "ts149", "rank": 2, "top1": "ts290"}
+{"qi": 146, "query": "Returns the Cloud Function with the given name.", "truth": "ts150", "rank": 1, "top1": "ts150"}
+{"qi": 147, "query": "Creates a new function in Cloud Function in the location specified in the body.", "truth": "ts151", "rank": 1, "top1": "ts151"}
+{"qi": 148, "query": "Updates Cloud Functions according to the specified update mask.", "truth": "ts152", "rank": 1, "top1": "ts152"}
+{"qi": 149, "query": "Uploads zip file with sources.", "truth": "ts153", "rank": 1, "top1": "ts153"}
+{"qi": 150, "query": "Deletes the specified Cloud Function.", "truth": "ts154", "rank": 1, "top1": "ts154"}
+{"qi": 151, "query": "Waits for the named operation to complete - checks status of the", "truth": "ts155", "rank": 1, "top1": "ts155"}
+{"qi": 152, "query": "Publishes messages to a Pub/Sub topic.", "truth": "ts156", "rank": 1, "top1": "ts156"}
+{"qi": 153, "query": "Creates a Pub/Sub topic, if it does not already exist.", "truth": "ts157", "rank": 1, "top1": "ts157"}
+{"qi": 154, "query": "Deletes a Pub/Sub topic if it exists.", "truth": "ts158", "rank": 1, "top1": "ts158"}
+{"qi": 155, "query": "Creates a Pub/Sub subscription, if it does not already exist.", "truth": "ts159", "rank": 1, "top1": "ts159"}
+{"qi": 156, "query": "Deletes a Pub/Sub subscription, if it exists.", "truth": "ts160", "rank": 1, "top1": "ts160"}
+{"qi": 157, "query": "Pulls up to ``max_messages`` messages from Pub/Sub subscription.", "truth": "ts161", "rank": 1, "top1": "ts161"}
+{"qi": 158, "query": "Pulls up to ``max_messages`` messages from Pub/Sub subscription.", "truth": "ts162", "rank": 2, "top1": "ts161"}
+{"qi": 159, "query": "Wrapper around the private _get_dep_statuses method that contains some global", "truth": "ts163", "rank": 1, "top1": "ts163"}
+{"qi": 160, "query": "Returns whether or not this dependency is met for a given task instance. A", "truth": "ts164", "rank": 1, "top1": "ts164"}
+{"qi": 161, "query": "Returns an iterable of strings that explain why this dependency wasn't met.", "truth": "ts165", "rank": 1, "top1": "ts165"}
+{"qi": 162, "query": "Parses a config file for s3 credentials. Can currently", "truth": "ts166", "rank": 1, "top1": "ts166"}
+{"qi": 163, "query": "Get the underlying `botocore.Credentials` object.", "truth": "ts167", "rank": 1, "top1": "ts167"}
+{"qi": 164, "query": "If the IAM role is a role name, get the Amazon Resource Name (ARN) for the role.", "truth": "ts168", "rank": 1, "top1": "ts168"}
+{"qi": 165, "query": "Returns verticaql connection object", "truth": "ts169", "rank": 1, "top1": "ts169"}
+{"qi": 166, "query": "Walks the tree of loggers and tries to set the context for each handler", "truth": "ts170", "rank": 1, "top1": "ts170"}
+{"qi": 167, "query": "Do whatever it takes to actually log the specified logging record", "truth": "ts171", "rank": 1, "top1": "ts171"}
+{"qi": 168, "query": "Ensure all logging output has been flushed", "truth": "ts172", "rank": 1, "top1": "ts172"}
+{"qi": 169, "query": "If the path contains a folder with a .zip suffix, then", "truth": "ts173", "rank": 1, "top1": "ts173"}
+{"qi": 170, "query": "Traverse a directory and look for Python files.", "truth": "ts174", "rank": 1, "top1": "ts174"}
+{"qi": 171, "query": "Construct a TaskInstance from the database based on the primary key", "truth": "ts175", "rank": 1, "top1": "ts175"}
+{"qi": 172, "query": ":param dag_id: DAG ID", "truth": "ts176", "rank": 1, "top1": "ts176"}
+{"qi": 173, "query": "Launch DagFileProcessorManager processor and start DAG parsing loop in manager.", "truth": "ts177", "rank": 1, "top1": "ts177"}
+{"qi": 174, "query": "Harvest DAG parsing results from result queue and sync metadata from stat queue.", "truth": "ts178", "rank": 1, "top1": "ts178"}
+{"qi": 175, "query": "Heartbeat DAG file processor and start it if it is not alive.", "truth": "ts179", "rank": 1, "top1": "ts179"}
+{"qi": 176, "query": "Sync metadata from stat queue and only keep the latest stat.", "truth": "ts180", "rank": 1, "top1": "ts180"}
+{"qi": 177, "query": "Send termination signal to DAG parsing processor manager", "truth": "ts181", "rank": 1, "top1": "ts181"}
+{"qi": 178, "query": "Terminate (and then kill) the manager process launched.", "truth": "ts182", "rank": 1, "top1": "ts182"}
+{"qi": 179, "query": "Helper method to clean up DAG file processors to avoid leaving orphan processes.", "truth": "ts183", "rank": 1, "top1": "ts183"}
+{"qi": 180, "query": "Use multiple processes to parse and generate tasks for the", "truth": "ts184", "rank": 1, "top1": "ts184"}
+{"qi": 181, "query": "Parse DAG files repeatedly in a standalone loop.", "truth": "ts185", "rank": 1, "top1": "ts185"}
+{"qi": 182, "query": "Parse DAG files in a loop controlled by DagParsingSignal.", "truth": "ts186", "rank": 1, "top1": "ts186"}
+{"qi": 183, "query": "Refresh file paths from dag dir if we haven't done it for too long.", "truth": "ts187", "rank": 2, "top1": "ts194"}
+{"qi": 184, "query": "Occasionally print out stats about how fast the files are getting processed", "truth": "ts188", "rank": 1, "top1": "ts188"}
+{"qi": 185, "query": "Clears import errors for files that no longer exist.", "truth": "ts189", "rank": 1, "top1": "ts189"}
+{"qi": 186, "query": "Print out stats about how files are getting processed.", "truth": "ts190", "rank": 2, "top1": "ts188"}
+{"qi": 187, "query": ":param file_path: the path to the file that's being processed", "truth": "ts191", "rank": 1, "top1": "ts191"}
+{"qi": 188, "query": ":param file_path: the path to the file that's being processed", "truth": "ts192", "rank": 2, "top1": "ts191"}
+{"qi": 189, "query": ":param file_path: the path to the file that's being processed", "truth": "ts193", "rank": 4, "top1": "ts191"}
+{"qi": 190, "query": "Update this with a new set of paths to DAG definition files.", "truth": "ts194", "rank": 1, "top1": "ts194"}
+{"qi": 191, "query": "Sleeps until all the processors are done.", "truth": "ts195", "rank": 1, "top1": "ts195"}
+{"qi": 192, "query": "This should be periodically called by the manager loop. This method will", "truth": "ts196", "rank": 5, "top1": "ts234"}
+{"qi": 193, "query": "Find zombie task instances, which are tasks haven't heartbeated for too long.", "truth": "ts197", "rank": 1, "top1": "ts197"}
+{"qi": 194, "query": ":return: whether all file paths have been processed max_runs times", "truth": "ts198", "rank": 1, "top1": "ts198"}
+{"qi": 195, "query": "Kill all child processes on exit since we don't want to leave", "truth": "ts199", "rank": 1, "top1": "ts199"}
+{"qi": 196, "query": "Opens a ssh connection to the remote host.", "truth": "ts200", "rank": 2, "top1": "ts201"}
+{"qi": 197, "query": "Creates a tunnel between two hosts. Like ssh -L <LOCAL_PORT>:host:<REMOTE_PORT>.", "truth": "ts201", "rank": 1, "top1": "ts201"}
+{"qi": 198, "query": "Creates a transfer job that runs periodically.", "truth": "ts202", "rank": 1, "top1": "ts202"}
+{"qi": 199, "query": "Gets the latest state of a long-running operation in Google Storage", "truth": "ts203", "rank": 1, "top1": "ts203"}
+{"qi": 200, "query": "Lists long-running operations in Google Storage Transfer", "truth": "ts204", "rank": 1, "top1": "ts204"}
+{"qi": 201, "query": "Updates a transfer job that runs periodically.", "truth": "ts205", "rank": 1, "top1": "ts205"}
+{"qi": 202, "query": "Deletes a transfer job. This is a soft delete. After a transfer job is", "truth": "ts206", "rank": 1, "top1": "ts206"}
+{"qi": 203, "query": "Cancels an transfer operation in Google Storage Transfer Service.", "truth": "ts207", "rank": 1, "top1": "ts207"}
+{"qi": 204, "query": "Gets an transfer operation in Google Storage Transfer Service.", "truth": "ts208", "rank": 1, "top1": "ts208"}
+{"qi": 205, "query": "Gets an transfer operation in Google Storage Transfer Service.", "truth": "ts209", "rank": 6, "top1": "ts208"}
+{"qi": 206, "query": "Pauses an transfer operation in Google Storage Transfer Service.", "truth": "ts210", "rank": 1, "top1": "ts210"}
+{"qi": 207, "query": "Resumes an transfer operation in Google Storage Transfer Service.", "truth": "ts211", "rank": 1, "top1": "ts211"}
+{"qi": 208, "query": "Waits until the job reaches the expected state.", "truth": "ts212", "rank": 2, "top1": "ts271"}
+{"qi": 209, "query": "Checks whether the operation list has an operation with the", "truth": "ts213", "rank": 1, "top1": "ts213"}
+{"qi": 210, "query": "Returns all task reschedules for the task instance and try number,", "truth": "ts214", "rank": 1, "top1": "ts214"}
+{"qi": 211, "query": "Kubernetes only supports lowercase alphanumeric characters and \"-\" and \".\" in", "truth": "ts215", "rank": 1, "top1": "ts215"}
+{"qi": 212, "query": "Kubernetes pod names must be <= 253 chars and must pass the following regex for", "truth": "ts216", "rank": 1, "top1": "ts216"}
+{"qi": 213, "query": "Valid label values must be 63 characters or less and must be empty or begin and", "truth": "ts217", "rank": 1, "top1": "ts217"}
+{"qi": 214, "query": "If the airflow scheduler restarts with pending \"Queued\" tasks, the tasks may or", "truth": "ts218", "rank": 1, "top1": "ts218"}
+{"qi": 215, "query": "Returns the number of slots open at the moment", "truth": "ts219", "rank": 1, "top1": "ts219"}
+{"qi": 216, "query": "Expands (potentially nested) env vars by repeatedly applying", "truth": "ts220", "rank": 1, "top1": "ts220"}
+{"qi": 217, "query": "Runs command and returns stdout", "truth": "ts221", "rank": 1, "top1": "ts221"}
+{"qi": 218, "query": "Generates a configuration from the provided template + variables defined in", "truth": "ts222", "rank": 1, "top1": "ts222"}
+{"qi": 219, "query": "Remove an option if it exists in config from a file or", "truth": "ts223", "rank": 1, "top1": "ts223"}
+{"qi": 220, "query": "Returns the section as a dict. Values are converted to int, float, bool", "truth": "ts224", "rank": 1, "top1": "ts224"}
+{"qi": 221, "query": "Returns the current configuration as an OrderedDict of OrderedDicts.", "truth": "ts225", "rank": 1, "top1": "ts225"}
+{"qi": 222, "query": "Allocate IDs for incomplete keys.", "truth": "ts226", "rank": 1, "top1": "ts226"}
+{"qi": 223, "query": "Begins a new transaction.", "truth": "ts227", "rank": 1, "top1": "ts227"}
+{"qi": 224, "query": "Commit a transaction, optionally creating, deleting or modifying some entities.", "truth": "ts228", "rank": 1, "top1": "ts228"}
+{"qi": 225, "query": "Lookup some entities by key.", "truth": "ts229", "rank": 1, "top1": "ts229"}
+{"qi": 226, "query": "Roll back a transaction.", "truth": "ts230", "rank": 1, "top1": "ts230"}
+{"qi": 227, "query": "Run a query for entities.", "truth": "ts231", "rank": 1, "top1": "ts231"}
+{"qi": 228, "query": "Gets the latest state of a long-running operation.", "truth": "ts232", "rank": 1, "top1": "ts232"}
+{"qi": 229, "query": "Deletes the long-running operation.", "truth": "ts233", "rank": 1, "top1": "ts233"}
+{"qi": 230, "query": "Poll backup operation state until it's completed.", "truth": "ts234", "rank": 1, "top1": "ts234"}
+{"qi": 231, "query": "Export entities from Cloud Datastore to Cloud Storage for backup.", "truth": "ts235", "rank": 1, "top1": "ts235"}
+{"qi": 232, "query": "Import a backup from Cloud Storage to Cloud Datastore.", "truth": "ts236", "rank": 1, "top1": "ts236"}
+{"qi": 233, "query": "Publish a message to a topic or an endpoint.", "truth": "ts237", "rank": 1, "top1": "ts237"}
+{"qi": 234, "query": "Fetch the hostname using the callable from the config or using", "truth": "ts238", "rank": 1, "top1": "ts238"}
+{"qi": 235, "query": "Retrieves connection to Cloud Natural Language service.", "truth": "ts239", "rank": 1, "top1": "ts239"}
+{"qi": 236, "query": "Finds named entities in the text along with entity types,", "truth": "ts240", "rank": 1, "top1": "ts240"}
+{"qi": 237, "query": "A convenience method that provides all the features that analyzeSentiment,", "truth": "ts241", "rank": 23, "top1": "ts325"}
+{"qi": 238, "query": "Classifies a document into categories.", "truth": "ts242", "rank": 2, "top1": "ts432"}
+{"qi": 239, "query": "Return the task object identified by the given dag_id and task_id.", "truth": "ts243", "rank": 1, "top1": "ts243"}
+{"qi": 240, "query": "Gets template fields for specific operator class.", "truth": "ts244", "rank": 1, "top1": "ts244"}
+{"qi": 241, "query": "A role that allows you to include a list of template fields in the middle of the text. This is especially", "truth": "ts245", "rank": 1, "top1": "ts245"}
+{"qi": 242, "query": "Properly close pooled database connections", "truth": "ts246", "rank": 1, "top1": "ts246"}
+{"qi": 243, "query": "Ensures that certain subfolders of AIRFLOW_HOME are on the classpath", "truth": "ts247", "rank": 1, "top1": "ts247"}
+{"qi": 244, "query": "Gets the returned Celery result from the Airflow task", "truth": "ts248", "rank": 1, "top1": "ts248"}
+{"qi": 245, "query": "Return true if the ticket cache contains \"conf\" information as is found", "truth": "ts249", "rank": 1, "top1": "ts249"}
+{"qi": 246, "query": "Transforms a SQLAlchemy model instance into a dictionary", "truth": "ts250", "rank": 1, "top1": "ts250"}
+{"qi": 247, "query": "Yield successive chunks of a given size from a list of items", "truth": "ts251", "rank": 1, "top1": "ts251"}
+{"qi": 248, "query": "Reduce the given list of items by splitting it into chunks", "truth": "ts252", "rank": 1, "top1": "ts252"}
+{"qi": 249, "query": "Given a number of tasks, builds a dependency chain.", "truth": "ts253", "rank": 1, "top1": "ts253"}
+{"qi": 250, "query": "Returns a pretty ascii table from tuples", "truth": "ts254", "rank": 1, "top1": "ts254"}
+{"qi": 251, "query": "Tries really hard to terminate all children (including grandchildren). Will send", "truth": "ts255", "rank": 1, "top1": "ts255"}
+{"qi": 252, "query": "Given task instance, try_number, filename_template, return the rendered log", "truth": "ts256", "rank": 1, "top1": "ts256"}
+{"qi": 253, "query": "Return the task object identified by the given dag_id and task_id.", "truth": "ts257", "rank": 2, "top1": "ts243"}
+{"qi": 254, "query": "Integrate plugins to the context", "truth": "ts258", "rank": 4, "top1": "ts280"}
+{"qi": 255, "query": "Returns a Google Cloud Dataproc service object.", "truth": "ts259", "rank": 1, "top1": "ts259"}
+{"qi": 256, "query": "Awaits for Google Cloud Dataproc Operation to complete.", "truth": "ts260", "rank": 1, "top1": "ts260"}
+{"qi": 257, "query": "Coerces content or all values of content if it is a dict to a string. The", "truth": "ts261", "rank": 1, "top1": "ts261"}
+{"qi": 258, "query": "Handles the Airflow + Databricks lifecycle logic for a Databricks operator", "truth": "ts262", "rank": 1, "top1": "ts262"}
+{"qi": 259, "query": "Run an pig script using the pig cli", "truth": "ts263", "rank": 1, "top1": "ts263"}
+{"qi": 260, "query": "Fetch and return the state of the given celery task. The scope of this function is", "truth": "ts264", "rank": 1, "top1": "ts264"}
+{"qi": 261, "query": "How many Celery tasks should each worker process send.", "truth": "ts265", "rank": 1, "top1": "ts265"}
+{"qi": 262, "query": "How many Celery tasks should be sent to each worker process.", "truth": "ts266", "rank": 1, "top1": "ts266"}
+{"qi": 263, "query": "Like a Python builtin dict object, setdefault returns the current value", "truth": "ts267", "rank": 1, "top1": "ts267"}
+{"qi": 264, "query": "Returns a Google MLEngine service object.", "truth": "ts268", "rank": 1, "top1": "ts268"}
+{"qi": 265, "query": "Launches a MLEngine job and wait for it to reach a terminal state.", "truth": "ts269", "rank": 1, "top1": "ts269"}
+{"qi": 266, "query": "Gets a MLEngine job based on the job name.", "truth": "ts270", "rank": 1, "top1": "ts270"}
+{"qi": 267, "query": "Waits for the Job to reach a terminal state.", "truth": "ts271", "rank": 1, "top1": "ts271"}
+{"qi": 268, "query": "Creates the Version on Google Cloud ML Engine.", "truth": "ts272", "rank": 1, "top1": "ts272"}
+{"qi": 269, "query": "Sets a version to be the default. Blocks until finished.", "truth": "ts273", "rank": 1, "top1": "ts273"}
+{"qi": 270, "query": "Lists all available versions of a model. Blocks until finished.", "truth": "ts274", "rank": 1, "top1": "ts274"}
+{"qi": 271, "query": "Deletes the given version of a model. Blocks until finished.", "truth": "ts275", "rank": 1, "top1": "ts275"}
+{"qi": 272, "query": "Create a Model. Blocks until finished.", "truth": "ts276", "rank": 1, "top1": "ts276"}
+{"qi": 273, "query": "Gets a Model. Blocks until finished.", "truth": "ts277", "rank": 3, "top1": "ts276"}
+{"qi": 274, "query": "Executes command received and stores result state in queue.", "truth": "ts278", "rank": 1, "top1": "ts278"}
+{"qi": 275, "query": "Write batch items to dynamodb table with provisioned throughout capacity.", "truth": "ts279", "rank": 1, "top1": "ts279"}
+{"qi": 276, "query": "Integrate plugins to the context.", "truth": "ts280", "rank": 1, "top1": "ts280"}
+{"qi": 277, "query": "Creates a new instance of the configured executor if none exists and returns it", "truth": "ts281", "rank": 1, "top1": "ts281"}
+{"qi": 278, "query": "Creates a new instance of the named executor.", "truth": "ts282", "rank": 1, "top1": "ts282"}
+{"qi": 279, "query": "Handles error callbacks when using Segment with segment_debug_mode set to True", "truth": "ts283", "rank": 1, "top1": "ts283"}
+{"qi": 280, "query": "Launches the pod synchronously and waits for completion.", "truth": "ts284", "rank": 1, "top1": "ts284"}
+{"qi": 281, "query": "Returns a mssql connection object", "truth": "ts285", "rank": 1, "top1": "ts285"}
+{"qi": 282, "query": "Call the SparkSubmitHook to run the provided spark job", "truth": "ts286", "rank": 1, "top1": "ts286"}
+{"qi": 283, "query": "Trigger a new dag run for a Dag with an execution date of now unless", "truth": "ts287", "rank": 1, "top1": "ts287"}
+{"qi": 284, "query": "Delete all DB records related to the specified Dag.", "truth": "ts288", "rank": 1, "top1": "ts288"}
+{"qi": 285, "query": "Returns a list of Dag Runs for a specific DAG ID.", "truth": "ts289", "rank": 2, "top1": "ts785"}
+{"qi": 286, "query": "Return python code of a given dag_id.", "truth": "ts290", "rank": 1, "top1": "ts290"}
+{"qi": 287, "query": "Returns a JSON with a task's public instance variables.", "truth": "ts291", "rank": 1, "top1": "ts291"}
+{"qi": 288, "query": "(Un)pauses a dag", "truth": "ts292", "rank": 1, "top1": "ts292"}
+{"qi": 289, "query": "Returns a JSON with a task instance's public instance variables.", "truth": "ts293", "rank": 2, "top1": "ts291"}
+{"qi": 290, "query": "Returns a JSON with a dag_run's public instance variables.", "truth": "ts294", "rank": 2, "top1": "ts291"}
+{"qi": 291, "query": "Get all pools.", "truth": "ts295", "rank": 1, "top1": "ts295"}
+{"qi": 292, "query": "Create a pool.", "truth": "ts296", "rank": 2, "top1": "ts680"}
+{"qi": 293, "query": "Delete pool.", "truth": "ts297", "rank": 1, "top1": "ts297"}
+{"qi": 294, "query": "Create a new container group", "truth": "ts298", "rank": 1, "top1": "ts298"}
+{"qi": 295, "query": "Get the state and exitcode of a container group", "truth": "ts299", "rank": 1, "top1": "ts299"}
+{"qi": 296, "query": "Get the messages of a container group", "truth": "ts300", "rank": 1, "top1": "ts300"}
+{"qi": 297, "query": "Get the tail from logs of a container group", "truth": "ts301", "rank": 1, "top1": "ts301"}
+{"qi": 298, "query": "Delete a container group", "truth": "ts302", "rank": 1, "top1": "ts302"}
+{"qi": 299, "query": "Test if a container group exists", "truth": "ts303", "rank": 1, "top1": "ts303"}
+{"qi": 300, "query": "Function decorator that Looks for an argument named \"default_args\", and", "truth": "ts304", "rank": 1, "top1": "ts304"}
+{"qi": 301, "query": "Builds an ingest query for an HDFS TSV load.", "truth": "ts305", "rank": 1, "top1": "ts305"}
+{"qi": 302, "query": "This function executes the transfer from the email server (via imap) into s3.", "truth": "ts306", "rank": 1, "top1": "ts306"}
+{"qi": 303, "query": "Check for message on subscribed channels and write to xcom the message with key ``message``", "truth": "ts307", "rank": 1, "top1": "ts307"}
+{"qi": 304, "query": "Reloads the current dagrun from the database", "truth": "ts308", "rank": 1, "top1": "ts308"}
+{"qi": 305, "query": "Returns a set of dag runs for the given search criteria.", "truth": "ts309", "rank": 1, "top1": "ts309"}
+{"qi": 306, "query": "Returns the task instances for this dag run", "truth": "ts310", "rank": 7, "top1": "ts311"}
+{"qi": 307, "query": "Returns the task instance specified by task_id for this dag run", "truth": "ts311", "rank": 1, "top1": "ts311"}
+{"qi": 308, "query": "The previous DagRun, if there is one", "truth": "ts312", "rank": 1, "top1": "ts312"}
+{"qi": 309, "query": "The previous, SCHEDULED DagRun, if there is one", "truth": "ts313", "rank": 1, "top1": "ts313"}
+{"qi": 310, "query": "Determines the overall state of the DagRun based on the state", "truth": "ts314", "rank": 3, "top1": "ts74"}
+{"qi": 311, "query": "Verifies the DagRun by checking for removed tasks or tasks that are not in the", "truth": "ts315", "rank": 1, "top1": "ts315"}
+{"qi": 312, "query": ":param dag_id: DAG ID", "truth": "ts316", "rank": 27, "top1": "ts176"}
+{"qi": 313, "query": "We need to get the headers in addition to the body answer", "truth": "ts317", "rank": 1, "top1": "ts317"}
+{"qi": 314, "query": "This function makes an API call to Jenkins to trigger a build for 'job_name'", "truth": "ts318", "rank": 1, "top1": "ts318"}
+{"qi": 315, "query": "This method poll the jenkins queue until the job is executed.", "truth": "ts319", "rank": 1, "top1": "ts319"}
+{"qi": 316, "query": "Given a context, this function provides a dictionary of values that can be used to", "truth": "ts320", "rank": 1, "top1": "ts320"}
+{"qi": 317, "query": "Calls callbacks before execution.", "truth": "ts321", "rank": 1, "top1": "ts321"}
+{"qi": 318, "query": "Calls callbacks after execution.", "truth": "ts322", "rank": 1, "top1": "ts322"}
+{"qi": 319, "query": "This function decides whether or not to Trigger the remote DAG", "truth": "ts323", "rank": 1, "top1": "ts323"}
+{"qi": 320, "query": "Sends a single datapoint metric to DataDog", "truth": "ts324", "rank": 1, "top1": "ts324"}
+{"qi": 321, "query": "Queries datadog for a specific metric, potentially with some", "truth": "ts325", "rank": 1, "top1": "ts325"}
+{"qi": 322, "query": "Posts an event to datadog (processing finished, potentially alerts, other issues)", "truth": "ts326", "rank": 1, "top1": "ts326"}
+{"qi": 323, "query": "Given either a manually set token or a conn_id, return the webhook_token to use", "truth": "ts327", "rank": 1, "top1": "ts327"}
+{"qi": 324, "query": "Construct the Slack message. All relevant parameters are combined here to a valid", "truth": "ts328", "rank": 1, "top1": "ts328"}
+{"qi": 325, "query": "Remote Popen (actually execute the slack webhook call)", "truth": "ts329", "rank": 1, "top1": "ts329"}
+{"qi": 326, "query": "Gets the DAG out of the dictionary, and refreshes it if expired", "truth": "ts330", "rank": 1, "top1": "ts330"}
+{"qi": 327, "query": "Given a path to a python module or zip file, this method imports", "truth": "ts331", "rank": 8, "top1": "ts639"}
+{"qi": 328, "query": "Fail given zombie tasks, which are tasks that haven't", "truth": "ts332", "rank": 1, "top1": "ts332"}
+{"qi": 329, "query": "Adds the DAG into the bag, recurses into sub dags.", "truth": "ts333", "rank": 1, "top1": "ts333"}
+{"qi": 330, "query": "Given a file path or a folder, this method looks for python modules,", "truth": "ts334", "rank": 9, "top1": "ts174"}
+{"qi": 331, "query": "Prints a report around DagBag loading stats", "truth": "ts335", "rank": 1, "top1": "ts335"}
+{"qi": 332, "query": "Call the SparkSubmitHook to run the provided spark job", "truth": "ts336", "rank": 2, "top1": "ts286"}
+{"qi": 333, "query": "Add or subtract days from a YYYY-MM-DD", "truth": "ts337", "rank": 1, "top1": "ts337"}
+{"qi": 334, "query": "Takes an input string and outputs another string", "truth": "ts338", "rank": 2, "top1": "ts815"}
+{"qi": 335, "query": "Integrate plugins to the context", "truth": "ts339", "rank": 3, "top1": "ts280"}
+{"qi": 336, "query": "poke matching files in a directory with self.regex", "truth": "ts340", "rank": 1, "top1": "ts340"}
+{"qi": 337, "query": "poke for a non empty directory", "truth": "ts341", "rank": 1, "top1": "ts341"}
+{"qi": 338, "query": "Clears a set of task instances, but makes sure the running ones", "truth": "ts342", "rank": 1, "top1": "ts342"}
+{"qi": 339, "query": "Return the try number that this task number will be when it is actually", "truth": "ts343", "rank": 1, "top1": "ts343"}
+{"qi": 340, "query": "Returns a command that can be executed anywhere where airflow is", "truth": "ts344", "rank": 1, "top1": "ts344"}
+{"qi": 341, "query": "Returns a command that can be executed anywhere where airflow is", "truth": "ts345", "rank": 2, "top1": "ts344"}
+{"qi": 342, "query": "Generates the shell command required to execute this task instance.", "truth": "ts346", "rank": 1, "top1": "ts346"}
+{"qi": 343, "query": "Get the very latest state from the database, if a session is passed,", "truth": "ts347", "rank": 1, "top1": "ts347"}
+{"qi": 344, "query": "Forces the task instance's state to FAILED in the database.", "truth": "ts348", "rank": 1, "top1": "ts348"}
+{"qi": 345, "query": "Refreshes the task instance from the database based on the primary key", "truth": "ts349", "rank": 1, "top1": "ts349"}
+{"qi": 346, "query": "Clears all XCom data from the database for the task instance", "truth": "ts350", "rank": 1, "top1": "ts350"}
+{"qi": 347, "query": "Returns a tuple that identifies the task instance uniquely", "truth": "ts351", "rank": 1, "top1": "ts351"}
+{"qi": 348, "query": "Checks whether the dependents of this task instance have all succeeded.", "truth": "ts352", "rank": 1, "top1": "ts352"}
+{"qi": 349, "query": "Returns whether or not all the conditions are met for this task instance to be run", "truth": "ts353", "rank": 13, "top1": "ts52"}
+{"qi": 350, "query": "Get datetime of the next retry if the task instance fails. For exponential", "truth": "ts354", "rank": 1, "top1": "ts354"}
+{"qi": 351, "query": "Checks on whether the task instance is in the right state and timeframe", "truth": "ts355", "rank": 1, "top1": "ts355"}
+{"qi": 352, "query": "Returns a boolean as to whether the slot pool has room for this", "truth": "ts356", "rank": 1, "top1": "ts356"}
+{"qi": 353, "query": "Returns the DagRun for this TaskInstance", "truth": "ts357", "rank": 1, "top1": "ts357"}
+{"qi": 354, "query": "Checks dependencies and then sets state to RUNNING if they are met. Returns", "truth": "ts358", "rank": 1, "top1": "ts358"}
+{"qi": 355, "query": "Immediately runs the task (without checking or changing db state", "truth": "ts359", "rank": 1, "top1": "ts359"}
+{"qi": 356, "query": "Make an XCom available for tasks to pull.", "truth": "ts360", "rank": 1, "top1": "ts360"}
+{"qi": 357, "query": "Pull XComs that optionally meet certain criteria.", "truth": "ts361", "rank": 1, "top1": "ts361"}
+{"qi": 358, "query": "Sets the log context.", "truth": "ts362", "rank": 1, "top1": "ts362"}
+{"qi": 359, "query": "Close and upload local log file to remote storage Wasb.", "truth": "ts363", "rank": 1, "top1": "ts363"}
+{"qi": 360, "query": "Read logs of given task instance and try_number from Wasb remote storage.", "truth": "ts364", "rank": 1, "top1": "ts364"}
+{"qi": 361, "query": "Check if remote_log_location exists in remote storage", "truth": "ts365", "rank": 1, "top1": "ts365"}
+{"qi": 362, "query": "Returns the log found at the remote_log_location. Returns '' if no", "truth": "ts366", "rank": 3, "top1": "ts365"}
+{"qi": 363, "query": "Writes the log to the remote_log_location. Fails silently if no hook", "truth": "ts367", "rank": 3, "top1": "ts701"}
+{"qi": 364, "query": "Retrieves connection to Google Compute Engine.", "truth": "ts368", "rank": 1, "top1": "ts368"}
+{"qi": 365, "query": "Starts an existing instance defined by project_id, zone and resource_id.", "truth": "ts369", "rank": 1, "top1": "ts369"}
+{"qi": 366, "query": "Sets machine type of an instance defined by project_id, zone and resource_id.", "truth": "ts370", "rank": 1, "top1": "ts370"}
+{"qi": 367, "query": "Retrieves instance template by project_id and resource_id.", "truth": "ts371", "rank": 1, "top1": "ts371"}
+{"qi": 368, "query": "Inserts instance template using body specified", "truth": "ts372", "rank": 1, "top1": "ts372"}
+{"qi": 369, "query": "Retrieves Instance Group Manager by project_id, zone and resource_id.", "truth": "ts373", "rank": 1, "top1": "ts373"}
+{"qi": 370, "query": "Patches Instance Group Manager with the specified body.", "truth": "ts374", "rank": 1, "top1": "ts374"}
+{"qi": 371, "query": "Waits for the named operation to complete - checks status of the async call.", "truth": "ts375", "rank": 3, "top1": "ts155"}
+{"qi": 372, "query": "Check if bucket_name exists.", "truth": "ts376", "rank": 1, "top1": "ts376"}
+{"qi": 373, "query": "Creates an Amazon S3 bucket.", "truth": "ts377", "rank": 1, "top1": "ts377"}
+{"qi": 374, "query": "Checks that a prefix exists in a bucket", "truth": "ts378", "rank": 1, "top1": "ts378"}
+{"qi": 375, "query": "Lists prefixes in a bucket under prefix", "truth": "ts379", "rank": 2, "top1": "ts378"}
+{"qi": 376, "query": "Lists keys in a bucket under prefix and not containing delimiter", "truth": "ts380", "rank": 2, "top1": "ts378"}
+{"qi": 377, "query": "Checks if a key exists in a bucket", "truth": "ts381", "rank": 1, "top1": "ts381"}
+{"qi": 378, "query": "Returns a boto3.s3.Object", "truth": "ts382", "rank": 1, "top1": "ts382"}
+{"qi": 379, "query": "Reads a key from S3", "truth": "ts383", "rank": 1, "top1": "ts383"}
+{"qi": 380, "query": "Reads a key with S3 Select.", "truth": "ts384", "rank": 1, "top1": "ts384"}
+{"qi": 381, "query": "Checks that a key matching a wildcard expression exists in a bucket", "truth": "ts385", "rank": 1, "top1": "ts385"}
+{"qi": 382, "query": "Returns a boto3.s3.Object object matching the wildcard expression", "truth": "ts386", "rank": 1, "top1": "ts386"}
+{"qi": 383, "query": "Loads a local file to S3", "truth": "ts387", "rank": 1, "top1": "ts387"}
+{"qi": 384, "query": "Loads a string to S3", "truth": "ts388", "rank": 1, "top1": "ts388"}
+{"qi": 385, "query": "Loads bytes to S3", "truth": "ts389", "rank": 1, "top1": "ts389"}
+{"qi": 386, "query": "Loads a file object to S3", "truth": "ts390", "rank": 1, "top1": "ts390"}
+{"qi": 387, "query": "Creates a copy of an object that is already stored in S3.", "truth": "ts391", "rank": 1, "top1": "ts391"}
+{"qi": 388, "query": ":param bucket: Name of the bucket in which you are going to delete object(s)", "truth": "ts392", "rank": 2, "top1": "ts507"}
+{"qi": 389, "query": "Queries cassandra and returns a cursor to the results.", "truth": "ts393", "rank": 1, "top1": "ts393"}
+{"qi": 390, "query": "Takes a cursor, and writes results to a local file.", "truth": "ts394", "rank": 1, "top1": "ts394"}
+{"qi": 391, "query": "Takes a cursor, and writes the BigQuery schema for the results to a", "truth": "ts395", "rank": 1, "top1": "ts395"}
+{"qi": 392, "query": "Converts a user type to RECORD that contains n fields, where n is the", "truth": "ts396", "rank": 1, "top1": "ts396"}
+{"qi": 393, "query": "Converts a tuple to RECORD that contains n fields, each will be converted", "truth": "ts397", "rank": 1, "top1": "ts397"}
+{"qi": 394, "query": "Converts a map to a repeated RECORD that contains two fields: 'key' and 'value',", "truth": "ts398", "rank": 1, "top1": "ts398"}
+{"qi": 395, "query": "Send an email with html content using sendgrid.", "truth": "ts399", "rank": 1, "top1": "ts399"}
+{"qi": 396, "query": "Retrieves connection to Cloud Speech.", "truth": "ts400", "rank": 1, "top1": "ts400"}
+{"qi": 397, "query": "Recognizes audio input", "truth": "ts401", "rank": 1, "top1": "ts401"}
+{"qi": 398, "query": "Call the SparkSqlHook to run the provided sql query", "truth": "ts402", "rank": 1, "top1": "ts402"}
+{"qi": 399, "query": "Provide task_instance context to airflow task handler.", "truth": "ts403", "rank": 1, "top1": "ts403"}
+{"qi": 400, "query": "Template method that contains custom logic of reading", "truth": "ts404", "rank": 1, "top1": "ts404"}
+{"qi": 401, "query": "Read logs of given task instance from local machine.", "truth": "ts405", "rank": 3, "top1": "ts364"}
+{"qi": 402, "query": "Create log directory and give it correct permissions.", "truth": "ts406", "rank": 1, "top1": "ts406"}
+{"qi": 403, "query": "Load AirflowPlugin subclasses from the entrypoints", "truth": "ts407", "rank": 1, "top1": "ts407"}
+{"qi": 404, "query": "Check whether a potential object is a subclass of", "truth": "ts408", "rank": 1, "top1": "ts408"}
+{"qi": 405, "query": "Sets tasks instances to skipped from the same dag run.", "truth": "ts409", "rank": 1, "top1": "ts409"}
+{"qi": 406, "query": "Return a AzureDLFileSystem object.", "truth": "ts410", "rank": 1, "top1": "ts410"}
+{"qi": 407, "query": "Check if a file exists on Azure Data Lake.", "truth": "ts411", "rank": 1, "top1": "ts411"}
+{"qi": 408, "query": "Upload a file to Azure Data Lake.", "truth": "ts412", "rank": 1, "top1": "ts412"}
+{"qi": 409, "query": "Download a file from Azure Blob Storage.", "truth": "ts413", "rank": 2, "top1": "ts466"}
+{"qi": 410, "query": "List files in Azure Data Lake Storage", "truth": "ts414", "rank": 1, "top1": "ts414"}
+{"qi": 411, "query": "Run Presto Query on Athena", "truth": "ts415", "rank": 1, "top1": "ts415"}
+{"qi": 412, "query": "Cancel the submitted athena query", "truth": "ts416", "rank": 1, "top1": "ts416"}
+{"qi": 413, "query": "Uncompress gz and bz2 files", "truth": "ts417", "rank": 1, "top1": "ts417"}
+{"qi": 414, "query": "Queries MSSQL and returns a cursor of results.", "truth": "ts418", "rank": 1, "top1": "ts418"}
+{"qi": 415, "query": "Upload all of the file splits (and optionally the schema .json file) to", "truth": "ts420", "rank": 1, "top1": "ts420"}
+{"qi": 416, "query": "Takes a value from MSSQL, and converts it to a value that's safe for", "truth": "ts421", "rank": 1, "top1": "ts421"}
+{"qi": 417, "query": "Decorates function to execute function at the same time submitting action_logging", "truth": "ts422", "rank": 1, "top1": "ts422"}
+{"qi": 418, "query": "Builds metrics dict from function args", "truth": "ts423", "rank": 1, "top1": "ts423"}
+{"qi": 419, "query": "Yields a dependency status that indicate whether the given task instance's trigger", "truth": "ts424", "rank": 2, "top1": "ts164"}
+{"qi": 420, "query": "Create the specified cgroup.", "truth": "ts425", "rank": 1, "top1": "ts425"}
+{"qi": 421, "query": "Delete the specified cgroup.", "truth": "ts426", "rank": 1, "top1": "ts426"}
+{"qi": 422, "query": ":return: a mapping between the subsystem name to the cgroup name", "truth": "ts427", "rank": 1, "top1": "ts427"}
+{"qi": 423, "query": "The purpose of this function is to be robust to improper connections", "truth": "ts428", "rank": 11, "top1": "ts1007"}
+{"qi": 424, "query": "Utility function to perform an API call with retries", "truth": "ts429", "rank": 1, "top1": "ts429"}
+{"qi": 425, "query": "Sign into Salesforce, only if we are not already signed in.", "truth": "ts430", "rank": 1, "top1": "ts430"}
+{"qi": 426, "query": "Make a query to Salesforce.", "truth": "ts431", "rank": 1, "top1": "ts431"}
+{"qi": 427, "query": "Get the description of an object from Salesforce.", "truth": "ts432", "rank": 1, "top1": "ts432"}
+{"qi": 428, "query": "Get a list of all available fields for an object.", "truth": "ts433", "rank": 1, "top1": "ts433"}
+{"qi": 429, "query": "Get all instances of the `object` from Salesforce.", "truth": "ts434", "rank": 1, "top1": "ts434"}
+{"qi": 430, "query": "Convert a column of a dataframe to UNIX timestamps if applicable", "truth": "ts435", "rank": 1, "top1": "ts435"}
+{"qi": 431, "query": "Write query results to file.", "truth": "ts436", "rank": 11, "top1": "ts555"}
+{"qi": 432, "query": "Read logs of given task instance and try_number from GCS.", "truth": "ts437", "rank": 1, "top1": "ts437"}
+{"qi": 433, "query": "Returns the log found at the remote_log_location.", "truth": "ts438", "rank": 2, "top1": "ts700"}
+{"qi": 434, "query": "Writes the log to the remote_log_location. Fails silently if no hook", "truth": "ts439", "rank": 2, "top1": "ts701"}
+{"qi": 435, "query": "Given a Google Cloud Storage URL (gs://<bucket>/<blob>), returns a", "truth": "ts440", "rank": 1, "top1": "ts440"}
+{"qi": 436, "query": "Fetches PyMongo Client", "truth": "ts441", "rank": 1, "top1": "ts441"}
+{"qi": 437, "query": "Fetches a mongo collection object for querying.", "truth": "ts442", "rank": 1, "top1": "ts442"}
+{"qi": 438, "query": "Runs an aggregation pipeline and returns the results", "truth": "ts443", "rank": 1, "top1": "ts443"}
+{"qi": 439, "query": "Runs a mongo find query and returns the results", "truth": "ts444", "rank": 1, "top1": "ts444"}
+{"qi": 440, "query": "Inserts a single document into a mongo collection", "truth": "ts445", "rank": 1, "top1": "ts445"}
+{"qi": 441, "query": "Inserts many docs into a mongo collection.", "truth": "ts446", "rank": 1, "top1": "ts446"}
+{"qi": 442, "query": "Updates a single document in a mongo collection.", "truth": "ts447", "rank": 1, "top1": "ts447"}
+{"qi": 443, "query": "Replaces a single document in a mongo collection.", "truth": "ts448", "rank": 1, "top1": "ts448"}
+{"qi": 444, "query": "Replaces many documents in a mongo collection.", "truth": "ts449", "rank": 1, "top1": "ts449"}
+{"qi": 445, "query": "Deletes a single document in a mongo collection.", "truth": "ts450", "rank": 1, "top1": "ts450"}
+{"qi": 446, "query": "Deletes one or more documents in a mongo collection.", "truth": "ts451", "rank": 1, "top1": "ts451"}
+{"qi": 447, "query": "Checks the mail folder for mails containing attachments with the given name.", "truth": "ts452", "rank": 1, "top1": "ts452"}
+{"qi": 448, "query": "Retrieves mail's attachments in the mail folder by its name.", "truth": "ts453", "rank": 1, "top1": "ts453"}
+{"qi": 449, "query": "Downloads mail's attachments in the mail folder by its name to the local directory.", "truth": "ts454", "rank": 1, "top1": "ts454"}
+{"qi": 450, "query": "Gets all attachments by name for the mail.", "truth": "ts455", "rank": 4, "top1": "ts453"}
+{"qi": 451, "query": "Gets the file including name and payload.", "truth": "ts456", "rank": 1, "top1": "ts456"}
+{"qi": 452, "query": "Write batch records to Kinesis Firehose", "truth": "ts457", "rank": 1, "top1": "ts457"}
+{"qi": 453, "query": "Determines whether a task is ready to be rescheduled. Only tasks in", "truth": "ts458", "rank": 1, "top1": "ts458"}
+{"qi": 454, "query": "Send email using backend specified in EMAIL_BACKEND.", "truth": "ts459", "rank": 1, "top1": "ts459"}
+{"qi": 455, "query": "Send an email with html content", "truth": "ts460", "rank": 1, "top1": "ts460"}
+{"qi": 456, "query": "Processes DateTimes from the DB making sure it is always", "truth": "ts461", "rank": 1, "top1": "ts461"}
+{"qi": 457, "query": "Check if a blob exists on Azure Blob Storage.", "truth": "ts462", "rank": 1, "top1": "ts462"}
+{"qi": 458, "query": "Check if a prefix exists on Azure Blob storage.", "truth": "ts463", "rank": 1, "top1": "ts463"}
+{"qi": 459, "query": "Upload a file to Azure Blob Storage.", "truth": "ts464", "rank": 2, "top1": "ts130"}
+{"qi": 460, "query": "Upload a string to Azure Blob Storage.", "truth": "ts465", "rank": 1, "top1": "ts465"}
+{"qi": 461, "query": "Download a file from Azure Blob Storage.", "truth": "ts466", "rank": 1, "top1": "ts466"}
+{"qi": 462, "query": "Read a file from Azure Blob Storage and return as a string.", "truth": "ts467", "rank": 1, "top1": "ts467"}
+{"qi": 463, "query": "Delete a file from Azure Blob Storage.", "truth": "ts468", "rank": 1, "top1": "ts468"}
+{"qi": 464, "query": "BACKPORT FROM PYTHON3 FTPLIB.", "truth": "ts469", "rank": 1, "top1": "ts469"}
+{"qi": 465, "query": "Returns a FTP connection object", "truth": "ts470", "rank": 1, "top1": "ts470"}
+{"qi": 466, "query": "Returns a dictionary of {filename: {attributes}} for all files", "truth": "ts471", "rank": 2, "top1": "ts655"}
+{"qi": 467, "query": "Returns a list of files on the remote system.", "truth": "ts472", "rank": 2, "top1": "ts656"}
+{"qi": 468, "query": "Transfers the remote file to a local location.", "truth": "ts473", "rank": 2, "top1": "ts659"}
+{"qi": 469, "query": "Transfers a local file to the remote location.", "truth": "ts474", "rank": 4, "top1": "ts659"}
+{"qi": 470, "query": "Rename a file.", "truth": "ts475", "rank": 1, "top1": "ts475"}
+{"qi": 471, "query": "Returns a datetime object representing the last time the file was modified", "truth": "ts476", "rank": 1, "top1": "ts476"}
+{"qi": 472, "query": "Infers from the dates which dag runs need to be created and does so.", "truth": "ts477", "rank": 1, "top1": "ts477"}
+{"qi": 473, "query": "Set the state of a task instance and if needed its relatives. Can set state", "truth": "ts478", "rank": 1, "top1": "ts478"}
+{"qi": 474, "query": "Helper method that set dag run state in the DB.", "truth": "ts479", "rank": 1, "top1": "ts479"}
+{"qi": 475, "query": "Set the dag run for a specific execution date and its task instances", "truth": "ts480", "rank": 2, "top1": "ts481"}
+{"qi": 476, "query": "Set the dag run for a specific execution date and its running task instances", "truth": "ts481", "rank": 1, "top1": "ts481"}
+{"qi": 477, "query": "Set the dag run for a specific execution date to running.", "truth": "ts482", "rank": 5, "top1": "ts735"}
+{"qi": 478, "query": "Return a version to identify the state of the underlying git repo. The version will", "truth": "ts483", "rank": 1, "top1": "ts483"}
+{"qi": 479, "query": "Call the DiscordWebhookHook to post message", "truth": "ts484", "rank": 1, "top1": "ts484"}
+{"qi": 480, "query": "Validates if field is OK.", "truth": "ts485", "rank": 1, "top1": "ts485"}
+{"qi": 481, "query": "Validates if the body (dictionary) follows specification that the validator was", "truth": "ts486", "rank": 1, "top1": "ts486"}
+{"qi": 482, "query": "Return the FileService object.", "truth": "ts487", "rank": 1, "top1": "ts487"}
+{"qi": 483, "query": "Check if a directory exists on Azure File Share.", "truth": "ts488", "rank": 1, "top1": "ts488"}
+{"qi": 484, "query": "Check if a file exists on Azure File Share.", "truth": "ts489", "rank": 1, "top1": "ts489"}
+{"qi": 485, "query": "Return the list of directories and files stored on a Azure File Share.", "truth": "ts490", "rank": 1, "top1": "ts490"}
+{"qi": 486, "query": "Create a new directory on a Azure File Share.", "truth": "ts491", "rank": 1, "top1": "ts491"}
+{"qi": 487, "query": "Download a file from Azure File Share.", "truth": "ts492", "rank": 1, "top1": "ts492"}
+{"qi": 488, "query": "Download a file from Azure File Share.", "truth": "ts493", "rank": 2, "top1": "ts492"}
+{"qi": 489, "query": "Upload a file to Azure File Share.", "truth": "ts494", "rank": 2, "top1": "ts496"}
+{"qi": 490, "query": "Upload a string to Azure File Share.", "truth": "ts495", "rank": 1, "top1": "ts495"}
+{"qi": 491, "query": "Upload a stream to Azure File Share.", "truth": "ts496", "rank": 1, "top1": "ts496"}
+{"qi": 492, "query": "Provide filename context to airflow task handler.", "truth": "ts497", "rank": 1, "top1": "ts497"}
+{"qi": 493, "query": "Create log file and directory if required.", "truth": "ts498", "rank": 1, "top1": "ts498"}
+{"qi": 494, "query": "Given a Google Cloud Storage URL (gs://<bucket>/<blob>), returns a", "truth": "ts499", "rank": 2, "top1": "ts440"}
+{"qi": 495, "query": "Returns a Google Cloud Storage service object.", "truth": "ts500", "rank": 1, "top1": "ts500"}
+{"qi": 496, "query": "Copies an object from a bucket to another, with renaming if requested.", "truth": "ts501", "rank": 1, "top1": "ts501"}
+{"qi": 497, "query": "Has the same functionality as copy, except that will work on files", "truth": "ts502", "rank": 2, "top1": "ts59"}
+{"qi": 498, "query": "Get a file from Google Cloud Storage.", "truth": "ts503", "rank": 1, "top1": "ts503"}
+{"qi": 499, "query": "Uploads a local file to Google Cloud Storage.", "truth": "ts504", "rank": 1, "top1": "ts504"}
+{"qi": 500, "query": "Checks for the existence of a file in Google Cloud Storage.", "truth": "ts505", "rank": 1, "top1": "ts505"}
+{"qi": 501, "query": "Checks if an blob_name is updated in Google Cloud Storage.", "truth": "ts506", "rank": 1, "top1": "ts506"}
+{"qi": 502, "query": "Deletes an object from the bucket.", "truth": "ts507", "rank": 1, "top1": "ts507"}
+{"qi": 503, "query": "List all objects from the bucket with the give string prefix in name", "truth": "ts508", "rank": 1, "top1": "ts508"}
+{"qi": 504, "query": "Gets the size of a file in Google Cloud Storage.", "truth": "ts509", "rank": 1, "top1": "ts509"}
+{"qi": 505, "query": "Gets the CRC32c checksum of an object in Google Cloud Storage.", "truth": "ts510", "rank": 1, "top1": "ts510"}
+{"qi": 506, "query": "Gets the MD5 hash of an object in Google Cloud Storage.", "truth": "ts511", "rank": 1, "top1": "ts511"}
+{"qi": 507, "query": "Creates a new bucket. Google Cloud Storage uses a flat namespace, so", "truth": "ts512", "rank": 1, "top1": "ts512"}
+{"qi": 508, "query": "Creates a new ACL entry on the specified bucket_name.", "truth": "ts513", "rank": 1, "top1": "ts513"}
+{"qi": 509, "query": "Creates a new ACL entry on the specified object.", "truth": "ts514", "rank": 1, "top1": "ts514"}
+{"qi": 510, "query": "Composes a list of existing object into a new object in the same storage bucket_name", "truth": "ts515", "rank": 1, "top1": "ts515"}
+{"qi": 511, "query": "Return the index, i, in arr that minimizes f(arr[i])", "truth": "ts516", "rank": 1, "top1": "ts516"}
+{"qi": 512, "query": "Returns true if training job's secondary status message has changed.", "truth": "ts517", "rank": 1, "top1": "ts517"}
+{"qi": 513, "query": "Returns a string contains start time and the secondary training job status message.", "truth": "ts518", "rank": 1, "top1": "ts518"}
+{"qi": 514, "query": "Tar the local file or directory and upload to s3", "truth": "ts519", "rank": 1, "top1": "ts519"}
+{"qi": 515, "query": "Extract the S3 operations from the configuration and execute them.", "truth": "ts520", "rank": 1, "top1": "ts520"}
+{"qi": 516, "query": "Check if an S3 URL exists", "truth": "ts521", "rank": 1, "top1": "ts521"}
+{"qi": 517, "query": "Establish an AWS connection for retrieving logs during training", "truth": "ts522", "rank": 1, "top1": "ts522"}
+{"qi": 518, "query": "Create a training job", "truth": "ts523", "rank": 1, "top1": "ts523"}
+{"qi": 519, "query": "Create a tuning job", "truth": "ts524", "rank": 1, "top1": "ts524"}
+{"qi": 520, "query": "Create a transform job", "truth": "ts525", "rank": 1, "top1": "ts525"}
+{"qi": 521, "query": "Create an endpoint", "truth": "ts526", "rank": 8, "top1": "ts572"}
+{"qi": 522, "query": "Return the training job info associated with job_name and print CloudWatch logs", "truth": "ts527", "rank": 1, "top1": "ts527"}
+{"qi": 523, "query": "Check status of a SageMaker job", "truth": "ts528", "rank": 2, "top1": "ts525"}
+{"qi": 524, "query": "Display the logs for a given training job, optionally tailing them until the", "truth": "ts529", "rank": 1, "top1": "ts529"}
+{"qi": 525, "query": "Execute the python dataflow job.", "truth": "ts530", "rank": 1, "top1": "ts530"}
+{"qi": 526, "query": "Checks whether the file specified by file_name is stored in Google Cloud", "truth": "ts531", "rank": 2, "top1": "ts505"}
+{"qi": 527, "query": "Run migrations in 'offline' mode.", "truth": "ts532", "rank": 1, "top1": "ts532"}
+{"qi": 528, "query": "Run migrations in 'online' mode.", "truth": "ts533", "rank": 1, "top1": "ts533"}
+{"qi": 529, "query": "Deletes the specified Cloud Bigtable instance.", "truth": "ts534", "rank": 1, "top1": "ts534"}
+{"qi": 530, "query": "Creates new instance.", "truth": "ts535", "rank": 3, "top1": "ts749"}
+{"qi": 531, "query": "Creates the specified Cloud Bigtable table.", "truth": "ts536", "rank": 1, "top1": "ts536"}
+{"qi": 532, "query": "Deletes the specified table in Cloud Bigtable.", "truth": "ts537", "rank": 1, "top1": "ts537"}
+{"qi": 533, "query": "Updates number of nodes in the specified Cloud Bigtable cluster.", "truth": "ts538", "rank": 1, "top1": "ts538"}
+{"qi": 534, "query": "This function creates the command list from available information", "truth": "ts539", "rank": 1, "top1": "ts539"}
+{"qi": 535, "query": "This function prepares a list of hiveconf params", "truth": "ts540", "rank": 1, "top1": "ts540"}
+{"qi": 536, "query": "Run an hql statement using the hive cli. If hive_conf is specified", "truth": "ts541", "rank": 1, "top1": "ts541"}
+{"qi": 537, "query": "Loads a pandas DataFrame into hive.", "truth": "ts542", "rank": 1, "top1": "ts542"}
+{"qi": 538, "query": "Loads a local file into Hive", "truth": "ts543", "rank": 1, "top1": "ts543"}
+{"qi": 539, "query": "Returns a Hive thrift client.", "truth": "ts544", "rank": 1, "top1": "ts544"}
+{"qi": 540, "query": "Checks whether a partition exists", "truth": "ts545", "rank": 2, "top1": "ts663"}
+{"qi": 541, "query": "Checks whether a partition with a given name exists", "truth": "ts546", "rank": 1, "top1": "ts546"}
+{"qi": 542, "query": "Get a metastore table object", "truth": "ts547", "rank": 2, "top1": "ts548"}
+{"qi": 543, "query": "Get a metastore table object", "truth": "ts548", "rank": 1, "top1": "ts548"}
+{"qi": 544, "query": "Returns a list of all partitions in a table. Works only", "truth": "ts549", "rank": 1, "top1": "ts549"}
+{"qi": 545, "query": "Helper method to get max partition of partitions with partition_key", "truth": "ts550", "rank": 1, "top1": "ts550"}
+{"qi": 546, "query": "Returns the maximum value for all partitions with given field in a table.", "truth": "ts551", "rank": 1, "top1": "ts551"}
+{"qi": 547, "query": "Check if table exists", "truth": "ts552", "rank": 1, "top1": "ts552"}
+{"qi": 548, "query": "Returns a Hive connection object.", "truth": "ts553", "rank": 11, "top1": "ts664"}
+{"qi": 549, "query": "Get results of the provided hql in target schema.", "truth": "ts554", "rank": 1, "top1": "ts554"}
+{"qi": 550, "query": "Execute hql in target schema and write results to a csv file.", "truth": "ts555", "rank": 1, "top1": "ts555"}
+{"qi": 551, "query": "Get a set of records from a Hive query.", "truth": "ts556", "rank": 1, "top1": "ts556"}
+{"qi": 552, "query": "Get a pandas dataframe from a Hive query", "truth": "ts557", "rank": 1, "top1": "ts557"}
+{"qi": 553, "query": "Retrieves connection to Cloud Vision.", "truth": "ts558", "rank": 1, "top1": "ts558"}
+{"qi": 554, "query": "For the documentation see:", "truth": "ts559", "rank": 59, "top1": "ts744"}
+{"qi": 555, "query": "For the documentation see:", "truth": "ts560", "rank": 97, "top1": "ts744"}
+{"qi": 556, "query": "For the documentation see:", "truth": "ts561", "rank": 7, "top1": "ts744"}
+{"qi": 557, "query": "For the documentation see:", "truth": "ts562", "rank": 48, "top1": "ts744"}
+{"qi": 558, "query": "For the documentation see:", "truth": "ts563", "rank": 2, "top1": "ts744"}
+{"qi": 559, "query": "For the documentation see:", "truth": "ts564", "rank": 75, "top1": "ts744"}
+{"qi": 560, "query": "For the documentation see:", "truth": "ts565", "rank": 8, "top1": "ts744"}
+{"qi": 561, "query": "For the documentation see:", "truth": "ts566", "rank": 24, "top1": "ts744"}
+{"qi": 562, "query": "For the documentation see:", "truth": "ts567", "rank": 18, "top1": "ts744"}
+{"qi": 563, "query": "For the documentation see:", "truth": "ts568", "rank": 65, "top1": "ts744"}
+{"qi": 564, "query": "For the documentation see:", "truth": "ts569", "rank": 45, "top1": "ts744"}
+{"qi": 565, "query": "For the documentation see:", "truth": "ts570", "rank": 10, "top1": "ts744"}
+{"qi": 566, "query": "For the documentation see:", "truth": "ts571", "rank": 111, "top1": "ts744"}
+{"qi": 567, "query": "Get Dingding endpoint for sending message.", "truth": "ts572", "rank": 1, "top1": "ts572"}
+{"qi": 568, "query": "Build different type of Dingding message", "truth": "ts573", "rank": 1, "top1": "ts573"}
+{"qi": 569, "query": "Send Dingding message", "truth": "ts574", "rank": 1, "top1": "ts574"}
+{"qi": 570, "query": "Endpoint for streaming log.", "truth": "ts575", "rank": 1, "top1": "ts575"}
+{"qi": 571, "query": "Returns the logs matching log_id in Elasticsearch and next offset.", "truth": "ts576", "rank": 1, "top1": "ts576"}
+{"qi": 572, "query": "Helper method that binds parameters to a SQL query.", "truth": "ts577", "rank": 1, "top1": "ts577"}
+{"qi": 573, "query": "Helper method that escapes parameters to a SQL query.", "truth": "ts578", "rank": 1, "top1": "ts578"}
+{"qi": 574, "query": "Helper method that casts a BigQuery row to the appropriate data types.", "truth": "ts579", "rank": 1, "top1": "ts579"}
+{"qi": 575, "query": "function to check expected type and raise", "truth": "ts580", "rank": 1, "top1": "ts580"}
+{"qi": 576, "query": "Returns a BigQuery PEP 249 connection object.", "truth": "ts581", "rank": 1, "top1": "ts581"}
+{"qi": 577, "query": "Returns a BigQuery service object.", "truth": "ts582", "rank": 1, "top1": "ts582"}
+{"qi": 578, "query": "Returns a Pandas DataFrame for the results produced by a BigQuery", "truth": "ts583", "rank": 1, "top1": "ts583"}
+{"qi": 579, "query": "Checks for the existence of a table in Google BigQuery.", "truth": "ts584", "rank": 1, "top1": "ts584"}
+{"qi": 580, "query": "Creates a new, empty table in the dataset.", "truth": "ts585", "rank": 1, "top1": "ts585"}
+{"qi": 581, "query": "Creates a new external table in the dataset with the data in Google", "truth": "ts586", "rank": 1, "top1": "ts586"}
+{"qi": 582, "query": "Patch information in an existing table.", "truth": "ts587", "rank": 1, "top1": "ts587"}
+{"qi": 583, "query": "Executes a BigQuery SQL query. Optionally persists results in a BigQuery", "truth": "ts588", "rank": 1, "top1": "ts588"}
+{"qi": 584, "query": "Executes a BigQuery extract command to copy data from BigQuery to", "truth": "ts589", "rank": 1, "top1": "ts589"}
+{"qi": 585, "query": "Executes a BigQuery copy command to copy data from one BigQuery table", "truth": "ts590", "rank": 1, "top1": "ts590"}
+{"qi": 586, "query": "Executes a BigQuery load command to load data from Google Cloud Storage", "truth": "ts591", "rank": 1, "top1": "ts591"}
+{"qi": 587, "query": "Executes a BigQuery SQL query. See here:", "truth": "ts592", "rank": 4, "top1": "ts588"}
+{"qi": 588, "query": "Cancel all started queries that have not yet completed", "truth": "ts593", "rank": 1, "top1": "ts593"}
+{"qi": 589, "query": "Get the schema for a given datset.table.", "truth": "ts594", "rank": 1, "top1": "ts594"}
+{"qi": 590, "query": "Get the data of a given dataset.table and optionally with selected columns.", "truth": "ts595", "rank": 1, "top1": "ts595"}
+{"qi": 591, "query": "Delete an existing table from the dataset;", "truth": "ts596", "rank": 1, "top1": "ts596"}
+{"qi": 592, "query": "creates a new, empty table in the dataset;", "truth": "ts597", "rank": 6, "top1": "ts585"}
+{"qi": 593, "query": "Grant authorized view access of a dataset to a view table.", "truth": "ts598", "rank": 1, "top1": "ts598"}
+{"qi": 594, "query": "Create a new empty dataset:", "truth": "ts599", "rank": 1, "top1": "ts599"}
+{"qi": 595, "query": "Delete a dataset of Big query in your project.", "truth": "ts600", "rank": 1, "top1": "ts600"}
+{"qi": 596, "query": "Method returns dataset_resource if dataset exist", "truth": "ts601", "rank": 1, "top1": "ts601"}
+{"qi": 597, "query": "Method returns full list of BigQuery datasets in the current project", "truth": "ts602", "rank": 1, "top1": "ts602"}
+{"qi": 598, "query": "Method to stream data into BigQuery one record at a time without needing", "truth": "ts603", "rank": 1, "top1": "ts603"}
+{"qi": 599, "query": "Executes a BigQuery query, and returns the job ID.", "truth": "ts604", "rank": 1, "top1": "ts604"}
+{"qi": 600, "query": "Execute a BigQuery query multiple times with different parameters.", "truth": "ts605", "rank": 1, "top1": "ts605"}
+{"qi": 601, "query": "Helper method for fetchone, which returns the next row from a buffer.", "truth": "ts606", "rank": 1, "top1": "ts606"}
+{"qi": 602, "query": "Fetch the next set of rows of a query result, returning a sequence of sequences", "truth": "ts607", "rank": 2, "top1": "ts608"}
+{"qi": 603, "query": "Fetch all (remaining) rows of a query result, returning them as a sequence of", "truth": "ts608", "rank": 1, "top1": "ts608"}
+{"qi": 604, "query": "Loads the manifest file and register the `url_for_asset_` template tag.", "truth": "ts609", "rank": 1, "top1": "ts609"}
+{"qi": 605, "query": "Queries Postgres and returns a cursor to the results.", "truth": "ts610", "rank": 1, "top1": "ts610"}
+{"qi": 606, "query": "Takes a value from Postgres, and converts it to a value that's safe for", "truth": "ts613", "rank": 3, "top1": "ts421"}
+{"qi": 607, "query": "Create all the intermediate directories in a remote host", "truth": "ts614", "rank": 1, "top1": "ts614"}
+{"qi": 608, "query": "Create queue using connection object", "truth": "ts615", "rank": 1, "top1": "ts615"}
+{"qi": 609, "query": "Send message to the queue", "truth": "ts616", "rank": 1, "top1": "ts616"}
+{"qi": 610, "query": "Integrate plugins to the context", "truth": "ts617", "rank": 2, "top1": "ts280"}
+{"qi": 611, "query": "Run the task command.", "truth": "ts618", "rank": 62, "top1": "ts706"}
+{"qi": 612, "query": "A callback that should be called when this is done running.", "truth": "ts619", "rank": 2, "top1": "ts322"}
+{"qi": 613, "query": "Parse options and process commands", "truth": "ts620", "rank": 1, "top1": "ts620"}
+{"qi": 614, "query": "add serie - Series are list of data that will be plotted", "truth": "ts621", "rank": 1, "top1": "ts621"}
+{"qi": 615, "query": "Build HTML content only, no header or body tags. To be useful this", "truth": "ts622", "rank": 2, "top1": "ts624"}
+{"qi": 616, "query": "Build the HTML page", "truth": "ts623", "rank": 1, "top1": "ts623"}
+{"qi": 617, "query": "generate HTML header content", "truth": "ts624", "rank": 1, "top1": "ts624"}
+{"qi": 618, "query": "generate HTML div", "truth": "ts625", "rank": 1, "top1": "ts625"}
+{"qi": 619, "query": "generate javascript code for the chart", "truth": "ts626", "rank": 1, "top1": "ts626"}
+{"qi": 620, "query": "Create X-axis", "truth": "ts627", "rank": 2, "top1": "ts628"}
+{"qi": 621, "query": "Create Y-axis", "truth": "ts628", "rank": 1, "top1": "ts628"}
+{"qi": 622, "query": "Returns a sqlite connection object", "truth": "ts630", "rank": 1, "top1": "ts630"}
+{"qi": 623, "query": "Decorator to log user actions", "truth": "ts631", "rank": 1, "top1": "ts631"}
+{"qi": 624, "query": "Decorator to make a view compressed", "truth": "ts632", "rank": 1, "top1": "ts632"}
+{"qi": 625, "query": "Decorator to check whether the user has read / write permission on the dag.", "truth": "ts633", "rank": 1, "top1": "ts633"}
+{"qi": 626, "query": "Returns the last dag run for a dag, None if there was none.", "truth": "ts634", "rank": 2, "top1": "ts74"}
+{"qi": 627, "query": "Creates a dag run from this dag including the tasks associated with this dag.", "truth": "ts635", "rank": 2, "top1": "ts732"}
+{"qi": 628, "query": "Publish the message to SQS queue", "truth": "ts636", "rank": 1, "top1": "ts636"}
+{"qi": 629, "query": "Generates the HTML for a paging component using a similar logic to the paging", "truth": "ts637", "rank": 1, "top1": "ts637"}
+{"qi": 630, "query": "returns a json response from a json serializable python object", "truth": "ts638", "rank": 1, "top1": "ts638"}
+{"qi": 631, "query": "Opens the given file. If the path contains a folder with a .zip suffix, then", "truth": "ts639", "rank": 1, "top1": "ts639"}
+{"qi": 632, "query": "Used by cache to get a unique key per URL", "truth": "ts640", "rank": 1, "top1": "ts640"}
+{"qi": 633, "query": "Returns Gcp Video Intelligence Service client", "truth": "ts641", "rank": 1, "top1": "ts641"}
+{"qi": 634, "query": "Performs video annotation.", "truth": "ts642", "rank": 1, "top1": "ts642"}
+{"qi": 635, "query": "Get Opsgenie api_key for creating alert", "truth": "ts643", "rank": 1, "top1": "ts643"}
+{"qi": 636, "query": "Overwrite HttpHook get_conn because this hook just needs base_url", "truth": "ts644", "rank": 1, "top1": "ts644"}
+{"qi": 637, "query": "Execute the Opsgenie Alert call", "truth": "ts645", "rank": 2, "top1": "ts648"}
+{"qi": 638, "query": "Execute the bash command in a temporary directory", "truth": "ts646", "rank": 1, "top1": "ts646"}
+{"qi": 639, "query": "Construct the Opsgenie JSON payload. All relevant parameters are combined here", "truth": "ts647", "rank": 1, "top1": "ts647"}
+{"qi": 640, "query": "Call the OpsgenieAlertHook to post message", "truth": "ts648", "rank": 1, "top1": "ts648"}
+{"qi": 641, "query": "check if aws conn exists already or create one and return it", "truth": "ts649", "rank": 1, "top1": "ts649"}
+{"qi": 642, "query": "Run Presto query on athena with provided config and return submitted query_execution_id", "truth": "ts650", "rank": 1, "top1": "ts650"}
+{"qi": 643, "query": "Fetch the status of submitted athena query. Returns None or one of valid query states.", "truth": "ts651", "rank": 1, "top1": "ts651"}
+{"qi": 644, "query": "Fetch submitted athena query results. returns none if query is in intermediate state or", "truth": "ts652", "rank": 1, "top1": "ts652"}
+{"qi": 645, "query": "Poll the status of submitted athena query until query state reaches final state.", "truth": "ts653", "rank": 1, "top1": "ts653"}
+{"qi": 646, "query": "Returns an SFTP connection object", "truth": "ts654", "rank": 1, "top1": "ts654"}
+{"qi": 647, "query": "Returns a dictionary of {filename: {attributes}} for all files", "truth": "ts655", "rank": 1, "top1": "ts655"}
+{"qi": 648, "query": "Returns a list of files on the remote system.", "truth": "ts656", "rank": 1, "top1": "ts656"}
+{"qi": 649, "query": "Creates a directory on the remote system.", "truth": "ts657", "rank": 1, "top1": "ts657"}
+{"qi": 650, "query": "Transfers the remote file to a local location.", "truth": "ts658", "rank": 3, "top1": "ts659"}
+{"qi": 651, "query": "Transfers a local file to the remote location.", "truth": "ts659", "rank": 1, "top1": "ts659"}
+{"qi": 652, "query": "Sleep for the time specified in the exception. If not specified, wait", "truth": "ts660", "rank": 1, "top1": "ts660"}
+{"qi": 653, "query": "Call Zendesk API and return results", "truth": "ts661", "rank": 1, "top1": "ts661"}
+{"qi": 654, "query": "Retrieves the partition values for a table.", "truth": "ts662", "rank": 2, "top1": "ts549"}
+{"qi": 655, "query": "Checks whether a partition exists", "truth": "ts663", "rank": 1, "top1": "ts663"}
+{"qi": 656, "query": "Get the information of the table", "truth": "ts664", "rank": 1, "top1": "ts664"}
+{"qi": 657, "query": "Get the physical location of the table", "truth": "ts665", "rank": 1, "top1": "ts665"}
+{"qi": 658, "query": "Return status of a cluster", "truth": "ts666", "rank": 1, "top1": "ts666"}
+{"qi": 659, "query": "Delete a cluster and optionally create a snapshot", "truth": "ts667", "rank": 1, "top1": "ts667"}
+{"qi": 660, "query": "Gets a list of snapshots for a cluster", "truth": "ts668", "rank": 1, "top1": "ts668"}
+{"qi": 661, "query": "Restores a cluster from its snapshot", "truth": "ts669", "rank": 1, "top1": "ts669"}
+{"qi": 662, "query": "Creates a snapshot of a cluster", "truth": "ts670", "rank": 1, "top1": "ts670"}
+{"qi": 663, "query": "SlackAPIOperator calls will not fail even if the call is not unsuccessful.", "truth": "ts671", "rank": 1, "top1": "ts671"}
+{"qi": 664, "query": "Args:", "truth": "ts672", "rank": 212, "top1": "ts516"}
+{"qi": 665, "query": "Args:", "truth": "ts673", "rank": 523, "top1": "ts516"}
+{"qi": 666, "query": "Creates a job flow using the config from the EMR connection.", "truth": "ts674", "rank": 1, "top1": "ts674"}
+{"qi": 667, "query": "Will test the filepath result and test if its size is at least self.filesize", "truth": "ts675", "rank": 1, "top1": "ts675"}
+{"qi": 668, "query": "Will filter if instructed to do so the result to remove matching criteria", "truth": "ts676", "rank": 1, "top1": "ts676"}
+{"qi": 669, "query": "Executed by task_instance at runtime", "truth": "ts677", "rank": 78, "top1": "ts311"}
+{"qi": 670, "query": "Takes an iterable (pymongo Cursor or Array) containing dictionaries and", "truth": "ts678", "rank": 1, "top1": "ts678"}
+{"qi": 671, "query": "Get pool by a given name.", "truth": "ts679", "rank": 1, "top1": "ts679"}
+{"qi": 672, "query": "Create a pool with a given parameters.", "truth": "ts680", "rank": 1, "top1": "ts680"}
+{"qi": 673, "query": "Delete pool by a given name.", "truth": "ts681", "rank": 1, "top1": "ts681"}
+{"qi": 674, "query": "Converts a python dictionary to the proto supplied", "truth": "ts682", "rank": 1, "top1": "ts682"}
+{"qi": 675, "query": "Given an operation, continuously fetches the status from Google Cloud until either", "truth": "ts683", "rank": 1, "top1": "ts683"}
+{"qi": 676, "query": "Fetches the operation from Google Cloud", "truth": "ts684", "rank": 1, "top1": "ts684"}
+{"qi": 677, "query": "Append labels to provided Cluster Protobuf", "truth": "ts685", "rank": 1, "top1": "ts685"}
+{"qi": 678, "query": "Deletes the cluster, including the Kubernetes endpoint and all", "truth": "ts686", "rank": 1, "top1": "ts686"}
+{"qi": 679, "query": "Creates a cluster, consisting of the specified number and type of Google Compute", "truth": "ts687", "rank": 2, "top1": "ts535"}
+{"qi": 680, "query": "Gets details of specified cluster", "truth": "ts688", "rank": 3, "top1": "ts666"}
+{"qi": 681, "query": "Given a Discord http_conn_id, return the default webhook endpoint or override if a", "truth": "ts689", "rank": 1, "top1": "ts689"}
+{"qi": 682, "query": "Construct the Discord JSON payload. All relevant parameters are combined here", "truth": "ts690", "rank": 1, "top1": "ts690"}
+{"qi": 683, "query": "Execute the Discord webhook call", "truth": "ts691", "rank": 2, "top1": "ts484"}
+{"qi": 684, "query": "Encrypts a plaintext message using Google Cloud KMS.", "truth": "ts692", "rank": 1, "top1": "ts692"}
+{"qi": 685, "query": "Remote Popen", "truth": "ts693", "rank": 1, "top1": "ts693"}
+{"qi": 686, "query": "Imports table from remote location to target dir. Arguments are", "truth": "ts694", "rank": 1, "top1": "ts694"}
+{"qi": 687, "query": "Imports a specific query from the rdbms to hdfs", "truth": "ts695", "rank": 1, "top1": "ts695"}
+{"qi": 688, "query": "Exports Hive table to remote location. Arguments are copies of direct", "truth": "ts696", "rank": 1, "top1": "ts696"}
+{"qi": 689, "query": "Retrieves connection to Cloud Text to Speech.", "truth": "ts697", "rank": 1, "top1": "ts697"}
+{"qi": 690, "query": "Synthesizes text input", "truth": "ts698", "rank": 1, "top1": "ts698"}
+{"qi": 691, "query": "Close and upload local log file to remote storage S3.", "truth": "ts699", "rank": 1, "top1": "ts699"}
+{"qi": 692, "query": "Returns the log found at the remote_log_location. Returns '' if no", "truth": "ts700", "rank": 2, "top1": "ts365"}
+{"qi": 693, "query": "Writes the log to the remote_log_location. Fails silently if no hook", "truth": "ts701", "rank": 1, "top1": "ts701"}
+{"qi": 694, "query": "When using git to retrieve the DAGs, use the GitSync Init Container", "truth": "ts702", "rank": 1, "top1": "ts702"}
+{"qi": 695, "query": "Defines any necessary environment variables for the pod executor", "truth": "ts703", "rank": 1, "top1": "ts703"}
+{"qi": 696, "query": "Defines any necessary secrets for the pod executor", "truth": "ts704", "rank": 1, "top1": "ts704"}
+{"qi": 697, "query": "Defines the security context", "truth": "ts705", "rank": 1, "top1": "ts705"}
+{"qi": 698, "query": "Kill (cancel) a Qubole command", "truth": "ts706", "rank": 1, "top1": "ts706"}
+{"qi": 699, "query": "Get results (or just s3 locations) of a command from Qubole and save into a file", "truth": "ts707", "rank": 1, "top1": "ts707"}
+{"qi": 700, "query": "Get Logs of a command from Qubole", "truth": "ts708", "rank": 1, "top1": "ts708"}
+{"qi": 701, "query": "Get jobs associated with a Qubole commands", "truth": "ts709", "rank": 1, "top1": "ts709"}
+{"qi": 702, "query": "Get link to qubole command result page.", "truth": "ts710", "rank": 1, "top1": "ts710"}
+{"qi": 703, "query": "Heartbeats update the job's entry in the database with a timestamp", "truth": "ts711", "rank": 1, "top1": "ts711"}
+{"qi": 704, "query": "This function checks if there are any tasks in the dagrun (or all)", "truth": "ts712", "rank": 4, "top1": "ts109"}
+{"qi": 705, "query": "Launch a process to process the given file.", "truth": "ts713", "rank": 1, "top1": "ts713"}
+{"qi": 706, "query": "Launch the process and start processing the DAG.", "truth": "ts714", "rank": 1, "top1": "ts714"}
+{"qi": 707, "query": "Terminate (and then kill) the process launched to process the file.", "truth": "ts715", "rank": 1, "top1": "ts715"}
+{"qi": 708, "query": "Check if the process launched to process this file is done.", "truth": "ts716", "rank": 1, "top1": "ts716"}
+{"qi": 709, "query": "Helper method to clean up processor_agent to avoid leaving orphan processes.", "truth": "ts717", "rank": 1, "top1": "ts717"}
+{"qi": 710, "query": "Finding all tasks that have SLAs defined, and sending alert emails", "truth": "ts718", "rank": 1, "top1": "ts718"}
+{"qi": 711, "query": "For the DAGs in the given DagBag, record any associated import errors and clears", "truth": "ts719", "rank": 1, "top1": "ts719"}
+{"qi": 712, "query": "This method checks whether a new DagRun needs to be created", "truth": "ts720", "rank": 1, "top1": "ts720"}
+{"qi": 713, "query": "This method schedules the tasks for a single DAG by looking at the", "truth": "ts721", "rank": 1, "top1": "ts721"}
+{"qi": 714, "query": "For all DAG IDs in the SimpleDagBag, look for task instances in the", "truth": "ts722", "rank": 3, "top1": "ts243"}
+{"qi": 715, "query": "Get the concurrency maps.", "truth": "ts723", "rank": 1, "top1": "ts723"}
+{"qi": 716, "query": "Finds TIs that are ready for execution with respect to pool limits,", "truth": "ts724", "rank": 1, "top1": "ts724"}
+{"qi": 717, "query": "Changes the state of task instances in the list with one of the given states", "truth": "ts725", "rank": 1, "top1": "ts725"}
+{"qi": 718, "query": "Takes task_instances, which should have been set to queued, and enqueues them", "truth": "ts726", "rank": 1, "top1": "ts726"}
+{"qi": 719, "query": "Attempts to execute TaskInstances that should be executed by the scheduler.", "truth": "ts727", "rank": 1, "top1": "ts727"}
+{"qi": 720, "query": "If there are tasks left over in the executor,", "truth": "ts728", "rank": 6, "top1": "ts52"}
+{"qi": 721, "query": "Iterates over the dags and processes them. Processing includes:", "truth": "ts729", "rank": 1, "top1": "ts729"}
+{"qi": 722, "query": "Respond to executor events.", "truth": "ts730", "rank": 1, "top1": "ts730"}
+{"qi": 723, "query": "The actual scheduler loop. The main steps in the loop are:", "truth": "ts731", "rank": 1, "top1": "ts731"}
+{"qi": 724, "query": "Process a Python file containing Airflow DAGs.", "truth": "ts732", "rank": 1, "top1": "ts732"}
+{"qi": 725, "query": "Updates the counters per state of the tasks that were running. Can re-add", "truth": "ts733", "rank": 1, "top1": "ts733"}
+{"qi": 726, "query": "Checks if the executor agrees with the state of task instances", "truth": "ts734", "rank": 2, "top1": "ts52"}
+{"qi": 727, "query": "Returns a dag run for the given run date, which will be matched to an existing", "truth": "ts735", "rank": 1, "top1": "ts735"}
+{"qi": 728, "query": "Returns a map of task instance key to task instance object for the tasks to", "truth": "ts736", "rank": 5, "top1": "ts351"}
+{"qi": 729, "query": "Process a set of task instances from a set of dag runs. Special handling is done", "truth": "ts737", "rank": 1, "top1": "ts737"}
+{"qi": 730, "query": "Computes the dag runs and their respective task instances for", "truth": "ts738", "rank": 1, "top1": "ts738"}
+{"qi": 731, "query": "Go through the dag_runs and update the state based on the task_instance state.", "truth": "ts739", "rank": 2, "top1": "ts480"}
+{"qi": 732, "query": "Initializes all components required to run a dag for a specified date range and", "truth": "ts740", "rank": 3, "top1": "ts477"}
+{"qi": 733, "query": "Self destruct task if state has been moved away from running externally", "truth": "ts741", "rank": 1, "top1": "ts741"}
+{"qi": 734, "query": "Provides a client for interacting with the Cloud Spanner API.", "truth": "ts742", "rank": 1, "top1": "ts742"}
+{"qi": 735, "query": "Gets information about a particular instance.", "truth": "ts743", "rank": 1, "top1": "ts743"}
+{"qi": 736, "query": "Invokes a method on a given instance by applying a specified Callable.", "truth": "ts744", "rank": 1, "top1": "ts744"}
+{"qi": 737, "query": "Creates a new Cloud Spanner instance.", "truth": "ts745", "rank": 1, "top1": "ts745"}
+{"qi": 738, "query": "Updates an existing Cloud Spanner instance.", "truth": "ts746", "rank": 1, "top1": "ts746"}
+{"qi": 739, "query": "Deletes an existing Cloud Spanner instance.", "truth": "ts747", "rank": 1, "top1": "ts747"}
+{"qi": 740, "query": "Retrieves a database in Cloud Spanner. If the database does not exist", "truth": "ts748", "rank": 1, "top1": "ts748"}
+{"qi": 741, "query": "Creates a new database in Cloud Spanner.", "truth": "ts749", "rank": 1, "top1": "ts749"}
+{"qi": 742, "query": "Updates DDL of a database in Cloud Spanner.", "truth": "ts750", "rank": 1, "top1": "ts750"}
+{"qi": 743, "query": "Drops a database in Cloud Spanner.", "truth": "ts751", "rank": 1, "top1": "ts751"}
+{"qi": 744, "query": "Executes an arbitrary DML query (INSERT, UPDATE, DELETE).", "truth": "ts752", "rank": 2, "top1": "ts830"}
+{"qi": 745, "query": "Pokes for a mail attachment on the mail server.", "truth": "ts753", "rank": 1, "top1": "ts753"}
+{"qi": 746, "query": "Creates additional_properties parameter based on language_hints, web_detection_params and", "truth": "ts754", "rank": 1, "top1": "ts754"}
+{"qi": 747, "query": "Returns a cassandra Session object", "truth": "ts755", "rank": 1, "top1": "ts755"}
+{"qi": 748, "query": "Checks if a table exists in Cassandra", "truth": "ts756", "rank": 1, "top1": "ts756"}
+{"qi": 749, "query": "Checks if a record exists in Cassandra", "truth": "ts757", "rank": 1, "top1": "ts757"}
+{"qi": 750, "query": "Construct the spark-submit command to execute.", "truth": "ts758", "rank": 2, "top1": "ts760"}
+{"qi": 751, "query": "Construct the command to poll the driver status.", "truth": "ts759", "rank": 1, "top1": "ts759"}
+{"qi": 752, "query": "Remote Popen to execute the spark-submit job", "truth": "ts760", "rank": 1, "top1": "ts760"}
+{"qi": 753, "query": "Processes the log files and extracts useful information out of it.", "truth": "ts761", "rank": 2, "top1": "ts190"}
+{"qi": 754, "query": "parses the logs of the spark driver status query process", "truth": "ts762", "rank": 1, "top1": "ts762"}
+{"qi": 755, "query": "Polls the driver based on self._driver_id to get the status.", "truth": "ts763", "rank": 2, "top1": "ts759"}
+{"qi": 756, "query": "Construct the spark-submit command to kill a driver.", "truth": "ts764", "rank": 1, "top1": "ts764"}
+{"qi": 757, "query": "Get the task runner that can be used to run the given job.", "truth": "ts765", "rank": 1, "top1": "ts765"}
+{"qi": 758, "query": "Try to use a waiter from the below pull request", "truth": "ts766", "rank": 1, "top1": "ts766"}
+{"qi": 759, "query": "Queries mysql and returns a cursor to the results.", "truth": "ts767", "rank": 1, "top1": "ts767"}
+{"qi": 760, "query": "Configure a csv writer with the file_handle and write schema", "truth": "ts769", "rank": 1, "top1": "ts769"}
+{"qi": 761, "query": "Takes a cursor, and writes the BigQuery schema in .json format for the", "truth": "ts770", "rank": 2, "top1": "ts395"}
+{"qi": 762, "query": "Takes a value from MySQLdb, and converts it to a value that's safe for", "truth": "ts772", "rank": 3, "top1": "ts421"}
+{"qi": 763, "query": "Return a dict of column name and column type based on self.schema if not None.", "truth": "ts773", "rank": 1, "top1": "ts773"}
+{"qi": 764, "query": "Helper function that maps from MySQL fields to BigQuery fields. Used", "truth": "ts774", "rank": 1, "top1": "ts774"}
+{"qi": 765, "query": "Authenticate a PasswordUser with the specified", "truth": "ts775", "rank": 1, "top1": "ts775"}
+{"qi": 766, "query": "Execute sqoop job", "truth": "ts776", "rank": 1, "top1": "ts776"}
+{"qi": 767, "query": "Saves the lineage to XCom and if configured to do so sends it", "truth": "ts777", "rank": 1, "top1": "ts777"}
+{"qi": 768, "query": "Prepares the lineage inlets and outlets. Inlets can be:", "truth": "ts778", "rank": 1, "top1": "ts778"}
+{"qi": 769, "query": "Returns the extra property by deserializing json.", "truth": "ts779", "rank": 1, "top1": "ts779"}
+{"qi": 770, "query": "Get a set of dates as a list based on a start, end and delta, delta", "truth": "ts780", "rank": 1, "top1": "ts780"}
+{"qi": 771, "query": "Returns the datetime of the form start_date + i * delta", "truth": "ts781", "rank": 1, "top1": "ts781"}
+{"qi": 772, "query": "Determine the most appropriate time unit for an array of time durations", "truth": "ts782", "rank": 1, "top1": "ts782"}
+{"qi": 773, "query": "Convert an array of time durations in seconds to the specified time unit.", "truth": "ts783", "rank": 1, "top1": "ts783"}
+{"qi": 774, "query": "Get a datetime object representing `n` days ago. By default the time is", "truth": "ts784", "rank": 1, "top1": "ts784"}
+{"qi": 775, "query": "Returns a list of Dag Runs for a specific DAG ID.", "truth": "ts785", "rank": 1, "top1": "ts785"}
+{"qi": 776, "query": "Initialize the role with the permissions and related view-menus.", "truth": "ts786", "rank": 1, "top1": "ts786"}
+{"qi": 777, "query": "Delete the given Role", "truth": "ts787", "rank": 1, "top1": "ts787"}
+{"qi": 778, "query": "Get all the roles associated with the user.", "truth": "ts788", "rank": 1, "top1": "ts788"}
+{"qi": 779, "query": "Returns a set of tuples with the perm name and view menu name", "truth": "ts789", "rank": 1, "top1": "ts789"}
+{"qi": 780, "query": "Return a set of dags that user has access to(either read or write).", "truth": "ts790", "rank": 1, "top1": "ts790"}
+{"qi": 781, "query": "Verify whether a given user could perform certain permission", "truth": "ts791", "rank": 1, "top1": "ts791"}
+{"qi": 782, "query": "Whether the user has this role name", "truth": "ts792", "rank": 1, "top1": "ts792"}
+{"qi": 783, "query": "Whether the user has this perm", "truth": "ts793", "rank": 1, "top1": "ts793"}
+{"qi": 784, "query": "FAB leaves faulty permissions that need to be cleaned up", "truth": "ts794", "rank": 1, "top1": "ts794"}
+{"qi": 785, "query": "Add the new permission , view_menu to ab_permission_view_role if not exists.", "truth": "ts795", "rank": 1, "top1": "ts795"}
+{"qi": 786, "query": "Workflow:", "truth": "ts796", "rank": 106, "top1": "ts175"}
+{"qi": 787, "query": "Admin should have all the permission-views.", "truth": "ts797", "rank": 1, "top1": "ts797"}
+{"qi": 788, "query": "1. Init the default role(Admin, Viewer, User, Op, public)", "truth": "ts798", "rank": 1, "top1": "ts798"}
+{"qi": 789, "query": "Sync permissions for given dag id. The dag id surely exists in our dag bag", "truth": "ts799", "rank": 1, "top1": "ts799"}
+{"qi": 790, "query": "Set the access policy on the given DAG's ViewModel.", "truth": "ts800", "rank": 1, "top1": "ts800"}
+{"qi": 791, "query": "Create perm-vm if not exist and insert into FAB security model for all-dags.", "truth": "ts801", "rank": 1, "top1": "ts801"}
+{"qi": 792, "query": "Deferred load of Fernet key.", "truth": "ts802", "rank": 1, "top1": "ts802"}
+{"qi": 793, "query": "Checks for existence of the partition in the AWS Glue Catalog table", "truth": "ts803", "rank": 1, "top1": "ts803"}
+{"qi": 794, "query": "Gets the AwsGlueCatalogHook", "truth": "ts804", "rank": 1, "top1": "ts804"}
+{"qi": 795, "query": "Check for message on subscribed queue and write to xcom the message with key ``messages``", "truth": "ts805", "rank": 1, "top1": "ts805"}
+{"qi": 796, "query": "Returns a path for a temporary file including a full copy of the configuration", "truth": "ts806", "rank": 1, "top1": "ts806"}
+{"qi": 797, "query": "Returns a snakebite HDFSClient object.", "truth": "ts807", "rank": 1, "top1": "ts807"}
+{"qi": 798, "query": "Establishes a connection depending on the security mode set via config or environment variable.", "truth": "ts808", "rank": 10, "top1": "ts93"}
+{"qi": 799, "query": "Check for the existence of a path in HDFS by querying FileStatus.", "truth": "ts809", "rank": 1, "top1": "ts809"}
+{"qi": 800, "query": "r\"\"\"", "truth": "ts810", "rank": 180, "top1": "ts578"}
+{"qi": 801, "query": "Establish a connection to pinot broker through pinot dbqpi.", "truth": "ts811", "rank": 1, "top1": "ts811"}
+{"qi": 802, "query": "Get the connection uri for pinot broker.", "truth": "ts812", "rank": 1, "top1": "ts812"}
+{"qi": 803, "query": "Executes the sql and returns a set of records.", "truth": "ts813", "rank": 1, "top1": "ts813"}
+{"qi": 804, "query": "Executes the sql and returns the first resulting row.", "truth": "ts814", "rank": 1, "top1": "ts814"}
+{"qi": 805, "query": "Truncate a string.", "truth": "ts815", "rank": 1, "top1": "ts815"}
+{"qi": 806, "query": "Make a slug from the given text.", "truth": "ts816", "rank": 1, "top1": "ts816"}
+{"qi": 807, "query": "Store an XCom value.", "truth": "ts817", "rank": 2, "top1": "ts360"}
+{"qi": 808, "query": "Retrieve an XCom value, optionally meeting certain criteria.", "truth": "ts818", "rank": 4, "top1": "ts361"}
+{"qi": 809, "query": "Retrieve an XCom value, optionally meeting certain criteria", "truth": "ts819", "rank": 2, "top1": "ts361"}
+{"qi": 810, "query": "Convert native python ``datetime.date`` object  to a format supported by the API", "truth": "ts820", "rank": 1, "top1": "ts820"}
+{"qi": 811, "query": "Convert native python ``datetime.time`` object  to a format supported by the API", "truth": "ts821", "rank": 1, "top1": "ts821"}
+{"qi": 812, "query": "Returns a Redis connection.", "truth": "ts822", "rank": 1, "top1": "ts822"}
+{"qi": 813, "query": "Returns a oracle connection object", "truth": "ts823", "rank": 1, "top1": "ts823"}
+{"qi": 814, "query": "A generic way to insert a set of tuples into a table,", "truth": "ts824", "rank": 3, "top1": "ts136"}
+{"qi": 815, "query": "A performant bulk insert for cx_Oracle", "truth": "ts825", "rank": 1, "top1": "ts825"}
+{"qi": 816, "query": "Returns a connection object", "truth": "ts826", "rank": 1, "top1": "ts826"}
+{"qi": 817, "query": "Executes the sql and returns a pandas dataframe", "truth": "ts827", "rank": 1, "top1": "ts827"}
+{"qi": 818, "query": "Executes the sql and returns a set of records.", "truth": "ts828", "rank": 2, "top1": "ts813"}
+{"qi": 819, "query": "Executes the sql and returns the first resulting row.", "truth": "ts829", "rank": 2, "top1": "ts814"}
+{"qi": 820, "query": "Runs a command or a list of commands. Pass a list of sql", "truth": "ts830", "rank": 1, "top1": "ts830"}
+{"qi": 821, "query": "Sets the autocommit flag on the connection", "truth": "ts831", "rank": 1, "top1": "ts831"}
+{"qi": 822, "query": "A generic way to insert a set of tuples into a table,", "truth": "ts832", "rank": 2, "top1": "ts136"}
+{"qi": 823, "query": "Returns the SQL literal of the cell as a string.", "truth": "ts833", "rank": 1, "top1": "ts833"}
+{"qi": 824, "query": "An endpoint helping check the health status of the Airflow instance,", "truth": "ts834", "rank": 1, "top1": "ts834"}
+{"qi": 825, "query": "A restful endpoint that returns external links for a given Operator", "truth": "ts835", "rank": 1, "top1": "ts835"}
+{"qi": 826, "query": "Default filters for model", "truth": "ts836", "rank": 1, "top1": "ts836"}
+{"qi": 827, "query": "Default filters for model", "truth": "ts837", "rank": 2, "top1": "ts836"}
+{"qi": 828, "query": "Opens a connection to the cloudant service and closes it automatically if used as context manager.", "truth": "ts838", "rank": 1, "top1": "ts838"}
+{"qi": 829, "query": "Call the SlackWebhookHook to post the provided Slack message", "truth": "ts839", "rank": 1, "top1": "ts839"}
+{"qi": 830, "query": "Returns the Credentials object for Google API", "truth": "ts840", "rank": 1, "top1": "ts840"}
+{"qi": 831, "query": "Returns an authorized HTTP object to be used to build a Google cloud", "truth": "ts841", "rank": 1, "top1": "ts841"}
+{"qi": 832, "query": "Fetches a field from extras, and returns it. This is some Airflow", "truth": "ts842", "rank": 3, "top1": "ts58"}
+{"qi": 833, "query": "Function decorator that intercepts HTTP Errors and raises AirflowException", "truth": "ts843", "rank": 1, "top1": "ts843"}
+{"qi": 834, "query": "Decorator that provides fallback for Google Cloud Platform project id. If", "truth": "ts844", "rank": 1, "top1": "ts844"}
+{"qi": 835, "query": "A list of states indicating that a task either has not completed", "truth": "ts845", "rank": 1, "top1": "ts845"}
+{"qi": 836, "query": ":param dag_id: the dag_id of the DAG to delete", "truth": "ts846", "rank": 1, "top1": "ts846"}
+{"qi": 837, "query": "Construct the spark-sql command to execute. Verbose output is enabled", "truth": "ts847", "rank": 1, "top1": "ts847"}
+{"qi": 838, "query": "Remote Popen (actually execute the Spark-sql query)", "truth": "ts848", "rank": 1, "top1": "ts848"}
+{"qi": 839, "query": "VGG 11-layer model (configuration \"A\") with batch normalization", "truth": "ts849", "rank": 1, "top1": "ts849"}
+{"qi": 840, "query": "VGG 13-layer model (configuration \"B\")", "truth": "ts850", "rank": 1, "top1": "ts850"}
+{"qi": 841, "query": "r\"\"\"AlexNet model architecture from the", "truth": "ts851", "rank": 1, "top1": "ts851"}
+{"qi": 842, "query": "r\"\"\"Densenet-121 model from", "truth": "ts852", "rank": 1, "top1": "ts852"}
+{"qi": 843, "query": "Convert a ``PIL Image`` or ``numpy.ndarray`` to tensor.", "truth": "ts853", "rank": 1, "top1": "ts853"}
+{"qi": 844, "query": "Convert a tensor or an ndarray to PIL Image.", "truth": "ts854", "rank": 1, "top1": "ts854"}
+{"qi": 845, "query": "Normalize a tensor image with mean and standard deviation.", "truth": "ts855", "rank": 1, "top1": "ts855"}
+{"qi": 846, "query": "r\"\"\"Resize the input PIL Image to the given size.", "truth": "ts856", "rank": 1, "top1": "ts856"}
+{"qi": 847, "query": "r\"\"\"Pad the given PIL Image on all sides with specified padding mode and fill value.", "truth": "ts857", "rank": 1, "top1": "ts857"}
+{"qi": 848, "query": "Crop the given PIL Image.", "truth": "ts858", "rank": 1, "top1": "ts858"}
+{"qi": 849, "query": "Crop the given PIL Image and resize it to desired size.", "truth": "ts859", "rank": 2, "top1": "ts858"}
+{"qi": 850, "query": "Horizontally flip the given PIL Image.", "truth": "ts860", "rank": 1, "top1": "ts860"}
+{"qi": 851, "query": "Helper function to get the coefficients (a, b, c, d, e, f, g, h) for the perspective transforms.", "truth": "ts861", "rank": 1, "top1": "ts861"}
+{"qi": 852, "query": "Perform perspective transform of the given PIL Image.", "truth": "ts862", "rank": 1, "top1": "ts862"}
+{"qi": 853, "query": "Vertically flip the given PIL Image.", "truth": "ts863", "rank": 1, "top1": "ts863"}
+{"qi": 854, "query": "Crop the given PIL Image into four corners and the central crop.", "truth": "ts864", "rank": 2, "top1": "ts858"}
+{"qi": 855, "query": "r\"\"\"Crop the given PIL Image into four corners and the central crop plus the", "truth": "ts865", "rank": 3, "top1": "ts858"}
+{"qi": 856, "query": "Adjust brightness of an Image.", "truth": "ts866", "rank": 1, "top1": "ts866"}
+{"qi": 857, "query": "Adjust contrast of an Image.", "truth": "ts867", "rank": 1, "top1": "ts867"}
+{"qi": 858, "query": "Adjust color saturation of an image.", "truth": "ts868", "rank": 1, "top1": "ts868"}
+{"qi": 859, "query": "Adjust hue of an image.", "truth": "ts869", "rank": 1, "top1": "ts869"}
+{"qi": 860, "query": "r\"\"\"Perform gamma correction on an image.", "truth": "ts870", "rank": 1, "top1": "ts870"}
+{"qi": 861, "query": "Rotate the image by angle.", "truth": "ts871", "rank": 1, "top1": "ts871"}
+{"qi": 862, "query": "Apply affine transformation on the image keeping image center invariant", "truth": "ts872", "rank": 1, "top1": "ts872"}
+{"qi": 863, "query": "Convert image to grayscale version of image.", "truth": "ts873", "rank": 1, "top1": "ts873"}
+{"qi": 864, "query": "Make a grid of images.", "truth": "ts874", "rank": 1, "top1": "ts874"}
+{"qi": 865, "query": "Save a given Tensor into an image file.", "truth": "ts875", "rank": 1, "top1": "ts875"}
+{"qi": 866, "query": "Finds the class folders in a dataset.", "truth": "ts876", "rank": 1, "top1": "ts876"}
+{"qi": 867, "query": "Return a Tensor containing the patches", "truth": "ts877", "rank": 1, "top1": "ts877"}
+{"qi": 868, "query": "Return a Tensor containing the list of labels", "truth": "ts878", "rank": 3, "top1": "ts989"}
+{"qi": 869, "query": "Return a Tensor containing the ground truth matches", "truth": "ts879", "rank": 1, "top1": "ts879"}
+{"qi": 870, "query": "1x1 convolution", "truth": "ts880", "rank": 1, "top1": "ts880"}
+{"qi": 871, "query": "Computes the accuracy over the k top predictions for the specified values of k", "truth": "ts881", "rank": 1, "top1": "ts881"}
+{"qi": 872, "query": "This function disables printing when not in master process", "truth": "ts882", "rank": 1, "top1": "ts882"}
+{"qi": 873, "query": "Warning: does not synchronize the deque!", "truth": "ts883", "rank": 1, "top1": "ts883"}
+{"qi": 874, "query": "r\"\"\"SqueezeNet 1.1 model from the `official SqueezeNet repo", "truth": "ts884", "rank": 1, "top1": "ts884"}
+{"qi": 875, "query": "Python2 support for os.makedirs(.., exist_ok=True)", "truth": "ts885", "rank": 1, "top1": "ts885"}
+{"qi": 876, "query": "Download a file from a url and place it in root.", "truth": "ts886", "rank": 1, "top1": "ts886"}
+{"qi": 877, "query": "List all directories at a given root", "truth": "ts887", "rank": 1, "top1": "ts887"}
+{"qi": 878, "query": "List all files ending with a suffix at a given root", "truth": "ts888", "rank": 1, "top1": "ts888"}
+{"qi": 879, "query": "Download a Google Drive file from  and place it in root.", "truth": "ts889", "rank": 1, "top1": "ts889"}
+{"qi": 880, "query": "Get parameters for ``crop`` for a random crop.", "truth": "ts890", "rank": 1, "top1": "ts890"}
+{"qi": 881, "query": "Get parameters for ``perspective`` for a random perspective transform.", "truth": "ts891", "rank": 1, "top1": "ts891"}
+{"qi": 882, "query": "Get parameters for ``crop`` for a random sized crop.", "truth": "ts892", "rank": 2, "top1": "ts890"}
+{"qi": 883, "query": "Get a randomized transform to be applied on image.", "truth": "ts893", "rank": 1, "top1": "ts893"}
+{"qi": 884, "query": "Get parameters for affine transformation", "truth": "ts894", "rank": 1, "top1": "ts894"}
+{"qi": 885, "query": "r\"\"\"Inception v3 model architecture from", "truth": "ts895", "rank": 1, "top1": "ts895"}
+{"qi": 886, "query": "Download and extract the tarball, and download each individual photo.", "truth": "ts896", "rank": 1, "top1": "ts896"}
+{"qi": 887, "query": "r\"\"\"GoogLeNet (Inception v1) model architecture from", "truth": "ts897", "rank": 1, "top1": "ts897"}
+{"qi": 888, "query": "Download the MNIST data if it doesn't exist in processed_folder already.", "truth": "ts898", "rank": 1, "top1": "ts898"}
+{"qi": 889, "query": "Download the EMNIST data if it doesn't exist in processed_folder already.", "truth": "ts899", "rank": 1, "top1": "ts899"}
+{"qi": 890, "query": "same as requests/requests/api.py request(...)", "truth": "ts900", "rank": 3, "top1": "ts905"}
+{"qi": 891, "query": "Returns theme name.", "truth": "ts901", "rank": 1, "top1": "ts901"}
+{"qi": 892, "query": "Render index page.", "truth": "ts902", "rank": 1, "top1": "ts902"}
+{"qi": 893, "query": "Return autocompleter results", "truth": "ts903", "rank": 1, "top1": "ts903"}
+{"qi": 894, "query": "Render preferences page && save user preferences", "truth": "ts904", "rank": 1, "top1": "ts904"}
+{"qi": 895, "query": "pre-request callback", "truth": "ts905", "rank": 1, "top1": "ts905"}
+{"qi": 896, "query": "post-response callback", "truth": "ts906", "rank": 4, "top1": "ts322"}
+{"qi": 897, "query": "Returns available themes list.", "truth": "ts907", "rank": 1, "top1": "ts907"}
+{"qi": 898, "query": "check if the searchQuery contain a bang, and create fitting autocompleter results", "truth": "ts908", "rank": 1, "top1": "ts908"}
+{"qi": 899, "query": "remove first and last lines to get only json", "truth": "ts909", "rank": 1, "top1": "ts909"}
+{"qi": 900, "query": "Embeds a custom gradient into a `Tensor`.", "truth": "ts910", "rank": 1, "top1": "ts910"}
+{"qi": 901, "query": "Computes `f(*xs)` and its gradients wrt to `*xs`.", "truth": "ts911", "rank": 1, "top1": "ts911"}
+{"qi": 902, "query": "Convenience function to efficiently construct a MultivariateNormalDiag.", "truth": "ts912", "rank": 1, "top1": "ts912"}
+{"qi": 903, "query": "Eight-schools joint log-prob.", "truth": "ts913", "rank": 1, "top1": "ts913"}
+{"qi": 904, "query": "Runs HMC on the eight-schools unnormalized posterior.", "truth": "ts914", "rank": 1, "top1": "ts914"}
+{"qi": 905, "query": "Decorator to programmatically expand the docstring.", "truth": "ts915", "rank": 1, "top1": "ts915"}
+{"qi": 906, "query": "Infer the original name passed into a distribution constructor.", "truth": "ts916", "rank": 1, "top1": "ts916"}
+{"qi": 907, "query": "RandomVariable constructor with a dummy name argument.", "truth": "ts917", "rank": 1, "top1": "ts917"}
+{"qi": 908, "query": "Wrap an existing distribution as a traceable random variable.", "truth": "ts918", "rank": 1, "top1": "ts918"}
+{"qi": 909, "query": "Factory function to make random variable given distribution class.", "truth": "ts919", "rank": 1, "top1": "ts919"}
+{"qi": 910, "query": "Shape for the mode/mean Tensors.", "truth": "ts920", "rank": 1, "top1": "ts920"}
+{"qi": 911, "query": "Compute one-step-ahead predictive distributions for all timesteps.", "truth": "ts921", "rank": 1, "top1": "ts921"}
+{"qi": 912, "query": "Construct predictive distribution over future observations.", "truth": "ts922", "rank": 1, "top1": "ts922"}
+{"qi": 913, "query": "Returns `max` or `mask` if `max` is not finite.", "truth": "ts923", "rank": 1, "top1": "ts923"}
+{"qi": 914, "query": "Computes `log(sum(exp(input_tensor))) along the specified axis.", "truth": "ts924", "rank": 1, "top1": "ts924"}
+{"qi": 915, "query": "Assert all elements of `x` are finite.", "truth": "ts925", "rank": 1, "top1": "ts925"}
+{"qi": 916, "query": "Assert `x` has rank equal to `rank` or smaller.", "truth": "ts926", "rank": 1, "top1": "ts926"}
+{"qi": 917, "query": "Computes the number of elements in a tensor with shape `event_shape`.", "truth": "ts927", "rank": 1, "top1": "ts927"}
+{"qi": 918, "query": "OneHotCategorical helper computing probs, cdf, etc over its support.", "truth": "ts928", "rank": 1, "top1": "ts928"}
+{"qi": 919, "query": "Creates a callable computing `KL[a,b]` from `a`, a `tfd.Distribution`.", "truth": "ts929", "rank": 1, "top1": "ts929"}
+{"qi": 920, "query": "Return a convert-to-tensor func, given a name, config, callable, etc.", "truth": "ts930", "rank": 1, "top1": "ts930"}
+{"qi": 921, "query": "Returns the config of this layer.", "truth": "ts931", "rank": 5, "top1": "ts964"}
+{"qi": 922, "query": "Create the distribution instance from a `params` vector.", "truth": "ts932", "rank": 12, "top1": "ts945"}
+{"qi": 923, "query": "The number of `params` needed to create a single distribution.", "truth": "ts933", "rank": 3, "top1": "ts944"}
+{"qi": 924, "query": "Create the distribution instance from a `params` vector.", "truth": "ts934", "rank": 2, "top1": "ts945"}
+{"qi": 925, "query": "Create the distribution instance from a `params` vector.", "truth": "ts935", "rank": 13, "top1": "ts945"}
+{"qi": 926, "query": "The number of `params` needed to create a single distribution.", "truth": "ts936", "rank": 2, "top1": "ts944"}
+{"qi": 927, "query": "Create the distribution instance from a `params` vector.", "truth": "ts937", "rank": 5, "top1": "ts945"}
+{"qi": 928, "query": "Returns the config of this layer.", "truth": "ts938", "rank": 3, "top1": "ts964"}
+{"qi": 929, "query": "Create the distribution instance from a `params` vector.", "truth": "ts939", "rank": 9, "top1": "ts945"}
+{"qi": 930, "query": "The number of `params` needed to create a single distribution.", "truth": "ts940", "rank": 4, "top1": "ts944"}
+{"qi": 931, "query": "Create the distribution instance from a `params` vector.", "truth": "ts941", "rank": 8, "top1": "ts945"}
+{"qi": 932, "query": "Create the distribution instance from a `params` vector.", "truth": "ts942", "rank": 4, "top1": "ts945"}
+{"qi": 933, "query": "Number of `params` needed to create a `MixtureSameFamily` distribution.", "truth": "ts943", "rank": 3, "top1": "ts944"}
+{"qi": 934, "query": "The number of `params` needed to create a single distribution.", "truth": "ts944", "rank": 1, "top1": "ts944"}
+{"qi": 935, "query": "Create the distribution instance from a `params` vector.", "truth": "ts945", "rank": 1, "top1": "ts945"}
+{"qi": 936, "query": "Yields the top-most interceptor on the thread-local interceptor stack.", "truth": "ts947", "rank": 2, "top1": "ts948"}
+{"qi": 937, "query": "Decorator that wraps `func` so that its execution is intercepted.", "truth": "ts948", "rank": 1, "top1": "ts948"}
+{"qi": 938, "query": "Context manager for recording interceptable executions onto a tape.", "truth": "ts949", "rank": 1, "top1": "ts949"}
+{"qi": 939, "query": "Generates synthetic data for binary classification.", "truth": "ts950", "rank": 1, "top1": "ts950"}
+{"qi": 940, "query": "Utility method to visualize decision boundaries in R^2.", "truth": "ts951", "rank": 1, "top1": "ts951"}
+{"qi": 941, "query": "Build a Dataset iterator for supervised classification.", "truth": "ts952", "rank": 1, "top1": "ts952"}
+{"qi": 942, "query": "Validate `map_values` if `validate_args`==True.", "truth": "ts953", "rank": 1, "top1": "ts953"}
+{"qi": 943, "query": "`TransitionOperator` that runs `fn` repeatedly and traces its outputs.", "truth": "ts954", "rank": 1, "top1": "ts954"}
+{"qi": 944, "query": "Calls a transition operator with args, unpacking args if its a sequence.", "truth": "ts955", "rank": 1, "top1": "ts955"}
+{"qi": 945, "query": "Calls `fn` and returns the gradients with respect to `fn`'s first output.", "truth": "ts956", "rank": 1, "top1": "ts956"}
+{"qi": 946, "query": "Maybe broadcasts `from_structure` to `to_structure`.", "truth": "ts957", "rank": 1, "top1": "ts957"}
+{"qi": 947, "query": "Transforms a log-prob function using a bijector.", "truth": "ts958", "rank": 1, "top1": "ts958"}
+{"qi": 948, "query": "Leapfrog `TransitionOperator`.", "truth": "ts959", "rank": 1, "top1": "ts959"}
+{"qi": 949, "query": "Metropolis-Hastings step.", "truth": "ts960", "rank": 1, "top1": "ts960"}
+{"qi": 950, "query": "Hamiltonian Monte Carlo `TransitionOperator`.", "truth": "ts961", "rank": 1, "top1": "ts961"}
+{"qi": 951, "query": "A function to do simple sign-based control of a variable.", "truth": "ts962", "rank": 1, "top1": "ts962"}
+{"qi": 952, "query": "Computes the output shape of the layer.", "truth": "ts963", "rank": 1, "top1": "ts963"}
+{"qi": 953, "query": "Returns the config of the layer.", "truth": "ts964", "rank": 1, "top1": "ts964"}
+{"qi": 954, "query": "Creates a layer from its config.", "truth": "ts965", "rank": 1, "top1": "ts965"}
+{"qi": 955, "query": "Convenience to convert to `Tensor` or leave as `None`.", "truth": "ts967", "rank": 1, "top1": "ts967"}
+{"qi": 956, "query": "Construct `scale` from various components.", "truth": "ts968", "rank": 1, "top1": "ts968"}
+{"qi": 957, "query": "Returns a callable that adds a random normal perturbation to the input.", "truth": "ts969", "rank": 1, "top1": "ts969"}
+{"qi": 958, "query": "Returns a callable that adds a random uniform perturbation to the input.", "truth": "ts970", "rank": 1, "top1": "ts970"}
+{"qi": 959, "query": "Batched KL divergence `KL(a || b)` for Independent distributions.", "truth": "ts971", "rank": 1, "top1": "ts971"}
+{"qi": 960, "query": "Computes the default value for reinterpreted_batch_ndim __init__ arg.", "truth": "ts972", "rank": 1, "top1": "ts972"}
+{"qi": 961, "query": "Expand the rank of x up to static_event_rank times for broadcasting.", "truth": "ts973", "rank": 1, "top1": "ts973"}
+{"qi": 962, "query": "r\"\"\"A lower bound on the entropy of this mixture model.", "truth": "ts974", "rank": 1, "top1": "ts974"}
+{"qi": 963, "query": "Get a list of num_components batchwise probabilities.", "truth": "ts975", "rank": 1, "top1": "ts975"}
+{"qi": 964, "query": "Validate `outcomes`, `logits` and `probs`'s shapes.", "truth": "ts976", "rank": 1, "top1": "ts976"}
+{"qi": 965, "query": "Attempt to import tensorflow, and ensure its version is sufficient.", "truth": "ts977", "rank": 1, "top1": "ts977"}
+{"qi": 966, "query": "Bayesian logistic regression, which returns labels given features.", "truth": "ts978", "rank": 1, "top1": "ts978"}
+{"qi": 967, "query": "Builds the Covertype data set.", "truth": "ts979", "rank": 1, "top1": "ts979"}
+{"qi": 968, "query": "Batchwise KL divergence KL(d1 || d2) with d1 and d2 Dirichlet.", "truth": "ts980", "rank": 1, "top1": "ts980"}
+{"qi": 969, "query": "Checks the validity of the concentration parameter.", "truth": "ts981", "rank": 1, "top1": "ts981"}
+{"qi": 970, "query": "Checks the validity of a sample.", "truth": "ts982", "rank": 1, "top1": "ts982"}
+{"qi": 971, "query": "Auto correlation along one axis.", "truth": "ts983", "rank": 1, "top1": "ts983"}
+{"qi": 972, "query": "Cholesky factor of the covariance matrix of vector-variate random samples.", "truth": "ts984", "rank": 1, "top1": "ts984"}
+{"qi": 973, "query": "Sample covariance between observations indexed by `event_axis`.", "truth": "ts985", "rank": 1, "top1": "ts985"}
+{"qi": 974, "query": "Sample correlation (Pearson) between observations indexed by `event_axis`.", "truth": "ts986", "rank": 1, "top1": "ts986"}
+{"qi": 975, "query": "Estimate standard deviation using samples.", "truth": "ts987", "rank": 1, "top1": "ts987"}
+{"qi": 976, "query": "Estimate variance using samples.", "truth": "ts988", "rank": 1, "top1": "ts988"}
+{"qi": 977, "query": "Return a list (preferred) or 1d Tensor from values, if values.ndims < 2.", "truth": "ts989", "rank": 1, "top1": "ts989"}
+{"qi": 978, "query": "Rectify possibly negatively axis. Prefer return Python list.", "truth": "ts990", "rank": 1, "top1": "ts990"}
+{"qi": 979, "query": "A version of squeeze that works with dynamic axis.", "truth": "ts991", "rank": 1, "top1": "ts991"}
+{"qi": 980, "query": "Calculate the batched KL divergence KL(n_a || n_b) with n_a and n_b Normal.", "truth": "ts992", "rank": 1, "top1": "ts992"}
+{"qi": 981, "query": "Standardize input `x` to a unit normal.", "truth": "ts993", "rank": 1, "top1": "ts993"}
+{"qi": 982, "query": "Reconstruct input `x` from a its normalized version.", "truth": "ts994", "rank": 1, "top1": "ts994"}
+{"qi": 983, "query": "Build the transition matrix for a semi-local linear trend model.", "truth": "ts995", "rank": 1, "top1": "ts995"}
+{"qi": 984, "query": "Build the transition noise model for a semi-local linear trend model.", "truth": "ts996", "rank": 1, "top1": "ts996"}
+{"qi": 985, "query": "r\"\"\"Returns a sample from the `dim` dimensional Halton sequence.", "truth": "ts997", "rank": 1, "top1": "ts997"}
+{"qi": 986, "query": "Applies the Owen (2017) randomization to the coefficients.", "truth": "ts998", "rank": 1, "top1": "ts998"}
+{"qi": 987, "query": "Uniform iid sample from the space of permutations.", "truth": "ts999", "rank": 1, "top1": "ts999"}
+{"qi": 988, "query": "Generates starting points for the Halton sequence procedure.", "truth": "ts1000", "rank": 1, "top1": "ts1000"}
+{"qi": 989, "query": "Computes the number of terms in the place value expansion.", "truth": "ts1001", "rank": 1, "top1": "ts1001"}
+{"qi": 990, "query": "Returns sorted array of primes such that `2 <= prime < n`.", "truth": "ts1002", "rank": 1, "top1": "ts1002"}
+{"qi": 991, "query": "Returns the machine epsilon for the supplied dtype.", "truth": "ts1003", "rank": 1, "top1": "ts1003"}
+{"qi": 992, "query": "The Hager Zhang line search algorithm.", "truth": "ts1004", "rank": 1, "top1": "ts1004"}
+{"qi": 993, "query": "Shrinks the input step size until the value and grad become finite.", "truth": "ts1005", "rank": 1, "top1": "ts1005"}
+{"qi": 994, "query": "Brackets the minimum and performs a line search.", "truth": "ts1006", "rank": 2, "top1": "ts1007"}
+{"qi": 995, "query": "The main loop of line search after the minimum has been bracketed.", "truth": "ts1007", "rank": 1, "top1": "ts1007"}
+{"qi": 996, "query": "Performs bisection and updates the interval.", "truth": "ts1008", "rank": 1, "top1": "ts1008"}
+{"qi": 997, "query": "Prepares the arguments for the line search initialization.", "truth": "ts1009", "rank": 1, "top1": "ts1009"}
+{"qi": 998, "query": "Converts a bool tensor to a string with True/False values.", "truth": "ts1010", "rank": 1, "top1": "ts1010"}
+{"qi": 999, "query": "Wrapper for tf.Print which supports lists and namedtuples for printing.", "truth": "ts1011", "rank": 1, "top1": "ts1011"}
