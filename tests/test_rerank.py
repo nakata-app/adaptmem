@@ -161,3 +161,58 @@ def test_add_corpus_requires_init():
     import pytest
     with pytest.raises(RuntimeError, match="Not initialised"):
         am.add_corpus([{"id": "c0", "text": "alpha"}])
+
+
+# ---- public rerank() helper (no bi-encoder index required) ----------------
+
+
+def test_rerank_method_with_strings():
+    am = AdaptMem()
+    am._rerank_model = _StubCrossEncoder(
+        {"alpha": 0.10, "bravo": 0.80, "charlie": 0.95, "delta": -0.50}
+    )
+    ranked = am.rerank("q", ["alpha", "bravo", "charlie", "delta"])
+    # Expected order by CE score: charlie(2)=0.95, bravo(1)=0.80, alpha(0)=0.10, delta(3)=-0.50
+    assert [i for i, _ in ranked] == [2, 1, 0, 3]
+    assert abs(ranked[0][1] - 0.95) < 1e-6
+
+
+def test_rerank_method_with_tuples():
+    am = AdaptMem()
+    am._rerank_model = _StubCrossEncoder({"alpha": 0.5, "bravo": 0.9})
+    ranked = am.rerank("q", [("id-a", "alpha"), ("id-b", "bravo")], top_k=1)
+    assert len(ranked) == 1
+    assert ranked[0][0] == 1  # bravo
+    assert abs(ranked[0][1] - 0.9) < 1e-6
+
+
+def test_rerank_method_with_dicts():
+    am = AdaptMem()
+    am._rerank_model = _StubCrossEncoder({"alpha": 0.1, "bravo": 0.9})
+    ranked = am.rerank("q", [{"text": "alpha"}, {"text": "bravo"}])
+    assert [i for i, _ in ranked] == [1, 0]
+
+
+def test_rerank_empty_candidates_returns_empty():
+    am = AdaptMem()
+    assert am.rerank("q", []) == []
+
+
+def test_rerank_top_k_truncates():
+    am = AdaptMem()
+    am._rerank_model = _StubCrossEncoder(
+        {"a": 0.9, "b": 0.5, "c": 0.1}
+    )
+    ranked = am.rerank("q", ["a", "b", "c"], top_k=2)
+    assert len(ranked) == 2
+    assert [i for i, _ in ranked] == [0, 1]
+
+
+def test_rerank_works_without_bi_encoder_index():
+    """The whole point: mnemonics has its own index, only needs CE here."""
+    am = AdaptMem()
+    # No .train(), no .load() — _model/_embeddings stay None.
+    am._rerank_model = _StubCrossEncoder({"x": 1.0, "y": 0.0})
+    ranked = am.rerank("q", ["x", "y"])
+    assert ranked[0][0] == 0
+    assert am._model is None  # confirm no bi-encoder needed

@@ -248,6 +248,42 @@ class AdaptMem:
             from sentence_transformers import CrossEncoder
             self._rerank_model = CrossEncoder(self.rerank_model_name)
 
+    def rerank(
+        self,
+        query: str,
+        candidates: list[str] | list[tuple[str, str]] | list[dict],
+        top_k: int | None = None,
+    ) -> list[tuple[int, float]]:
+        """Cross-encoder rerank for externally-retrieved candidates.
+
+        Standalone path that does NOT require the AdaptMem bi-encoder index
+        to be loaded. Use when another retriever (e.g. mnemonics HNSW + BM25)
+        produces candidate passages and you want a CE re-score on top.
+
+        candidates may be:
+          - list[str]            -> texts directly
+          - list[(id, text)]     -> tuples, only text is scored
+          - list[{"text": ...}]  -> dicts with a "text" key
+
+        Returns: [(original_index, ce_score), ...] sorted by ce_score desc.
+        Caller maps indices back to its own objects.
+        """
+        if not candidates:
+            return []
+        if isinstance(candidates[0], tuple):
+            texts = [c[1] for c in candidates]
+        elif isinstance(candidates[0], dict):
+            texts = [c["text"] for c in candidates]
+        else:
+            texts = list(candidates)
+        self._ensure_rerank_model()
+        pairs = [(query, t) for t in texts]
+        ce_scores = self._rerank_model.predict(pairs, show_progress_bar=False)
+        ranked = sorted(enumerate(ce_scores), key=lambda x: -float(x[1]))
+        if top_k is not None:
+            ranked = ranked[:top_k]
+        return [(i, float(s)) for i, s in ranked]
+
     def search(
         self,
         query: str,
