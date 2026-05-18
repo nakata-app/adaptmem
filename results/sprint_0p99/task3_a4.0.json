@@ -1,0 +1,99 @@
+{
+  "experiment": "Task 3 time-aware rerank (temporal)",
+  "top_k": 50,
+  "alpha": 4.0,
+  "total": 133,
+  "baseline_R@1": 0.9549,
+  "rerank_R@1": 0.9248,
+  "baseline_hits": 127,
+  "rerank_hits": 123,
+  "skipped_no_keyword": 115,
+  "newly_correct_top1": [],
+  "newly_wrong_top1": [
+    {
+      "qid": "gpt4_1e4a8aec",
+      "q": "What gardening-related activity did I do two weeks ago?",
+      "target": "2023-04-21 16:42:00",
+      "sigma": 3
+    },
+    {
+      "qid": "gpt4_fa19884d",
+      "q": "What is the artist that I started to listen to last Friday?",
+      "target": "2023-03-31 19:25:00",
+      "sigma": 1
+    },
+    {
+      "qid": "gpt4_8279ba03",
+      "q": "What kitchen appliance did I buy 10 days ago?",
+      "target": "2023-03-15 18:26:00",
+      "sigma": 1
+    },
+    {
+      "qid": "gpt4_b5700ca0",
+      "q": "Where did I attend the religious activity last week?",
+      "target": "2023-04-03 13:35:00",
+      "sigma": 4
+    }
+  ],
+  "still_fail": [
+    {
+      "qid": "gpt4_1e4a8aec",
+      "q": "What gardening-related activity did I do two weeks ago?",
+      "reason": "still_fail",
+      "target": "2023-04-21 16:42:00"
+    },
+    {
+      "qid": "gpt4_59149c78",
+      "q": "I mentioned that I participated in an art-related event two weeks ago. Where was that event held at?",
+      "reason": "still_fail",
+      "target": "2023-01-18 08:41:00"
+    },
+    {
+      "qid": "gpt4_4929293b",
+      "q": "What was the the life event of one of my relatives that I participated in a week ago?",
+      "reason": "still_fail",
+      "target": "2023-06-15 18:33:00"
+    },
+    {
+      "qid": "gpt4_468eb064",
+      "q": "Who did I meet with during the lunch last Tuesday?",
+      "reason": "still_fail",
+      "target": "2023-04-11 16:50:00"
+    },
+    {
+      "qid": "gpt4_fa19884d",
+      "q": "What is the artist that I started to listen to last Friday?",
+      "reason": "still_fail",
+      "target": "2023-03-31 19:25:00"
+    },
+    {
+      "qid": "eac54add",
+      "q": "What was the significant buisiness milestone I mentioned four weeks ago?",
+      "reason": "still_fail",
+      "target": "2023-02-28 20:35:00"
+    },
+    {
+      "qid": "4dfccbf8",
+      "q": "What did I do with Rachel on the Wednesday two months ago?",
+      "reason": "still_fail",
+      "target": "2023-01-30 16:08:00"
+    },
+    {
+      "qid": "gpt4_8279ba03",
+      "q": "What kitchen appliance did I buy 10 days ago?",
+      "reason": "still_fail",
+      "target": "2023-03-15 18:26:00"
+    },
+    {
+      "qid": "gpt4_b5700ca0",
+      "q": "Where did I attend the religious activity last week?",
+      "reason": "still_fail",
+      "target": "2023-04-03 13:35:00"
+    },
+    {
+      "qid": "gpt4_93159ced_abs",
+      "q": "How long have I been working before I started my current job at Google?",
+      "reason": "no_temporal_keyword"
+    }
+  ]
+}

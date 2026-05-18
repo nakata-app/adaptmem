@@ -1,0 +1,49 @@
+{
+  "experiment": "Task 3 time-aware rerank (temporal)",
+  "top_k": 50,
+  "alpha": 0.01,
+  "total": 133,
+  "baseline_R@1": 0.9549,
+  "rerank_R@1": 0.9699,
+  "baseline_hits": 127,
+  "rerank_hits": 129,
+  "skipped_no_keyword": 115,
+  "newly_correct_top1": [
+    {
+      "qid": "gpt4_59149c78",
+      "q": "I mentioned that I participated in an art-related event two weeks ago. Where was that event held at?",
+      "target": "2023-01-18 08:41:00",
+      "sigma": 3
+    },
+    {
+      "qid": "4dfccbf8",
+      "q": "What did I do with Rachel on the Wednesday two months ago?",
+      "target": "2023-01-30 16:08:00",
+      "sigma": 7
+    }
+  ],
+  "newly_wrong_top1": [],
+  "still_fail": [
+    {
+      "qid": "gpt4_4929293b",
+      "q": "What was the the life event of one of my relatives that I participated in a week ago?",
+      "reason": "gated_top1_close"
+    },
+    {
+      "qid": "gpt4_468eb064",
+      "q": "Who did I meet with during the lunch last Tuesday?",
+      "reason": "gated_top1_close"
+    },
+    {
+      "qid": "eac54add",
+      "q": "What was the significant buisiness milestone I mentioned four weeks ago?",
+      "reason": "still_fail",
+      "target": "2023-02-28 20:35:00"
+    },
+    {
+      "qid": "gpt4_93159ced_abs",
+      "q": "How long have I been working before I started my current job at Google?",
+      "reason": "no_temporal_keyword"
+    }
+  ]
+}

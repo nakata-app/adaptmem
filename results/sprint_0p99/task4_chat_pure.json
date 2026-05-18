@@ -1,0 +1,101 @@
+{
+  "ckpt": "/Users/macmini/Projects/adaptmem/checkpoints/chat-ce-v1-20260516",
+  "fusion": "pure",
+  "top_k": 20,
+  "subset_total_baseline": 0.9079754601226994,
+  "subset_total_rerank": 0.8711656441717791,
+  "moved_count": 6,
+  "lost_count": 12,
+  "by_type": {
+    "single-session-preference": {
+      "n": 30,
+      "baseline_R@1": 0.7,
+      "rerank_R@1": 0.7,
+      "baseline_fails": 9,
+      "rerank_fails": 9
+    },
+    "temporal-reasoning": {
+      "n": 133,
+      "baseline_R@1": 0.9548872180451128,
+      "rerank_R@1": 0.9097744360902256,
+      "baseline_fails": 6,
+      "rerank_fails": 12
+    }
+  },
+  "moved": [
+    [
+      "0edc2aef",
+      "Can you suggest a hotel for my upcoming trip to Miami?"
+    ],
+    [
+      "d24813b1",
+      "I'm thinking of inviting my colleagues over for a small gathering. Any tips on w"
+    ],
+    [
+      "505af2f5",
+      "I was thinking of trying a new coffee creamer recipe. Any recommendations?"
+    ],
+    [
+      "1c0ddc50",
+      "Can you suggest some activities I can do during my commute to work?"
+    ],
+    [
+      "gpt4_468eb064",
+      "Who did I meet with during the lunch last Tuesday?"
+    ],
+    [
+      "gpt4_93159ced_abs",
+      "How long have I been working before I started my current job at Google?"
+    ]
+  ],
+  "lost": [
+    [
+      "195a1a1b",
+      "Can you suggest some activities that I can do in the evening?"
+    ],
+    [
+      "6b7dfb22",
+      "I've been feeling a bit stuck with my paintings lately. Do you have any ideas on"
+    ],
+    [
+      "09d032c9",
+      "I've been having trouble with the battery life on my phone lately. Any tips?"
+    ],
+    [
+      "07b6f563",
+      "Can you suggest some useful accessories for my phone?"
+    ],
+    [
+      "0bc8ad92",
+      "How many months have passed since I last visited a museum with a friend?"
+    ],
+    [
+      "gpt4_b5700ca9",
+      "How many days ago did I attend the Maundy Thursday service at the Episcopal Chur"
+    ],
+    [
+      "gpt4_7f6b06db",
+      "What is the order of the three trips I took in the past three months, from earli"
+    ],
+    [
+      "4dfccbf7",
+      "How many days had passed since I started taking ukulele lessons when I decided t"
+    ],
+    [
+      "gpt4_ec93e27f",
+      "Which mode of transport did I use most recently, a bus or a train?"
+    ],
+    [
+      "5e1b23de",
+      "How many months ago did I attend the photography workshop?"
+    ],
+    [
+      "71017277",
+      "I received a piece of jewelry last Saturday from whom?"
+    ],
+    [
+      "gpt4_fa19884d",
+      "What is the artist that I started to listen to last Friday?"
+    ]
+  ]
+}

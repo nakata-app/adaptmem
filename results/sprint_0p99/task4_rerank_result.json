@@ -1,0 +1,33 @@
+{
+  "experiment": "Task 4 cross-encoder rerank on subset",
+  "subset_types": [
+    "single-session-preference",
+    "temporal-reasoning"
+  ],
+  "top_k": 20,
+  "n_queries": 163,
+  "by_type": {
+    "single-session-preference": {
+      "n": 30,
+      "baseline_R@1": 0.7,
+      "rerank_R@1": 0.2333,
+      "baseline_fails": 9,
+      "rerank_fails": 23
+    },
+    "temporal-reasoning": {
+      "n": 133,
+      "baseline_R@1": 0.9549,
+      "rerank_R@1": 0.0902,
+      "baseline_fails": 6,
+      "rerank_fails": 121
+    }
+  },
+  "subset_total": {
+    "baseline_R@1": 0.908,
+    "rerank_R@1": 0.1166
+  },
+  "fails_unrecoverable_topk": 0,
+  "fails_unrecoverable_qids": [],
+  "newly_correct_top1": [],
+  "checkpoint": "/Users/macmini/Projects/adaptmem/checkpoints/codecrossenc-v2-20260516/codecrossenc_v2"
+}

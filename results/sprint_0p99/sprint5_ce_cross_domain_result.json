@@ -1,0 +1,74 @@
+{
+  "experiment": "Sprint 5 cross-domain CE rerank (codecrossenc-v2 applied to LongMemEval)",
+  "ce_checkpoint": "/Users/macmini/Projects/adaptmem/checkpoints/codecrossenc-v2-20260516/codecrossenc_v2",
+  "ce_training_domain": "CodeSearchNet (90k examples, bi-top-50 hard negs)",
+  "test_domain": "LongMemEval (conversational)",
+  "margin": 1.0,
+  "top_k": 20,
+  "n": 500,
+  "R@1_baseline_ftv4_raw": 0.968,
+  "R@1_final": 0.968,
+  "delta_vs_in_domain_chat_ce_v3": "see sprint4_trust_gate_result.json (0.978)",
+  "fails_baseline": 16,
+  "fails_final": 16,
+  "total_overrides": 6,
+  "total_helped": 0,
+  "total_hurt": 0,
+  "by_type": {
+    "knowledge-update": {
+      "n": 78,
+      "R@1_baseline": 1.0,
+      "R@1_final": 1.0,
+      "overrides": 6,
+      "trust_kept": 72,
+      "override_helped": 0,
+      "override_hurt": 0
+    },
+    "multi-session": {
+      "n": 133,
+      "R@1_baseline": 0.985,
+      "R@1_final": 0.985,
+      "overrides": 0,
+      "trust_kept": 133,
+      "override_helped": 0,
+      "override_hurt": 0
+    },
+    "single-session-assistant": {
+      "n": 56,
+      "R@1_baseline": 0.9643,
+      "R@1_final": 0.9643,
+      "overrides": 0,
+      "trust_kept": 56,
+      "override_helped": 0,
+      "override_hurt": 0
+    },
+    "single-session-preference": {
+      "n": 30,
+      "R@1_baseline": 0.8667,
+      "R@1_final": 0.8667,
+      "overrides": 0,
+      "trust_kept": 30,
+      "override_helped": 0,
+      "override_hurt": 0
+    },
+    "single-session-user": {
+      "n": 70,
+      "R@1_baseline": 0.9857,
+      "R@1_final": 0.9857,
+      "overrides": 0,
+      "trust_kept": 70,
+      "override_helped": 0,
+      "override_hurt": 0
+    },
+    "temporal-reasoning": {
+      "n": 133,
+      "R@1_baseline": 0.9474,
+      "R@1_final": 0.9474,
+      "overrides": 0,
+      "trust_kept": 133,
+      "override_helped": 0,
+      "override_hurt": 0
+    }
+  },
+  "runtime_s": 41.2
+}
