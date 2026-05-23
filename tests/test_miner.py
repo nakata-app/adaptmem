@@ -76,3 +76,33 @@ def test_miner_random_fallback_when_all_topk_relevant():
     # Top-1 is m1 (which IS relevant), so neg falls back to random non-rel = m2
     assert len(pairs) == 1
     assert pairs[0].neg_id == "m2"
+
+
+def test_miner_n_negatives_multiplies_pairs():
+    # 3 corpus entries, 1 relevant → 2 hard negatives available → 2 pairs per query
+    corpus = [
+        CorpusEntry(id="m1", text="postgres index btree gin"),
+        CorpusEntry(id="m2", text="postgres jsonb gin index"),
+        CorpusEntry(id="m3", text="apple banana fruit basket"),
+    ]
+    queries = [LabelledQuery(query="postgres index", relevant_ids=["m1"])]
+    miner = HardNegativeMiner(base_model=FakeEncoder(), top_k_mine=3, n_negatives=2)
+    pairs = miner.mine(corpus, queries)
+    assert len(pairs) == 2
+    neg_ids = {p.neg_id for p in pairs}
+    # Both hard negatives (m2, m3) should be picked — no duplicates
+    assert len(neg_ids) == 2
+    assert "m1" not in neg_ids
+
+
+def test_miner_n_negatives_deduplicates():
+    # Only 1 non-relevant exists but n_negatives=3 → still just 1 pair
+    corpus = [
+        CorpusEntry(id="m1", text="postgres index"),
+        CorpusEntry(id="m2", text="apple banana"),
+    ]
+    queries = [LabelledQuery(query="postgres", relevant_ids=["m1"])]
+    miner = HardNegativeMiner(base_model=FakeEncoder(), n_negatives=3)
+    pairs = miner.mine(corpus, queries)
+    assert len(pairs) == 1
+    assert pairs[0].neg_id == "m2"

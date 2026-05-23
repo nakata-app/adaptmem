@@ -26,25 +26,19 @@ class AdaptMem:
         self,
         base_model: str = "all-MiniLM-L6-v2",
         rerank: bool = False,
-        rerank_model: str = "cross-encoder/ms-marco-MiniLM-L-12-v2",
+        rerank_model: str = "BAAI/bge-reranker-v2-m3",
         device: str | None = None,
+        model_kwargs: dict[str, Any] | None = None,
     ):
         self.base_model_name = base_model
         self._model = None
         self._corpus: list[CorpusEntry] = []
         self._embeddings: np.ndarray[Any, Any] | None = None
-        # Optional cross-encoder rerank stage. Disabled by default; when enabled,
-        # `search` fetches a wider bi-encoder candidate set and reorders it with
-        # the cross-encoder before returning top_k.
         self.rerank_enabled = rerank
         self.rerank_model_name = rerank_model
         self._rerank_model = None
-        # Device override for the underlying SentenceTransformer. None lets
-        # PyTorch auto-detect (CUDA → MPS → CPU). Passing "cpu" sidesteps
-        # MPS deadlocks that have surfaced on some Apple-silicon configs
-        # during contrastive fine-tuning. Persisted in config.json so that
-        # .load() can restore the same choice.
         self.device = device
+        self.model_kwargs = model_kwargs or {}
 
     # ---- Training -------------------------------------------------------
     def train(
@@ -69,9 +63,15 @@ class AdaptMem:
 
         from sentence_transformers import SentenceTransformer
 
-        st_kwargs = {"device": self.device} if self.device else {}
+        st_kwargs: dict[str, Any] = {**self.model_kwargs}
+        if self.device:
+            st_kwargs["device"] = self.device
         base = SentenceTransformer(self.base_model_name, **st_kwargs)
-        miner = HardNegativeMiner(base_model=base, top_k_mine=config.top_k_mine)
+        miner = HardNegativeMiner(
+            base_model=base,
+            top_k_mine=config.top_k_mine,
+            n_negatives=config.n_negatives,
+        )
         pairs = miner.mine(entries, queries)
         if not pairs:
             raise ValueError("Hard-negative mining produced 0 pairs — check your labels.")
@@ -82,12 +82,17 @@ class AdaptMem:
 
         examples = [p.to_input_example() for p in pairs]
         loader: DataLoader[Any] = DataLoader(examples, shuffle=True, batch_size=config.batch_size)  # type: ignore[arg-type]
-        loss = losses.MultipleNegativesRankingLoss(base)
+
+        if config.loss_type == "cached_mnrl":
+            loss = losses.CachedMultipleNegativesRankingLoss(base, mini_batch_size=config.batch_size)
+        else:
+            loss = losses.MultipleNegativesRankingLoss(base)
 
         import time
 
         t0 = time.time()
-        n_steps = max(1, (len(examples) // config.batch_size) * config.epochs)
+        effective_batch = config.batch_size * config.gradient_accumulation_steps
+        n_steps = max(1, (len(examples) // effective_batch) * config.epochs)
         warmup = int(n_steps * config.warmup_ratio)
         base.fit(
             train_objectives=[(loader, loss)],
@@ -95,6 +100,7 @@ class AdaptMem:
             warmup_steps=warmup,
             optimizer_params={"lr": config.learning_rate},
             show_progress_bar=False,
+            accumulation_steps=config.gradient_accumulation_steps,
         )
         runtime = time.time() - t0
 
@@ -198,6 +204,7 @@ class AdaptMem:
                     "rerank": self.rerank_enabled,
                     "rerank_model": self.rerank_model_name,
                     "device": self.device,
+                    "model_kwargs": self.model_kwargs,
                 }
             )
         )
@@ -210,15 +217,17 @@ class AdaptMem:
         am = cls.__new__(cls)
         am.base_model_name = ""
         am.device = None
-        # Read device from config.json (if present) before constructing the
-        # SentenceTransformer so we can honour an explicit "cpu" choice.
+        am.model_kwargs = {}
         cfg_path = p / "config.json"
         cfg = None
         if cfg_path.exists():
             import json as _json
             cfg = _json.loads(cfg_path.read_text())
             am.device = cfg.get("device")
-        st_kwargs = {"device": am.device} if am.device else {}
+            am.model_kwargs = cfg.get("model_kwargs", {})
+        st_kwargs: dict[str, Any] = {**am.model_kwargs}
+        if am.device:
+            st_kwargs["device"] = am.device
         am._model = SentenceTransformer(str(p / "model"), **st_kwargs)
         am._embeddings = np.load(p / "embeddings.npy")
         am._corpus = []
@@ -234,11 +243,11 @@ class AdaptMem:
             am.base_model_name = cfg.get("base_model", "")
             am.rerank_enabled = bool(cfg.get("rerank", False))
             am.rerank_model_name = cfg.get(
-                "rerank_model", "cross-encoder/ms-marco-MiniLM-L-12-v2"
+                "rerank_model", "BAAI/bge-reranker-v2-m3"
             )
         else:
             am.rerank_enabled = False
-            am.rerank_model_name = "cross-encoder/ms-marco-MiniLM-L-12-v2"
+            am.rerank_model_name = "BAAI/bge-reranker-v2-m3"
         am._rerank_model = None
         return am
 

@@ -1,7 +1,7 @@
 """Hard-negative mining over a corpus.
 
 For each labelled query, we encode the corpus once with a base model, retrieve
-the top-K candidates, and pick the first non-relevant one as a hard negative.
+the top-K candidates, and pick the first non-relevant ones as hard negatives.
 A "hard" negative shares lexical/semantic surface with the query but is
 genuinely wrong — these are the examples a contrastive loss learns from.
 """
@@ -27,15 +27,23 @@ class HardNegativeMiner:
 
     Strategy:
     - Encode corpus once with a `base_model` (sentence-transformers SentenceTransformer).
-    - For each query, retrieve top-K. Pick the first non-relevant id as the hard negative.
-    - If all top-K are relevant, fall back to a uniformly-random non-relevant id.
-    - One triple is emitted per (query, relevant_id) — multi-label queries spawn multiple
-      training pairs, all anchored on the same query but with distinct positives.
+    - For each query, retrieve top-K. Pick the first `n_negatives` non-relevant ids as
+      hard negatives. Each (positive, negative) pair becomes a separate TrainingPair,
+      multiplying the training signal by n_negatives.
+    - If fewer hard negatives found in top-K, fall back to random non-relevant ids.
+    - One set of triples is emitted per (query, relevant_id).
     """
 
-    def __init__(self, base_model: Any, top_k_mine: int = 10, seed: int = 42):
+    def __init__(
+        self,
+        base_model: Any,
+        top_k_mine: int = 10,
+        n_negatives: int = 1,
+        seed: int = 42,
+    ):
         self.base_model = base_model
         self.top_k_mine = top_k_mine
+        self.n_negatives = n_negatives
         self.rng = random.Random(seed)
 
     def mine(
@@ -43,7 +51,6 @@ class HardNegativeMiner:
     ) -> list[TrainingPair]:
         if not corpus:
             return []
-        # Encode corpus once
         ids = [c.id for c in corpus]
         texts = [c.text for c in corpus]
         embs = self.base_model.encode(
@@ -69,35 +76,40 @@ class HardNegativeMiner:
             top_ids = [ids[i] for i in top_idx]
 
             relevant = set(q.relevant_ids)
-            # Pick first non-relevant in top-K
-            neg_idx = None
+
+            # Collect up to n_negatives hard negatives from top-K
+            neg_indices: list[int] = []
             for j, sid in zip(top_idx, top_ids):
                 if sid not in relevant:
-                    neg_idx = j
-                    break
+                    neg_indices.append(j)
+                    if len(neg_indices) >= self.n_negatives:
+                        break
 
-            if neg_idx is None:
-                # Random non-relevant from full corpus
-                non_rel_pool = [i for i, sid in enumerate(ids) if sid not in relevant]
-                if not non_rel_pool:
-                    continue
-                neg_idx = self.rng.choice(non_rel_pool)
+            # Fill remaining slots with random non-relevant ids
+            if len(neg_indices) < self.n_negatives:
+                non_rel_pool = [
+                    i for i, sid in enumerate(ids) if sid not in relevant and i not in neg_indices
+                ]
+                need = self.n_negatives - len(neg_indices)
+                if non_rel_pool:
+                    neg_indices.extend(self.rng.sample(non_rel_pool, min(need, len(non_rel_pool))))
 
-            neg_text = texts[neg_idx]
-            neg_id = ids[neg_idx]
+            if not neg_indices:
+                continue
 
             id_to_text = {sid: txt for sid, txt in zip(ids, texts)}
             for rel_id in q.relevant_ids:
                 if rel_id not in id_to_text:
                     continue
-                pairs.append(
-                    TrainingPair(
-                        anchor=q.query,
-                        positive=id_to_text[rel_id],
-                        negative=neg_text,
-                        pos_id=rel_id,
-                        neg_id=neg_id,
+                for neg_idx in neg_indices:
+                    pairs.append(
+                        TrainingPair(
+                            anchor=q.query,
+                            positive=id_to_text[rel_id],
+                            negative=texts[neg_idx],
+                            pos_id=rel_id,
+                            neg_id=ids[neg_idx],
+                        )
                     )
-                )
 
         return pairs

@@ -180,6 +180,8 @@ def evaluate_with_st_model(model, test_qs: list[dict], top_k: int = 10) -> dict:
     skipped = 0
     # Per-question-type counters: type -> {n, r1, r5, r10}
     per_type: dict[str, dict[str, float]] = {}
+    # R@1 misses: questions where rank-1 retrieved the wrong session
+    r1_misses: list[dict] = []
     t0 = time.time()
     for i, q in enumerate(test_qs):
         sids, docs = make_per_question_corpus(q)
@@ -215,6 +217,16 @@ def evaluate_with_st_model(model, test_qs: list[dict], top_k: int = 10) -> dict:
         bucket["r1"] += h1
         bucket["r5"] += h5
         bucket["r10"] += h10
+        if h1 == 0.0:
+            r1_misses.append({
+                "question_id": q.get("question_id", f"q{i}"),
+                "question_type": qtype,
+                "question": q["question"][:120],
+                "expected": sorted(gt),
+                "retrieved_rank1": ranked_sids[0] if ranked_sids else None,
+                "hit_at_5": h5 == 1.0,
+                "hit_at_10": h10 == 1.0,
+            })
         if (i + 1) % 50 == 0:
             elapsed = time.time() - t0
             eta = elapsed * (n - i - 1) / (i + 1)
@@ -237,6 +249,7 @@ def evaluate_with_st_model(model, test_qs: list[dict], top_k: int = 10) -> dict:
         "r5": round(r5 / n, 4) if n else 0.0,
         "r10": round(r10 / n, 4) if n else 0.0,
         "per_question_type": per_type_summary,
+        "r1_misses": r1_misses,
         "wall_clock_s": round(time.time() - t0, 2),
     }
 
@@ -284,6 +297,15 @@ def cmd_test(args) -> None:
     print(f"# Model: {results['model_path']}")
     print(f"# n_test={results['n_test']} (skipped_empty={results['n_skipped_empty']})")
     print(f"# R@1={results['r1']}  R@5={results['r5']}  R@10={results['r10']}")
+
+    misses = results.get("r1_misses", [])
+    if misses:
+        print(f"# R@1 misses: {len(misses)} / {results['n_evaluated']}")
+        by_type: dict[str, int] = {}
+        for m in misses:
+            by_type[m["question_type"]] = by_type.get(m["question_type"], 0) + 1
+        for qtype, cnt in sorted(by_type.items(), key=lambda x: -x[1]):
+            print(f"#   {qtype}: {cnt}")
 
     if args.results_out:
         Path(args.results_out).write_text(json.dumps(results, indent=2))
