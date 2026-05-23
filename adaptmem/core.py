@@ -94,14 +94,17 @@ class AdaptMem:
         effective_batch = config.batch_size * config.gradient_accumulation_steps
         n_steps = max(1, (len(examples) // effective_batch) * config.epochs)
         warmup = int(n_steps * config.warmup_ratio)
-        base.fit(
-            train_objectives=[(loader, loss)],
-            epochs=config.epochs,
-            warmup_steps=warmup,
-            optimizer_params={"lr": config.learning_rate},
-            show_progress_bar=False,
-            accumulation_steps=config.gradient_accumulation_steps,
-        )
+        fit_kwargs: dict[str, Any] = {
+            "train_objectives": [(loader, loss)],
+            "epochs": config.epochs,
+            "warmup_steps": warmup,
+            "optimizer_params": {"lr": config.learning_rate},
+            "show_progress_bar": False,
+        }
+        import inspect
+        if "accumulation_steps" in inspect.signature(base.fit).parameters:
+            fit_kwargs["accumulation_steps"] = config.gradient_accumulation_steps
+        base.fit(**fit_kwargs)
         runtime = time.time() - t0
 
         self._model = base
