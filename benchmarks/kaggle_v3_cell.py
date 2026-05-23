@@ -153,15 +153,20 @@ ft_model = am.encoder
 print('\n=== EVAL 1: bi-encoder only ===')
 ft_only = evaluate_model(ft_model, test_qs, label='v3-bienc')
 
-print('\n=== LOADING CROSS-ENCODER ===')
+# VRAM yonetimi: bi-encoder'i CPU'ya tasi, cross-encoder GPU'ya yukle
+print('\n=== LOADING CROSS-ENCODER (bi-encoder CPU\'ya tasiniyor) ===')
+ft_model.to('cpu')
+torch.cuda.empty_cache()
 from sentence_transformers import CrossEncoder
 ce = CrossEncoder('BAAI/bge-reranker-v2-m3', device='cuda')
-print('Cross-encoder loaded')
+print('Cross-encoder loaded, bi-encoder CPU\'da')
 
-print('\n=== EVAL 2: bi-encoder + CE rerank (top-30) ===')
+# Rerank eval: bi-encoder CPU'da encode, cross-encoder GPU'da rerank
+# Encode yavastir ama OOM olmaz
+print('\n=== EVAL 2: bi-encoder(CPU) + CE rerank (top-30) ===')
 ft_rerank30 = evaluate_model(ft_model, test_qs, label='v3+CE-30', reranker=ce, rerank_top_k=30)
 
-print('\n=== EVAL 3: bi-encoder + CE rerank (top-50) ===')
+print('\n=== EVAL 3: bi-encoder(CPU) + CE rerank (top-50) ===')
 ft_rerank50 = evaluate_model(ft_model, test_qs, label='v3+CE-50', reranker=ce, rerank_top_k=50)
 
 print('\n' + '=' * 70)
