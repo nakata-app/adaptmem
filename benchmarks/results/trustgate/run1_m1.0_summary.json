@@ -1,0 +1,103 @@
+{
+  "A_champion": {
+    "mode": "rerank",
+    "n": 500,
+    "runtime_s": 690.9,
+    "R@1": 0.954,
+    "R@5": 0.99,
+    "R@10": 0.994,
+    "by_type": {
+      "single-session-user": {
+        "n": 70,
+        "R@1": 0.9857,
+        "R@5": 0.9857,
+        "R@10": 1.0
+      },
+      "multi-session": {
+        "n": 133,
+        "R@1": 0.9774,
+        "R@5": 0.9925,
+        "R@10": 1.0
+      },
+      "single-session-preference": {
+        "n": 30,
+        "R@1": 0.7,
+        "R@5": 0.9667,
+        "R@10": 0.9667
+      },
+      "temporal-reasoning": {
+        "n": 133,
+        "R@1": 0.9248,
+        "R@5": 0.985,
+        "R@10": 0.985
+      },
+      "knowledge-update": {
+        "n": 78,
+        "R@1": 1.0,
+        "R@5": 1.0,
+        "R@10": 1.0
+      },
+      "single-session-assistant": {
+        "n": 56,
+        "R@1": 1.0,
+        "R@5": 1.0,
+        "R@10": 1.0
+      }
+    }
+  },
+  "B_trust_gate_m1.0": {
+    "mode": "rerank",
+    "n": 500,
+    "runtime_s": 749.2,
+    "R@1": 0.954,
+    "R@5": 0.99,
+    "R@10": 0.994,
+    "by_type": {
+      "single-session-user": {
+        "n": 70,
+        "R@1": 0.9857,
+        "R@5": 0.9857,
+        "R@10": 1.0
+      },
+      "multi-session": {
+        "n": 133,
+        "R@1": 0.9774,
+        "R@5": 0.9925,
+        "R@10": 1.0
+      },
+      "single-session-preference": {
+        "n": 30,
+        "R@1": 0.7,
+        "R@5": 0.9667,
+        "R@10": 0.9667
+      },
+      "temporal-reasoning": {
+        "n": 133,
+        "R@1": 0.9248,
+        "R@5": 0.985,
+        "R@10": 0.985
+      },
+      "knowledge-update": {
+        "n": 78,
+        "R@1": 1.0,
+        "R@5": 1.0,
+        "R@10": 1.0
+      },
+      "single-session-assistant": {
+        "n": 56,
+        "R@1": 1.0,
+        "R@5": 1.0,
+        "R@10": 1.0
+      }
+    },
+    "trust_gate": {
+      "model": "/kaggle/input/chat-ce-v3",
+      "margin": 1.0,
+      "fired": 0
+    }
+  },
+  "delta_R@1": 0.0,
+  "helped": 0,
+  "hurt": 0,
+  "gate_ce": "/kaggle/input/chat-ce-v3"
+}
