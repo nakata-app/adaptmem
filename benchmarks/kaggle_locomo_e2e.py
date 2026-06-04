@@ -89,6 +89,12 @@ for conv in data:
                     continue
                 spk, txt = turn.get('speaker',''), turn.get('text','')
                 dia = turn.get('dia_id','')
+                # Resim icerigi: kanitlarin %23.7'si resimli turn'lerde (run1
+                # bulgusu). blip_caption'i metne ekle ki "neyin fotografi"
+                # sorulari kor nokta olmasin; resim-only turn'ler de girsin.
+                cap = turn.get('blip_caption') or ''
+                if cap:
+                    txt = (txt + ' ' if txt else '') + f'[shares photo: {cap}]'
                 if not txt:
                     continue
                 stamped = f'[{dt}] {spk}: {txt}'
@@ -135,15 +141,30 @@ for conv in data:
                     if any(d in ev for d in seen[:k]):
                         rhits[k] += 1; b[k] += 1
 
-            # --- DeepSeek cevap ---
+            # --- DeepSeek cevap (Mem0-tarzi tam template; run1'deki kompakt
+            # prompt temporal'i 0.455'e dusurmus olabilirdi) ---
             mem_a = '\n'.join(f"- {r['text']}" for r in ra)
             mem_b = '\n'.join(f"- {r['text']}" for r in rb)
             prompt = (
-                'You answer questions from conversation memories. Timestamps are in\n'
-                'brackets. Convert relative time references to actual dates using the\n'
-                'memory timestamps. Answer in 5-6 words max.\n\n'
-                f'Memories {spk_a}:\n{mem_a}\n\nMemories {spk_b}:\n{mem_b}\n\n'
-                f'Question: {q}\nAnswer:')
+                'You are an intelligent memory assistant tasked with retrieving\n'
+                'accurate information from conversation memories.\n\n'
+                '# INSTRUCTIONS:\n'
+                '1. Carefully analyze all provided memories from both speakers\n'
+                '2. Pay special attention to the timestamps to determine the answer\n'
+                '3. If the question asks about a specific event or fact, look for direct\n'
+                '   evidence in the memories\n'
+                '4. If the memories contain contradictory information, prioritize the\n'
+                '   most recent memory\n'
+                '5. For questions about time references (like "last year", "two months\n'
+                '   ago"), calculate the actual date based on the memory timestamp\n'
+                '6. Always convert relative time references to specific dates, months,\n'
+                '   or years\n'
+                '7. Focus only on the content of the memories. Do not confuse character\n'
+                '   names mentioned in memories with the actual speakers\n'
+                '8. The answer should be less than 5-6 words.\n\n'
+                f'Memories for user {spk_a}:\n\n{mem_a}\n\n'
+                f'Memories for user {spk_b}:\n\n{mem_b}\n\n'
+                f'Question: {q}\n\nAnswer:')
             answer = 'ERROR'
             for attempt in range(5):
                 try:
