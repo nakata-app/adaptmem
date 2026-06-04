@@ -108,8 +108,10 @@ print('\n' + '='*70)
 print(f'B: champion + trust-gate(chat-ce-v3, margin={MARGIN})')
 print('='*70)
 t0 = time.time()
+PIN = 0.5  # 0.998+ margin'li 2 gate kazanimini temporal demotion'dan korur
 subprocess.run(base_cmd + ['--trust-gate-ce', GATE_CE,
                            '--trust-gate-margin', str(MARGIN),
+                           '--trust-gate-pin-margin', str(PIN),
                            '--out', f'{R}/B.json',
                            '--per-q-out', f'{R}/B_perq.json'],
                cwd=WD, env=base_env, check=True)
