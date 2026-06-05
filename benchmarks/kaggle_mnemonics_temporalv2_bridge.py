@@ -49,8 +49,8 @@ if not os.path.isdir(WD):
     subprocess.run(['git','clone','--depth','1',
                     'https://github.com/nakata-app/mnemonics.git', WD], check=True)
 subprocess.run(['git','-C',WD,'log','--oneline','-1'], check=True)
-if '--temporal-v2' not in open(f'{WD}/benchmarks/longmemeval_eval.py').read():
-    print('!!! clone eski (--temporal-v2 yok)'); sys.exit(4)
+if '--temporal-v3' not in open(f'{WD}/benchmarks/longmemeval_eval.py').read():
+    print('!!! clone eski (--temporal-v3 yok)'); sys.exit(4)
 subprocess.run(f'pip install -q -e {WD} sentence-transformers numpy adaptmem 2>&1 | tail -2',
                shell=True, check=True)
 
@@ -74,8 +74,8 @@ def run_eval(tag, extra):
     print(f"{tag}  R@1={d['R@1']:.3f} R@5={d['R@5']:.3f} R@10={d['R@10']:.3f} ({time.time()-t0:.0f}s)")
     return d
 
-A = run_eval('A', [])
-B = run_eval('B', ['--temporal-v2'])
+A = run_eval('A', ['--temporal-v2'])      # sampiyon 0.972 (v2 dahil)
+B = run_eval('B', ['--temporal-v3'])      # + event-date ordinal + last-weekday
 
 ap = {q['qid']: q for q in json.load(open(f'{R}/A_perq.json'))}
 bp = {q['qid']: q for q in json.load(open(f'{R}/B_perq.json'))}
@@ -83,10 +83,10 @@ gain = [q for q in ap if not ap[q]['hit@1'] and bp[q]['hit@1']]
 loss = [q for q in ap if ap[q]['hit@1'] and not bp[q]['hit@1']]
 
 print('\n' + '='*70)
-print('SUMMARY — temporal-v2 vs champion (ikisi de mn-ce-v1 gate)')
+print('SUMMARY — temporal-v3 vs champion (ikisi de mn-ce-v1 gate)')
 print('='*70)
-print(f"A (champion 0.970 config)  R@1={A['R@1']:.4f} R@5={A['R@5']:.4f} R@10={A['R@10']:.4f}")
-print(f"B (A + temporal-v2)        R@1={B['R@1']:.4f} R@5={B['R@5']:.4f} R@10={B['R@10']:.4f}")
+print(f"A (champion 0.972, v2)     R@1={A['R@1']:.4f} R@5={A['R@5']:.4f} R@10={A['R@10']:.4f}")
+print(f"B (A + temporal-v3)        R@1={B['R@1']:.4f} R@5={B['R@5']:.4f} R@10={B['R@10']:.4f}")
 print(f"delta R@1: {B['R@1']-A['R@1']:+.4f}   helped={len(gain)} hurt={len(loss)}")
 for q in gain: print(f"  HELP {q[:24]} {ap[q]['qtype']}")
 for q in loss: print(f"  HURT {q[:24]} {ap[q]['qtype']}")
