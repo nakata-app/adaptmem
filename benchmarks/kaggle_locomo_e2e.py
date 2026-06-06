@@ -29,6 +29,8 @@ if not os.path.isdir(WD):
     subprocess.run(['git','clone','--depth','1',
                     'https://github.com/nakata-app/mnemonics.git', WD], check=True)
 subprocess.run(['git','-C',WD,'log','--oneline','-1'], check=True)
+if not os.path.exists(f'{WD}/mnemonics/extract.py'):
+    print('!!! clone eski (extract.py yok)'); sys.exit(4)
 subprocess.run(f'pip install -q -e {WD} sentence-transformers openai 2>&1 | tail -2',
                shell=True, check=True)
 sys.path.insert(0, WD)
@@ -47,6 +49,12 @@ print(f'locomo: {DATA}, {len(data)} conversation')
 
 from openai import OpenAI
 client = OpenAI(api_key="__DEEPSEEK_KEY__", base_url="https://api.deepseek.com/v1")
+
+# --- S2: fact-extraction katmani (opsiyonel; provenance'li atomik fact'ler) ---
+EXTRACT_FACTS = True
+from mnemonics.extract import FactExtractor
+extractor = FactExtractor(client=client, model='deepseek-chat',
+                          max_calls=250, max_facts=25)
 
 TOP_K, CAND_K = 30, 50
 results = {"mnemonics": []}
@@ -102,10 +110,58 @@ for conv in data:
                 m = {'ts': dt, 'dia_id': dia}
                 if spk == spk_a:   texts_a.append(stamped); meta_a.append(m)
                 elif spk == spk_b: texts_b.append(stamped); meta_b.append(m)
+        # Fact-extraction: session basina LLM damitmasi; fact, kaynak turn'un
+        # konusmacisinin namespace'ine girer (karisik kaynak -> iki ns birden).
+        # Fact metni DIA=<id+id>| prefix'iyle saklanir ki retrieval R@k
+        # skorlamasi fact uzerinden kanita ulasmayi da saysin.
+        if EXTRACT_FACTS:
+            spk_of = {}
+            sess_groups = {}
+            for key in conv['conversation']:
+                if not key.startswith('session_') or key.endswith('_date_time'):
+                    continue
+                turns = conv['conversation'][key]
+                if not isinstance(turns, list):
+                    continue
+                dt = conv['conversation'].get(f'{key}_date_time', '')
+                tl = []
+                for t in turns:
+                    if isinstance(t, dict) and t.get('text') and t.get('dia_id'):
+                        txt = t['text']
+                        cap = t.get('blip_caption') or ''
+                        if cap:
+                            txt = f'{txt} [shares photo: {cap}]'
+                        tl.append({'id': t['dia_id'], 'speaker': t.get('speaker','?'),
+                                   'text': txt})
+                        spk_of[t['dia_id']] = t.get('speaker','')
+                if tl:
+                    sess_groups[key] = (tl, dt)
+            f_texts_a, f_meta_a, f_texts_b, f_meta_b = [], [], [], []
+            for key, (tl, dt) in sess_groups.items():
+                try:
+                    facts = extractor.extract_session(tl, session_date=dt)
+                except RuntimeError as e:
+                    print(f'  !!! extraction budget: {e}'); facts = []
+                for f in facts:
+                    stamped = f"DIA={'+'.join(f['source_ids'])}|[fact] {f['text']}"
+                    m = {'kind': 'fact', 'dia_id': f['source_ids'][0]}
+                    spks = {spk_of.get(s,'') for s in f['source_ids']}
+                    if spk_a in spks or not (spks & {spk_a, spk_b}):
+                        f_texts_a.append(stamped); f_meta_a.append(m)
+                    if spk_b in spks:
+                        f_texts_b.append(stamped); f_meta_b.append(m)
+            texts_a += f_texts_a; meta_a += f_meta_a
+            texts_b += f_texts_b; meta_b += f_meta_b
+            print(f'{sid}: fact_a={len(f_texts_a)} fact_b={len(f_texts_b)} '
+                  f'(calls={extractor.stats["calls"]})', flush=True)
+
         if texts_a: ingest(texts=texts_a, store=store, ns=f'loc_{sid}_a', meta=meta_a)
         if texts_b: ingest(texts=texts_b, store=store, ns=f'loc_{sid}_b', meta=meta_b)
 
         def dias_of(row):
+            t = row.get('text', '')
+            if t.startswith('DIA=') and '|' in t:
+                return set(t.split('DIA=', 1)[1].split('|', 1)[0].split('+'))
             m = row.get('meta') or {}
             if isinstance(m, str):
                 try: m = json.loads(m)
@@ -196,4 +252,7 @@ print(f"LOCOMO RETRIEVAL (recall_any@k, kanit dia_id, kategori 1-4)")
 print('='*66)
 print(json.dumps(retr, indent=1))
 print(f"\nanswers: {len(results['mnemonics'])} (ERROR={errs}) -> locomo_answers.json")
+if EXTRACT_FACTS:
+    print(f"extraction stats: {extractor.stats}")
+    json.dump(extractor.stats, open(f'{R}/extraction_stats.json', 'w'), indent=1)
 print('skorlama: Mem0 evals.py sekline uygun; judge ayri adimda.')
