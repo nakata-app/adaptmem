@@ -5,7 +5,7 @@ from openai import OpenAI
 
 client = OpenAI(api_key=os.environ['DEEPSEEK_API_KEY'],
                 base_url='https://api.deepseek.com/v1')
-answers = json.load(open('/Users/macmini/Projects/adaptmem/results/locomo_e2e_run3/results/locomo_answers.json'))['mnemonics']
+answers = json.load(open('/Users/macmini/Projects/adaptmem/results/locomo_e2e_run4/results/locomo_answers.json'))['mnemonics']
 print(f'puanlanacak: {len(answers)}')
 
 PROMPT = """You are grading a short answer against a gold answer.
@@ -51,5 +51,5 @@ out = {
     'by_category': {c: {'n': t, 'acc': round(s/t, 4)} for c, (s, t) in sorted(by.items())},
     'judge': 'deepseek-chat (CORRECT/WRONG, temp0)',
 }
-json.dump(out, open('/Users/macmini/Projects/adaptmem/results/locomo_e2e_run3/results/locomo_judged.json','w'), indent=1)
+json.dump(out, open('/Users/macmini/Projects/adaptmem/results/locomo_e2e_run4/results/locomo_judged.json','w'), indent=1)
 print(json.dumps(out, indent=1))
