@@ -8,7 +8,7 @@ Kullanim: python locomo_answerer_swap.py [--model deepseek-v4-pro]
           [--run locomo_e2e_run6] [--stride 4] [--max-tokens 2000]
 stride=4 -> her 4. soru (385/1540, kategori karisimi korunur). stride=1 -> tam.
 """
-import json, os, sys, time, argparse
+import json, os, re, sys, time, argparse
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from openai import OpenAI
@@ -18,6 +18,10 @@ ap.add_argument('--model', default='deepseek-v4-pro')
 ap.add_argument('--run', default='locomo_e2e_run6')
 ap.add_argument('--stride', type=int, default=4)
 ap.add_argument('--max-tokens', type=int, default=2000)
+ap.add_argument('--base-url', default='https://api.deepseek.com/v1')
+ap.add_argument('--key-env', default='DEEPSEEK_API_KEY')
+ap.add_argument('--reuse-from', default=None,
+                help='onceki swap json\'u; ayni modelin odenmis cevap+verdict\'leri atlanir')
 args = ap.parse_args()
 
 BASE = f'/Users/macmini/Projects/adaptmem/results/{args.run}/results'
@@ -25,8 +29,18 @@ DATA = '/Users/macmini/Projects/_competitors/locomo-orig/data/locomo10.json'
 # 2026-06-06 api-docs.deepseek.com/quick_start/pricing ($/1M token, cache-miss)
 PRICE = {'deepseek-v4-pro': (0.435, 0.87), 'deepseek-v4-flash': (0.14, 0.28)}
 
-client = OpenAI(api_key=os.environ['DEEPSEEK_API_KEY'],
-                base_url='https://api.deepseek.com/v1')
+# answerer istenen saglayicida; judge SABIT deepseek-chat (kosular arasi
+# kiyas ayni hakemle yapilmali)
+client = OpenAI(api_key=os.environ[args.key_env], base_url=args.base_url)
+judge_client = OpenAI(api_key=os.environ['DEEPSEEK_API_KEY'],
+                      base_url='https://api.deepseek.com/v1')
+
+def strip_think(txt):
+    """MiniMax M3 tarzi inline <think>...</think> bloklarini ayikla."""
+    out = re.sub(r'<think>.*?</think>', '', txt, flags=re.S).strip()
+    if '<think>' in txt and '</think>' not in txt:
+        return ''  # dusunce kesilmis, cevap yok -> bos say (retry tetikler)
+    return out
 contexts = json.load(open(f'{BASE}/locomo_contexts.json'))
 verdicts = json.load(open(f'{BASE}/locomo_verdicts.json'))
 speakers = {c['sample_id']: (c['conversation']['speaker_a'],
@@ -34,7 +48,18 @@ speakers = {c['sample_id']: (c['conversation']['speaker_a'],
             for c in json.load(open(DATA))}
 
 idx = list(range(0, len(contexts), args.stride))
-print(f'model={args.model}  subset={len(idx)}/{len(contexts)} (stride={args.stride})')
+# Odenmis cevaplari yeniden satin alma: onceki kosunun cevap+verdict'i aynen
+# tasinir, sadece eksik indeksler API'ye gider.
+reused = {}
+if args.reuse_from:
+    prev = json.load(open(args.reuse_from))
+    assert prev['model'] == args.model, 'reuse farkli model — kiyas bozulur'
+    assert prev['run'] == args.run, 'reuse farkli run'
+    reused = {a['i']: (a['response'], a['new_verdict']) for a in prev['answers']
+              if not str(a['response']).startswith('ERROR')}
+idx_todo = [i for i in idx if i not in reused]
+print(f'model={args.model}  subset={len(idx)}/{len(contexts)} (stride={args.stride})'
+      f'{f"  reuse={len(idx)-len(idx_todo)}  yeni={len(idx_todo)}" if reused else ""}')
 
 # kernel'dekiyle birebir ayni template
 TEMPLATE = (
@@ -85,7 +110,7 @@ def answer(i):
                 max_tokens=args.max_tokens, temperature=0)
             usage['in'] += r.usage.prompt_tokens
             usage['out'] += r.usage.completion_tokens
-            txt = (r.choices[0].message.content or '').strip()
+            txt = strip_think((r.choices[0].message.content or '').strip())
             if txt:
                 return i, txt
             # reasoning butceyi yemis, cevap bos: bir kez genis butceyle dene
@@ -96,7 +121,7 @@ def answer(i):
                     max_tokens=args.max_tokens * 3, temperature=0)
                 usage['in'] += r.usage.prompt_tokens
                 usage['out'] += r.usage.completion_tokens
-                txt = (r.choices[0].message.content or '').strip()
+                txt = strip_think((r.choices[0].message.content or '').strip())
                 return i, txt or 'ERROR: empty'
         except Exception as e:
             if attempt < 4:
@@ -110,7 +135,7 @@ def judge(i_resp):
     v = verdicts[i]
     for attempt in range(4):
         try:
-            r = client.chat.completions.create(
+            r = judge_client.chat.completions.create(
                 model='deepseek-chat',
                 messages=[{'role': 'user', 'content': JUDGE_PROMPT.format(
                     q=v['question'], gt=v['answer'], resp=resp)}],
@@ -122,19 +147,21 @@ def judge(i_resp):
     return i, 0
 
 t0 = time.time()
-answers = {}
+answers = {i: r for i, (r, _) in reused.items()}
+new_verdict = {i: v for i, (_, v) in reused.items()}
+todo_answers = {}
 with ThreadPoolExecutor(max_workers=8) as ex:
-    for n, (i, resp) in enumerate(ex.map(answer, idx), 1):
-        answers[i] = resp
+    for n, (i, resp) in enumerate(ex.map(answer, idx_todo), 1):
+        todo_answers[i] = resp
         if n % 50 == 0:
-            print(f'  cevap {n}/{len(idx)}  {time.time()-t0:.0f}s', flush=True)
+            print(f'  cevap {n}/{len(idx_todo)}  {time.time()-t0:.0f}s', flush=True)
+answers.update(todo_answers)
 
-new_verdict = {}
 with ThreadPoolExecutor(max_workers=8) as ex:
-    for n, (i, v) in enumerate(ex.map(judge, answers.items()), 1):
+    for n, (i, v) in enumerate(ex.map(judge, todo_answers.items()), 1):
         new_verdict[i] = v
         if n % 100 == 0:
-            print(f'  judge {n}/{len(idx)}  {time.time()-t0:.0f}s', flush=True)
+            print(f'  judge {n}/{len(idx_todo)}  {time.time()-t0:.0f}s', flush=True)
 
 # --- run6 ile kiyas (ayni subset) ---
 by = defaultdict(lambda: {'n': 0, 'old': 0, 'new': 0, 'fixed': 0, 'broken': 0})
