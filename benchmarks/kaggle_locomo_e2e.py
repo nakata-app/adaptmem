@@ -65,7 +65,12 @@ extractor = FactExtractor(client=client, model='deepseek-chat',
                           max_calls=400, max_facts=25)
 
 TOP_K, CAND_K = 30, 50
-DEDUP_ANSWER_CTX = True   # run5 kolu; False = run4 davranisi
+# run5 OLCULDU: dedup NEGATIF (0.8214 -> 0.8078; temporal -3.4pp, single-hop
+# -1.8pp, open-domain +4.2pp). Otopsi: fact, ham turn'u listeden dusurunce
+# ham turn'un '[tarih] konusmaci:' damgasi da gidiyor; cevaplayici tarih
+# hesabini o damgadan yapiyordu. Fact'lerde tarih damgasi yok (prozda bazen
+# var, tutarsiz). Ders: dedup ancak fact'ler tarih-damgali olursa denenebilir.
+DEDUP_ANSWER_CTX = False  # kapali; sampiyon davranis = run4
 dedup_kept = dedup_skipped = 0
 results = {"mnemonics": []}
 ks = (1, 5, 10)
