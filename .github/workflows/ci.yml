@@ -24,6 +24,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev,server]"
           pip install mypy
+      # HF anonim istekleri GH runner IP'lerinde 429'a takiliyor (test_embed /
+      # test_reindex_then_search flaky-fail). Modeli cache'le: bir kez inen
+      # model sonraki kosularda HF'ye sorulmadan kullanilir. Cache post-step'i
+      # job fail olsa da kaydeder, birkac kosuda oturur.
+      - name: Cache HuggingFace models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-models-minilm-l6-v2
       - name: Lint
         run: ruff check adaptmem tests
       - name: Type-check (mypy --strict)
