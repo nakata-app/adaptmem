@@ -1,12 +1,19 @@
-"""LoCoMo cevap puanlama — DeepSeek judge (CORRECT/WRONG), 8 paralel."""
+"""LoCoMo cevap puanlama — DeepSeek judge (CORRECT/WRONG), 8 paralel.
+
+Kullanim: python locomo_judge.py [run_adi]   (varsayilan: locomo_e2e_run6)
+Cikti: locomo_judged.json (kategori toplami) + locomo_verdicts.json
+(soru-bazli karar dokumu — run'lar arasi flip analizi icin, run5 kor-noktasi).
+"""
 import json, os, sys, time
 from concurrent.futures import ThreadPoolExecutor
 from openai import OpenAI
 
+RUN = sys.argv[1] if len(sys.argv) > 1 else 'locomo_e2e_run6'
+BASE = f'/Users/macmini/Projects/adaptmem/results/{RUN}/results'
 client = OpenAI(api_key=os.environ['DEEPSEEK_API_KEY'],
                 base_url='https://api.deepseek.com/v1')
-answers = json.load(open('/Users/macmini/Projects/adaptmem/results/locomo_e2e_run5/results/locomo_answers.json'))['mnemonics']
-print(f'puanlanacak: {len(answers)}')
+answers = json.load(open(f'{BASE}/locomo_answers.json'))['mnemonics']
+print(f'puanlanacak: {len(answers)}  (run={RUN})')
 
 PROMPT = """You are grading a short answer against a gold answer.
 Rules: semantic equivalence counts as CORRECT; the answer must contain the gold key fact;
@@ -51,5 +58,12 @@ out = {
     'by_category': {c: {'n': t, 'acc': round(s/t, 4)} for c, (s, t) in sorted(by.items())},
     'judge': 'deepseek-chat (CORRECT/WRONG, temp0)',
 }
-json.dump(out, open('/Users/macmini/Projects/adaptmem/results/locomo_e2e_run5/results/locomo_judged.json','w'), indent=1)
+json.dump(out, open(f'{BASE}/locomo_judged.json','w'), indent=1)
+# Soru-bazli karar dokumu: flip analizi (hangi soru run'lar arasi dondu)
+json.dump([{'sample_id': a.get('sample_id'), 'question': a['question'],
+            'answer': a['answer'], 'response': a['response'],
+            'category': a['category'], 'verdict': v}
+           for a, v in zip(answers, results)],
+          open(f'{BASE}/locomo_verdicts.json','w'), indent=1)
 print(json.dumps(out, indent=1))
+print(f'verdicts -> {BASE}/locomo_verdicts.json')

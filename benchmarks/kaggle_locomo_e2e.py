@@ -12,7 +12,12 @@ run5 kolu (DEDUP_ANSWER_CTX): fact + ham turn ayni kaniti tasiyinca cevap
 baglaminda tekrar oluyor (run4'te multi-hop -1.4pp dustu, fact sayisi artinca).
 Cozum: skor sirasinda yuru, dia kapsamasi tamamen onceden-kapsanmis satiri
 atla. SADECE cevap baglamina uygulanir; retrieval R@k ham listeden olculur
-(run4 ile birebir kiyas icin).
+(run4 ile birebir kiyas icin). OLCULDU: NEGATIF, kapali.
+
+run6 kolu: fisler tarih-damgali saklanir ('DIA=..|[tarih] [fact] ...').
+Run5 otopsisi: cevaplayici zaman hesabini ham turn'un '[tarih]' damgasindan
+yapiyor, fislerde damga yoktu. Bonus: cevap baglamlari locomo_contexts.json'a
+kaydedilir (cevap-asamasi kollarini yerel test icin).
 """
 import os, sys, subprocess, json, time, glob
 import torch
@@ -70,9 +75,14 @@ TOP_K, CAND_K = 30, 50
 # ham turn'un '[tarih] konusmaci:' damgasi da gidiyor; cevaplayici tarih
 # hesabini o damgadan yapiyordu. Fact'lerde tarih damgasi yok (prozda bazen
 # var, tutarsiz). Ders: dedup ancak fact'ler tarih-damgali olursa denenebilir.
+# run6 kolu: fis tarih-damgalama ([tarih] [fact] ...). Dedup KAPALI kalir —
+# kosu basina tek degisken; damga ise yararsa dedup run7'de yeniden denenebilir.
 DEDUP_ANSWER_CTX = False  # kapali; sampiyon davranis = run4
 dedup_kept = dedup_skipped = 0
 results = {"mnemonics": []}
+# run6 (kor-nokta 2): cevaplayiciya giden baglam da kaydedilir; cevap-asamasi
+# kollari (prompt, dedup, damga bicimi) Kaggle'siz yerel test edilebilsin.
+contexts = []
 ks = (1, 5, 10)
 rhits = {k: 0 for k in ks}
 rby = {}
@@ -81,6 +91,7 @@ t_start = time.time()
 
 def save_partial():
     json.dump(results, open(f'{R}/locomo_answers.json', 'w'), indent=1)
+    json.dump(contexts, open(f'{R}/locomo_contexts.json', 'w'), indent=1)
     retr = {
         'n': n_r,
         **{f'R@{k}': round(rhits[k]/max(n_r,1), 4) for k in ks},
@@ -158,7 +169,11 @@ for conv in data:
                 except RuntimeError as e:
                     print(f'  !!! extraction budget: {e}'); facts = []
                 for f in facts:
-                    stamped = f"DIA={'+'.join(f['source_ids'])}|[fact] {f['text']}"
+                    # run6: fis tarih-damgali — ham turn'un '[tarih]' damgasiyla
+                    # ayni bicim; cevaplayici zaman hesabini bundan yapiyor
+                    # (run5 otopsisi). dt bos ise damga atlanir.
+                    ds = f'[{dt}] ' if dt else ''
+                    stamped = f"DIA={'+'.join(f['source_ids'])}|{ds}[fact] {f['text']}"
                     m = {'kind': 'fact', 'dia_id': f['source_ids'][0]}
                     spks = {spk_of.get(s,'') for s in f['source_ids']}
                     if spk_a in spks or not (spks & {spk_a, spk_b}):
@@ -270,6 +285,10 @@ for conv in data:
             results['mnemonics'].append({
                 'sample_id': sid, 'question': q, 'answer': gt,
                 'response': answer, 'category': str(qa.get('category'))})
+            contexts.append({
+                'sample_id': sid, 'question': q,
+                'ctx_a': [r['text'] for r in ctx_a],
+                'ctx_b': [r['text'] for r in ctx_b]})
             if len(results['mnemonics']) % 200 == 0:
                 retr = save_partial()
                 el = time.time() - t_start
@@ -289,6 +308,7 @@ if EXTRACT_FACTS:
     json.dump(extractor.stats, open(f'{R}/extraction_stats.json', 'w'), indent=1)
 if DEDUP_ANSWER_CTX:
     tot = dedup_kept + dedup_skipped
-    print(f"RUN=run5-dedup  ctx dedup: kept={dedup_kept} skipped={dedup_skipped} "
+    print(f"ctx dedup: kept={dedup_kept} skipped={dedup_skipped} "
           f"({100*dedup_skipped/max(tot,1):.1f}% atildi)")
+print('RUN=run6-factdate  fis tarih-damgali; dedup kapali (run4 davranisi)')
 print('skorlama: Mem0 evals.py sekline uygun; judge ayri adimda.')
