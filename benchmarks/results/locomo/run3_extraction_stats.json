@@ -1,0 +1,7 @@
+{
+ "calls": 250,
+ "facts": 2044,
+ "empty_sessions": 0,
+ "parse_failures": 1,
+ "dropped_bad_sources": 0
+}
