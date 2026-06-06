@@ -75,9 +75,12 @@ TOP_K, CAND_K = 30, 50
 # ham turn'un '[tarih] konusmaci:' damgasi da gidiyor; cevaplayici tarih
 # hesabini o damgadan yapiyordu. Fact'lerde tarih damgasi yok (prozda bazen
 # var, tutarsiz). Ders: dedup ancak fact'ler tarih-damgali olursa denenebilir.
-# run6 kolu: fis tarih-damgalama ([tarih] [fact] ...). Dedup KAPALI kalir —
-# kosu basina tek degisken; damga ise yararsa dedup run7'de yeniden denenebilir.
-DEDUP_ANSWER_CTX = False  # kapali; sampiyon davranis = run4
+# run6 kolu: fis tarih-damgalama ([tarih] [fact] ...). OLCULDU: POZITIF,
+# 0.8214 -> 0.8286 (+0.7pp; multi +1.1, temporal +0.7, single +0.7, open notr).
+# run7 adayi dedup'tu; once daha buyuk kol araniyor (headroom analizi:
+# yanlislarin kaci kanit-baglamda-ama-cevap-yanlis = cevaplayici kolu,
+# kaci kanit-baglamda-yok = retrieval kolu). Karar o analizden.
+DEDUP_ANSWER_CTX = False  # kapali; sampiyon davranis = run6 (damga acik)
 dedup_kept = dedup_skipped = 0
 results = {"mnemonics": []}
 # run6 (kor-nokta 2): cevaplayiciya giden baglam da kaydedilir; cevap-asamasi
