@@ -9,6 +9,10 @@ import numpy as np
 from adaptmem.miner import CorpusEntry, HardNegativeMiner
 from adaptmem.types import LabelledQuery, RetrievalHit, TrainConfig
 
+# Marks a cross-encoder that was injected rather than loaded by
+# `_ensure_rerank_model`; its max_length is unknown, so it is never reloaded.
+_EXTERNAL = object()
+
 
 class AdaptMem:
     """One-shot domain adaptation for retrieval.
@@ -22,6 +26,11 @@ class AdaptMem:
     fine-tuned model lives in memory until you call `save(path)`.
     """
 
+    # Class-level defaults keep `load()` (which builds via `__new__`) safe.
+    rerank_max_length: int | None = None
+    rerank_batch_size: int | None = None
+    _rerank_loaded_max_length: Any = _EXTERNAL
+
     def __init__(
         self,
         base_model: str = "all-MiniLM-L6-v2",
@@ -29,6 +38,8 @@ class AdaptMem:
         rerank_model: str = "BAAI/bge-reranker-v2-m3",
         device: str | None = None,
         model_kwargs: dict[str, Any] | None = None,
+        rerank_max_length: int | None = None,
+        rerank_batch_size: int | None = None,
     ):
         self.base_model_name = base_model
         self._model = None
@@ -36,6 +47,8 @@ class AdaptMem:
         self._embeddings: np.ndarray[Any, Any] | None = None
         self.rerank_enabled = rerank
         self.rerank_model_name = rerank_model
+        self.rerank_max_length = rerank_max_length
+        self.rerank_batch_size = rerank_batch_size
         self._rerank_model = None
         self.device = device
         self.model_kwargs = model_kwargs or {}
@@ -206,6 +219,8 @@ class AdaptMem:
                     "base_model": self.base_model_name,
                     "rerank": self.rerank_enabled,
                     "rerank_model": self.rerank_model_name,
+                    "rerank_max_length": self.rerank_max_length,
+                    "rerank_batch_size": self.rerank_batch_size,
                     "device": self.device,
                     "model_kwargs": self.model_kwargs,
                 }
@@ -248,6 +263,8 @@ class AdaptMem:
             am.rerank_model_name = cfg.get(
                 "rerank_model", "BAAI/bge-reranker-v2-m3"
             )
+            am.rerank_max_length = cfg.get("rerank_max_length")
+            am.rerank_batch_size = cfg.get("rerank_batch_size")
         else:
             am.rerank_enabled = False
             am.rerank_model_name = "BAAI/bge-reranker-v2-m3"
@@ -255,16 +272,49 @@ class AdaptMem:
         return am
 
     # ---- Inference -----------------------------------------------------
-    def _ensure_rerank_model(self) -> None:
-        if self._rerank_model is None:
-            from sentence_transformers import CrossEncoder
-            self._rerank_model = CrossEncoder(self.rerank_model_name)
+    def _ensure_rerank_model(self, max_length: int | None = None) -> None:
+        """Load the cross-encoder, honouring ``max_length``.
+
+        ``max_length`` is a construction-time property of the CrossEncoder, so a
+        loaded model whose length differs from the requested one is reloaded.
+        An injected model (tests, callers that set ``_rerank_model``) is never
+        reloaded. ``None`` means the model's own default.
+        """
+        want = max_length if max_length is not None else self.rerank_max_length
+        if self._rerank_model is not None and (
+            self._rerank_loaded_max_length is _EXTERNAL
+            or self._rerank_loaded_max_length == want
+        ):
+            return
+        from sentence_transformers import CrossEncoder
+        kwargs: dict[str, Any] = {} if want is None else {"max_length": want}
+        self._rerank_model = CrossEncoder(self.rerank_model_name, **kwargs)
+        self._rerank_loaded_max_length = want
+
+    def _ce_scores(
+        self,
+        pairs: list[tuple[str, str]],
+        max_length: int | None = None,
+        batch_size: int | None = None,
+    ) -> Any:
+        """Score (query, text) pairs. Unset knobs leave behaviour unchanged."""
+        self._ensure_rerank_model(max_length)
+        ce = self._rerank_model
+        assert ce is not None  # _ensure_rerank_model populates it
+        bs = batch_size if batch_size is not None else self.rerank_batch_size
+        kwargs: dict[str, Any] = {"show_progress_bar": False}
+        if bs is not None:
+            kwargs["batch_size"] = bs
+        return ce.predict(pairs, **kwargs)
 
     def rerank(
         self,
         query: str,
         candidates: list[str] | list[tuple[str, str]] | list[dict[str, Any]],
         top_k: int | None = None,
+        *,
+        max_length: int | None = None,
+        batch_size: int | None = None,
     ) -> list[tuple[int, float]]:
         """Cross-encoder rerank for externally-retrieved candidates.
 
@@ -276,6 +326,11 @@ class AdaptMem:
           - list[str]            -> texts directly
           - list[(id, text)]     -> tuples, only text is scored
           - list[{"text": ...}]  -> dicts with a "text" key
+
+        max_length / batch_size bound the cross-encoder's memory use (long rows
+        times a large batch can OOM a 16GB GPU). They fall back to the
+        instance's rerank_max_length / rerank_batch_size, then to the model
+        defaults; unset leaves behaviour unchanged.
 
         Returns: [(original_index, ce_score), ...] sorted by ce_score desc.
         Caller maps indices back to its own objects.
@@ -290,11 +345,8 @@ class AdaptMem:
             texts = [c["text"] for c in candidates]  # type: ignore[index, call-overload]
         else:
             texts = list(candidates)  # type: ignore[arg-type]
-        self._ensure_rerank_model()
-        ce = self._rerank_model
-        assert ce is not None  # _ensure_rerank_model populates it
         pairs = [(query, t) for t in texts]
-        ce_scores = ce.predict(pairs, show_progress_bar=False)
+        ce_scores = self._ce_scores(pairs, max_length, batch_size)
         ranked = sorted(enumerate(ce_scores), key=lambda x: -float(x[1]))
         if top_k is not None:
             ranked = ranked[:top_k]
@@ -335,10 +387,9 @@ class AdaptMem:
             ]
 
         # Cross-encoder rerank
-        self._ensure_rerank_model()
         candidates = [self._corpus[i] for i in idx]
         pairs = [(query, c.text) for c in candidates]
-        ce_scores = self._rerank_model.predict(pairs, show_progress_bar=False)
+        ce_scores = self._ce_scores(pairs)
         ranked = sorted(zip(candidates, ce_scores), key=lambda x: -float(x[1]))
         k = min(top_k, len(ranked))
         return [
