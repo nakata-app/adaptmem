@@ -4,6 +4,22 @@ All notable changes to adaptmem are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- `AdaptMem.rerank(..., max_length=, batch_size=)` and the matching
+  `AdaptMem(rerank_max_length=, rerank_batch_size=)` constructor defaults
+  (persisted in `config.json`). They bound cross-encoder memory use (long rows
+  times a large batch can OOM a 16GB GPU) and let a caller such as mnemonics
+  apply the same limits whichever reranker backend it uses. Unset leaves
+  behaviour unchanged: `CrossEncoder` is built with no `max_length` and
+  `predict` gets no `batch_size`, exactly as before.
+- `max_length` is a construction-time property of the cross-encoder, so a loaded
+  model whose length differs from the requested one is reloaded. An injected
+  `_rerank_model` is never reloaded.
+- `AdaptMem.search()` uses the same scoring path, so `rerank_batch_size` applies
+  there too.
+
 ## [0.6.0], 2026-05-14
 
 The "server is ready for someone else's machine" release. Production
