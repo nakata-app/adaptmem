@@ -216,3 +216,86 @@ def test_rerank_works_without_bi_encoder_index():
     ranked = am.rerank("q", ["x", "y"])
     assert ranked[0][0] == 0
     assert am._model is None  # confirm no bi-encoder needed
+
+
+# ---- max_length / batch_size propagation -------------------------------
+
+
+class _RecordingCrossEncoder:
+    """Stands in for sentence_transformers.CrossEncoder; records its kwargs."""
+
+    instances: list["_RecordingCrossEncoder"] = []
+
+    def __init__(self, name, **kwargs):
+        self.name = name
+        self.init_kwargs = kwargs
+        self.predict_kwargs: dict | None = None
+        _RecordingCrossEncoder.instances.append(self)
+
+    def predict(self, pairs, **kwargs):
+        self.predict_kwargs = kwargs
+        return np.arange(len(pairs), dtype=float)
+
+
+def _install_fake_st(monkeypatch):
+    import sys
+    import types
+
+    _RecordingCrossEncoder.instances = []
+    fake = types.ModuleType("sentence_transformers")
+    fake.CrossEncoder = _RecordingCrossEncoder  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "sentence_transformers", fake)
+    return _RecordingCrossEncoder.instances
+
+
+def test_rerank_unset_knobs_leave_behaviour_unchanged(monkeypatch):
+    made = _install_fake_st(monkeypatch)
+    AdaptMem().rerank("q", ["a", "b"])
+    assert made[0].init_kwargs == {}
+    assert made[0].predict_kwargs == {"show_progress_bar": False}
+
+
+def test_rerank_per_call_knobs_reach_the_cross_encoder(monkeypatch):
+    made = _install_fake_st(monkeypatch)
+    AdaptMem().rerank("q", ["a", "b"], max_length=128, batch_size=4)
+    assert made[0].init_kwargs == {"max_length": 128}
+    assert made[0].predict_kwargs == {"show_progress_bar": False, "batch_size": 4}
+
+
+def test_rerank_instance_defaults_apply_and_call_overrides(monkeypatch):
+    made = _install_fake_st(monkeypatch)
+    am = AdaptMem(rerank_max_length=256, rerank_batch_size=8)
+    am.rerank("q", ["a"])
+    assert made[0].init_kwargs == {"max_length": 256}
+    assert made[0].predict_kwargs["batch_size"] == 8
+    am.rerank("q", ["a"], batch_size=2)
+    assert len(made) == 1  # same max_length: no reload
+    assert made[0].predict_kwargs["batch_size"] == 2
+
+
+def test_rerank_reloads_when_max_length_changes(monkeypatch):
+    made = _install_fake_st(monkeypatch)
+    am = AdaptMem()
+    am.rerank("q", ["a"], max_length=128)
+    am.rerank("q", ["a"], max_length=128)
+    assert len(made) == 1
+    am.rerank("q", ["a"], max_length=512)
+    assert len(made) == 2
+    assert made[1].init_kwargs == {"max_length": 512}
+
+
+def test_rerank_never_reloads_an_injected_cross_encoder(monkeypatch):
+    made = _install_fake_st(monkeypatch)
+    am = AdaptMem()
+    am._rerank_model = _StubCrossEncoder({"x": 1.0})
+    am.rerank("q", ["x"], max_length=64)
+    assert made == []
+    assert am._rerank_model.last_pairs == [("q", "x")]
+
+
+def test_search_path_honours_instance_batch_size(monkeypatch):
+    made = _install_fake_st(monkeypatch)
+    am = _build_am(rerank=True)
+    am.rerank_batch_size = 3
+    am.search("q", top_k=1)
+    assert made[0].predict_kwargs["batch_size"] == 3
