@@ -192,6 +192,8 @@ class AdaptMem:
     def save(self, path: str | Path) -> None:
         if self._model is None:
             raise RuntimeError("No model to save. Call .train() or .load() first.")
+        if self._embeddings is None:
+            raise RuntimeError("No embeddings to save. Call .train() or .load() first.")
         out = Path(path)
         out.mkdir(parents=True, exist_ok=True)
         self._model.save(str(out / "model"))
