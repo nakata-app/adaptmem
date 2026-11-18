@@ -48,7 +48,7 @@ def test_search_404_for_unknown_corpus(client):
 
 
 def test_reindex_then_search(client):
-    c, state = client
+    c, _state = client
     # Reindex with a tiny corpus.
     docs = [
         {"id": "a", "text": "PostgreSQL has native JSON since version 9.4."},
@@ -167,10 +167,10 @@ def test_serve_rejects_unpaired_tls_flags(monkeypatch):
     """`serve(ssl_keyfile=X)` without certfile (or vice versa) → SystemExit."""
     import pytest as _pytest
 
-    from adaptmem.server import serve
-
     # Stub uvicorn.run so we never actually bind a port.
     import uvicorn
+
+    from adaptmem.server import serve
 
     monkeypatch.setattr(uvicorn, "run", lambda *a, **k: None)
 
@@ -580,9 +580,8 @@ def test_audit_log_hashes_api_key():
     # (capsys is async-tricky in TestClient; use file path instead.)
     import tempfile
 
-    f = tempfile.NamedTemporaryFile("w+", delete=False, suffix=".jsonl")
-    f.close()
-    state["audit_log_file"] = f.name
+    with tempfile.NamedTemporaryFile("w+", delete=False, suffix=".jsonl") as f:
+        state["audit_log_file"] = f.name
 
     c = TestClient(app)
     c.post(

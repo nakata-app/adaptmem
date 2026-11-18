@@ -5,6 +5,8 @@ download) and stub the CrossEncoder so the test is fast and offline.
 """
 from __future__ import annotations
 
+from typing import ClassVar
+
 import numpy as np
 
 from adaptmem import AdaptMem
@@ -116,7 +118,7 @@ def _build_am_with_encoder(rerank: bool = False) -> AdaptMem:
     am._embeddings = np.array([[1.0, 0.0]], dtype=np.float32)
     # A stub encoder that returns a deterministic 2-d vector per text.
     class _Enc:
-        vecs = {
+        vecs: ClassVar[dict[str, np.ndarray]] = {
             "alpha": np.array([1.0, 0.0]),
             "bravo": np.array([0.0, 1.0]),
             "charlie": np.array([0.7, 0.7]),

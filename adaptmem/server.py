@@ -17,10 +17,14 @@ Design choices:
 from __future__ import annotations
 
 import importlib.util
+import logging
+import sqlite3
 import time
 from typing import Any
 
 from adaptmem.core import AdaptMem
+
+logger = logging.getLogger(__name__)
 
 
 _STARTED_AT = time.time()
@@ -125,7 +129,9 @@ def _enable_otel(app: Any) -> bool:
         return False
     try:
         from opentelemetry import trace
-        from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+        from opentelemetry.exporter.otlp.proto.http.trace_exporter import (
+            OTLPSpanExporter,
+        )
         from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
         from opentelemetry.sdk.resources import Resource
         from opentelemetry.sdk.trace import TracerProvider
@@ -167,9 +173,9 @@ def _build_app() -> Any:
         if store is not None:
             try:
                 store.close()
-            except Exception:
-                # Shutdown is best-effort; swallow rather than crash uvicorn.
-                pass
+            except sqlite3.Error:
+                # Shutdown is best-effort; log and continue rather than crash uvicorn.
+                logger.warning("store.close() failed during shutdown", exc_info=True)
 
     app = FastAPI(
         title="adaptmem",
@@ -735,8 +741,9 @@ def serve(
             if loaded is None:
                 continue
             docs, embeddings, model_name = loaded
-            from adaptmem.miner import CorpusEntry as _CorpusEntry
             from sentence_transformers import SentenceTransformer as _ST
+
+            from adaptmem.miner import CorpusEntry as _CorpusEntry
 
             engine = AdaptMem(base_model=model_name, device=device)
             engine._model = _ST(model_name, device=device or None)

@@ -35,7 +35,7 @@ class TrainingPair:
     pos_id: str = ""
     neg_id: str = ""
 
-    def to_input_example(self) -> "InputExample":
+    def to_input_example(self) -> InputExample:
         """Convert to sentence_transformers.InputExample (lazy import)."""
         from sentence_transformers import InputExample
 

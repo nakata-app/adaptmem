@@ -9,7 +9,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 CLI = [sys.executable, "-m", "adaptmem.cli"]
 
 
@@ -18,6 +17,7 @@ def _run(args, **kwargs) -> subprocess.CompletedProcess:
         CLI + args,
         capture_output=True,
         text=True,
+        check=False,
         cwd=Path(__file__).resolve().parent.parent,
         **kwargs,
     )

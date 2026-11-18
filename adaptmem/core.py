@@ -3,12 +3,15 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
 from adaptmem.miner import CorpusEntry, HardNegativeMiner
 from adaptmem.types import LabelledQuery, RetrievalHit, TrainConfig
+
+if TYPE_CHECKING:
+    from sentence_transformers import CrossEncoder, SentenceTransformer
 
 
 class AdaptMem:
@@ -32,12 +35,12 @@ class AdaptMem:
         model_kwargs: dict[str, Any] | None = None,
     ):
         self.base_model_name = base_model
-        self._model = None
+        self._model: SentenceTransformer | None = None
         self._corpus: list[CorpusEntry] = []
         self._embeddings: np.ndarray[Any, Any] | None = None
         self.rerank_enabled = rerank
         self.rerank_model_name = rerank_model
-        self._rerank_model = None
+        self._rerank_model: CrossEncoder | None = None
         self.device = device
         self.model_kwargs = model_kwargs or {}
 
@@ -214,7 +217,7 @@ class AdaptMem:
         )
 
     @classmethod
-    def load(cls, path: str | Path) -> "AdaptMem":
+    def load(cls, path: str | Path) -> AdaptMem:
         from sentence_transformers import SentenceTransformer
 
         p = Path(path)
@@ -347,9 +350,11 @@ class AdaptMem:
 
         # Cross-encoder rerank
         self._ensure_rerank_model()
+        ce = self._rerank_model
+        assert ce is not None  # _ensure_rerank_model populates it
         candidates = [self._corpus[i] for i in idx]
         pairs = [(query, c.text) for c in candidates]
-        ce_scores = self._rerank_model.predict(pairs, show_progress_bar=False)
+        ce_scores = ce.predict(pairs, show_progress_bar=False)
         ranked = sorted(zip(candidates, ce_scores), key=lambda x: -float(x[1]))
         k = min(top_k, len(ranked))
         return [

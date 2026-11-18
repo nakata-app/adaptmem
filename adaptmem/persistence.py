@@ -27,11 +27,11 @@ from __future__ import annotations
 
 import sqlite3
 import time
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 import numpy as np
-
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS corpora (

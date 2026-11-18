@@ -24,7 +24,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.5"]
+dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff==0.17.5"]
 shell = ["argcomplete>=3.5"]
 server = ["fastapi>=0.110", "uvicorn[standard]>=0.30", "pydantic>=2.5", "slowapi>=0.1.9"]
 telemetry = [
@@ -65,4 +65,11 @@ ignore_missing_imports = true
 # `requests` `[server]` extra üzerinden lazy import; types-requests CI'da
 # yüklü ama bench venv'lerinde yok — iki environment'ta da temiz geçsin.
 module = ["requests", "requests.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# `slowapi` `[server]` extra'sından geliyor ve py.typed dağıtmıyor
+# (v0.1.x). Tip paketi de yok — mypy için import-not-found/not-untyped
+# kabul et.
+module = ["slowapi", "slowapi.*"]
 ignore_missing_imports = true
