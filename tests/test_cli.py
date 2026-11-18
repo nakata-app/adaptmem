@@ -52,6 +52,12 @@ def test_evaluate_help_lists_required_args():
     assert "--top-k" in out.stdout
 
 
+def test_evaluate_help_lists_per_query_dump():
+    out = _run(["evaluate", "--help"])
+    assert out.returncode == 0
+    assert "--dump-per-query" in out.stdout
+
+
 def test_no_subcommand_errors():
     out = _run([])
     assert out.returncode != 0

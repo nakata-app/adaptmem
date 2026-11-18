@@ -1,6 +1,7 @@
 """High-level AdaptMem class: train + persist + search."""
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import Any
 
@@ -258,7 +259,10 @@ class AdaptMem:
     def _ensure_rerank_model(self) -> None:
         if self._rerank_model is None:
             from sentence_transformers import CrossEncoder
-            self._rerank_model = CrossEncoder(self.rerank_model_name)
+            dev = os.environ.get("ADAPTMEM_RERANK_DEVICE")
+            self._rerank_model = CrossEncoder(
+                self.rerank_model_name, device=dev if dev else None
+            )
 
     def rerank(
         self,
@@ -294,7 +298,14 @@ class AdaptMem:
         ce = self._rerank_model
         assert ce is not None  # _ensure_rerank_model populates it
         pairs = [(query, t) for t in texts]
-        ce_scores = ce.predict(pairs, show_progress_bar=False)
+        predict_kw: dict[str, Any] = {"show_progress_bar": False}
+        batch_env = os.environ.get("ADAPTMEM_RERANK_BATCH")
+        if batch_env:
+            predict_kw["batch_size"] = int(batch_env)
+        max_len_env = os.environ.get("ADAPTMEM_RERANK_MAXLEN")
+        if max_len_env:
+            predict_kw["max_length"] = int(max_len_env)
+        ce_scores = ce.predict(pairs, **predict_kw)
         ranked = sorted(enumerate(ce_scores), key=lambda x: -float(x[1]))
         if top_k is not None:
             ranked = ranked[:top_k]

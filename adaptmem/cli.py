@@ -47,12 +47,15 @@ def _cmd_evaluate(args: argparse.Namespace) -> None:
     ks = sorted({1, 5, args.top_k})
     max_k = max(ks)
     hits_at = {k: 0 for k in ks}
+    per_query = []
     n = 0
     for q in queries:
         relevant = set(q["relevant_ids"])
         if not relevant:
             continue
         ranked = [h.chunk_id for h in am.search(q["query"], top_k=max_k)]
+        rank = next((i + 1 for i, cid in enumerate(ranked) if cid in relevant), None)
+        per_query.append({"query": q["query"], "rank": rank})
         for k in ks:
             if any(rid in ranked[:k] for rid in relevant):
                 hits_at[k] += 1
@@ -62,6 +65,9 @@ def _cmd_evaluate(args: argparse.Namespace) -> None:
         print(json.dumps({"error": "no labelled queries with relevant_ids"}, indent=2))
         return
     out = {"n": n, "recall": {f"@{k}": round(hits_at[k] / n, 4) for k in ks}}
+    dump_path = getattr(args, "dump_per_query", None)
+    if dump_path:
+        Path(dump_path).write_text(json.dumps(per_query, indent=2))
     print(json.dumps(out, indent=2))
 
 
@@ -139,6 +145,12 @@ def main() -> None:
     e.add_argument("--top-k", type=int, default=10, help="Largest k to compute (R@1/R@5/R@k)")
     e.add_argument("--rerank", action="store_true")
     e.add_argument("--rerank-model", default=None)
+    e.add_argument(
+        "--dump-per-query",
+        default=None,
+        help="write per-query first-relevant rank as JSON (feeds paired "
+        "significance testing: benchmarks/eval_significance.py)",
+    )
     e.set_defaults(func=_cmd_evaluate)
 
     sv = sub.add_parser(
